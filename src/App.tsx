@@ -12,6 +12,8 @@ import StoryViewer from "./pages/StoryViewer";
 import ProfilePage from "./pages/ProfilePage";
 import NotFound from "./pages/NotFound";
 import LeaderboardPage from "./pages/LeaderboardPage";
+import PublicProfilePage from "./pages/PublicProfilePage";
+import CentralAdminDashboard from "./pages/CentralAdminDashboard";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 
 const queryClient = new QueryClient();
@@ -56,6 +58,22 @@ const App = () => (
                 element={
                   <ProtectedRoute>
                     <LeaderboardPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/user/:id"
+                element={
+                  <ProtectedRoute>
+                    <PublicProfilePage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/central-admin"
+                element={
+                  <ProtectedRoute>
+                    <CentralAdminDashboard />
                   </ProtectedRoute>
                 }
               />

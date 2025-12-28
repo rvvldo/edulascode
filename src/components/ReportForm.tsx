@@ -13,7 +13,10 @@ import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
 import { pushData } from "@/lib/firebase.service";
 import { useAuth } from "@/contexts/AuthContext";
-import { Loader2, Send } from "lucide-react";
+import { Loader2, Send, Clock, CheckCircle2, AlertCircle } from "lucide-react";
+import { useRealtimeData } from "@/hooks/useFirebase";
+import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
 
 const ReportForm = () => {
     const { currentUser } = useAuth();
@@ -23,6 +26,33 @@ const ReportForm = () => {
         category: "bug",
         description: "",
     });
+
+    // Fetch reports
+    const { data: reportsData } = useRealtimeData("reports");
+    const userReports = reportsData
+        ? Object.entries(reportsData)
+            .map(([id, data]: [string, any]) => ({ id, ...data }))
+            .filter((report) => report.userId === currentUser?.uid)
+            .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+        : [];
+
+    const getStatusColor = (status: string) => {
+        switch (status) {
+            case 'pending': return 'bg-red-100 text-red-800 border-red-200';
+            case 'process': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+            case 'done': return 'bg-green-100 text-green-800 border-green-200';
+            default: return 'bg-gray-100 text-gray-800';
+        }
+    };
+
+    const getStatusIcon = (status: string) => {
+        switch (status) {
+            case 'pending': return <Clock className="w-3 h-3 mr-1" />;
+            case 'process': return <Loader2 className="w-3 h-3 mr-1" />;
+            case 'done': return <CheckCircle2 className="w-3 h-3 mr-1" />;
+            default: return <AlertCircle className="w-3 h-3 mr-1" />;
+        }
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -52,7 +82,7 @@ const ReportForm = () => {
             console.error("Error submitting report:", error);
             toast({
                 title: "Gagal Mengirim",
-                description: "Terjadi kesalahan saat mengirim laporan.",
+                description: `Terjadi kesalahan: ${(error as Error).message}`,
                 variant: "destructive",
             });
         } finally {
@@ -125,7 +155,47 @@ const ReportForm = () => {
                     </Button>
                 </form>
             </div>
+            {/* Riwayat Laporan */}
+            <div className="mt-8">
+                <h3 className="text-lg font-bold mb-4">Riwayat Laporan Anda</h3>
+                <div className="space-y-4">
+                    {userReports.length > 0 ? (
+                        userReports.map((report) => (
+                            <Card key={report.id} className="p-4 border-border/50">
+                                <div className="flex justify-between items-start">
+                                    <div>
+                                        <div className="flex items-center gap-2 mb-1">
+                                            <Badge variant="outline" className="text-xs">
+                                                {report.category}
+                                            </Badge>
+                                            <span className="text-xs text-muted-foreground">
+                                                {new Date(report.createdAt).toLocaleDateString()}
+                                            </span>
+                                        </div>
+                                        <h4 className="font-semibold text-sm">{report.subject}</h4>
+                                        <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
+                                            {report.description}
+                                        </p>
+                                    </div>
+                                    <Badge
+                                        variant="secondary"
+                                        className={`${getStatusColor(report.status)} flex items-center`}
+                                    >
+                                        {getStatusIcon(report.status)}
+                                        <span className="capitalize">{report.status || 'pending'}</span>
+                                    </Badge>
+                                </div>
+                            </Card>
+                        ))
+                    ) : (
+                        <div className="text-center py-8 text-muted-foreground bg-muted/20 rounded-xl border border-dashed border-border">
+                            Belum ada laporan yang dikirim
+                        </div>
+                    )}
+                </div>
+            </div>
         </div>
+
     );
 };
 

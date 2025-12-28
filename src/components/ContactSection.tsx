@@ -45,7 +45,7 @@ export function ContactSection() {
                 </div>
                 <div>
                   <p className="text-sm font-medium text-muted-foreground mb-1">Email</p>
-                  <p className="font-semibold text-foreground text-lg group-hover:text-primary transition-colors">hello@edulad.id</p>
+                  <p className="font-semibold text-foreground text-lg group-hover:text-primary transition-colors">edulad20@gmail.com</p>
                 </div>
               </div>
               <div className="flex items-center gap-5 group cursor-pointer">
@@ -54,7 +54,7 @@ export function ContactSection() {
                 </div>
                 <div>
                   <p className="text-sm font-medium text-muted-foreground mb-1">Telepon</p>
-                  <p className="font-semibold text-foreground text-lg group-hover:text-primary transition-colors">+62 21 1234 5678</p>
+                  <p className="font-semibold text-foreground text-lg group-hover:text-primary transition-colors">+62 878-6544-0787</p>
                 </div>
               </div>
               <div className="flex items-center gap-5 group cursor-pointer">
@@ -63,7 +63,7 @@ export function ContactSection() {
                 </div>
                 <div>
                   <p className="text-sm font-medium text-muted-foreground mb-1">Lokasi</p>
-                  <p className="font-semibold text-foreground text-lg group-hover:text-primary transition-colors">Gedog Wetan, Jawa Timur</p>
+                  <p className="font-semibold text-foreground text-lg group-hover:text-primary transition-colors">Gedog Wetan, Turen</p>
                 </div>
               </div>
             </div>
@@ -132,7 +132,7 @@ export function ContactSection() {
                 <span className="font-display text-2xl font-bold text-foreground">EDULAD</span>
               </Link>
               <p className="text-muted-foreground leading-relaxed mb-6">
-                Platform terdepan untuk menghubungkan talenta muda dengan peluang emas. Temukan lomba, beasiswa, dan komunitas yang mendukung perjalanan suksesmu.
+                Platform untuk menyalurkan wawasan tentang pentingnya kesadaran pelestarian lingkunan.
               </p>
               <div className="flex items-center gap-4">
                 {[
@@ -184,7 +184,7 @@ export function ContactSection() {
             <div>
               <h4 className="font-display text-lg font-bold text-foreground mb-6">Komunitas</h4>
               <ul className="space-y-4">
-                {["Event", "Newsletter"].map((item) => (
+                {["Event", "Seminar"].map((item) => (
                   <li key={item}>
                     <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
                       {item}
@@ -199,11 +199,11 @@ export function ContactSection() {
             <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8 text-sm text-muted-foreground">
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4" />
-                <span>hello@edulad.id</span>
+                <span>edulad20@gmail.com</span>
               </div>
               <div className="flex items-center gap-2">
                 <MapPin className="w-4 h-4" />
-                <span>Malang, Jawa Timur</span>
+                <span>Gedog Wetan, Turen</span>
               </div>
             </div>
             <p className="text-sm text-muted-foreground text-center md:text-right">

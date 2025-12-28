@@ -19,13 +19,29 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRealtimeData } from "@/hooks/useFirebase";
+import { NotificationSidebar } from "@/components/NotificationSidebar";
 
 // Mock data for stories
+// Static stories data
 const stories = [
   {
     id: 1,
@@ -91,10 +107,22 @@ const stories = [
 
 const Dashboard = () => {
   const { currentUser, logout } = useAuth();
-  const { data: userData } = useRealtimeData(`users/${currentUser?.uid}`);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [userSearchQuery, setUserSearchQuery] = useState("");
   const navigate = useNavigate();
+  const { data: userData } = useRealtimeData(`users/${currentUser?.uid}`);
+  const { data: allUsers } = useRealtimeData("users"); // Fetch all users for search
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeCategory, setActiveCategory] = useState("Semua");
+  const [searchOpen, setSearchOpen] = useState(false);
+
+  // Convert users object to array for search
+  const userList = allUsers
+    ? Object.entries(allUsers).map(([id, data]: [string, any]) => ({
+      id,
+      name: data.displayName || "User",
+      email: data.email,
+      institution: data.institution
+    }))
+    : [];
 
   const handleLogout = async () => {
     try {
@@ -135,34 +163,67 @@ const Dashboard = () => {
                   </Link>
                 </DropdownMenuItem>
 
-                <DropdownMenuItem className="flex items-center gap-2 cursor-pointer">
-                  <Settings className="w-4 h-4" />
-                  Pengaturan
+                <DropdownMenuItem asChild>
+                  <Link to="/profile?tab=settings" className="flex items-center gap-2 cursor-pointer">
+                    <Settings className="w-4 h-4" />
+                    Pengaturan
+                  </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="flex items-center gap-2 cursor-pointer">
-                  <HelpCircle className="w-4 h-4" />
-                  Bantuan
+                <DropdownMenuItem asChild>
+                  <Link to="/profile?tab=help" className="flex items-center gap-2 cursor-pointer">
+                    <HelpCircle className="w-4 h-4" />
+                    Bantuan
+                  </Link>
                 </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleLogout} className="flex items-center gap-2 cursor-pointer text-destructive focus:text-destructive focus:bg-destructive/10">
-                  <LogOut className="w-4 h-4" />
-                  Keluar
-                </DropdownMenuItem>
+
               </DropdownMenuContent>
             </DropdownMenu>
 
 
             {/* Search Users */}
             <div className="flex-1 max-w-md mx-4 lg:mx-8">
-              <div className="relative group">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
-                <Input
-                  placeholder="Cari pengguna lain..."
-                  value={userSearchQuery}
-                  onChange={(e) => setUserSearchQuery(e.target.value)}
-                  className="pl-10 h-10 bg-background/60 backdrop-blur-sm border-border/50 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all"
-                />
-              </div>
+              <Popover open={searchOpen} onOpenChange={setSearchOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    role="combobox"
+                    aria-expanded={searchOpen}
+                    className="w-full justify-between text-muted-foreground font-normal"
+                  >
+                    <span className="flex items-center gap-2">
+                      <Search className="w-4 h-4" />
+                      Cari pengguna lain...
+                    </span>
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-[300px] p-0" align="start">
+                  <Command>
+                    <CommandInput placeholder="Ketik nama user..." />
+                    <CommandList>
+                      <CommandEmpty>Tidak ditemukan.</CommandEmpty>
+                      <CommandGroup heading="Pengguna">
+                        {userList.map((user) => (
+                          <CommandItem
+                            key={user.id}
+                            value={user.name}
+                            onSelect={() => {
+                              navigate(`/user/${user.id}`);
+                              setSearchOpen(false);
+                            }}
+                            className="cursor-pointer"
+                          >
+                            <User className="mr-2 h-4 w-4" />
+                            <div className="flex flex-col">
+                              <span>{user.name}</span>
+                              <span className="text-xs text-muted-foreground">{user.institution}</span>
+                            </div>
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
             </div>
 
             {/* Right Section */}
@@ -170,16 +231,12 @@ const Dashboard = () => {
               {/* Leaderboard Button */}
               <Link to="/leaderboard">
                 <Button variant="ghost" size="icon" className="hover:bg-primary/10 transition-colors" title="Leaderboard">
-                  <Trophy className="w-5 h-5 text-accent" />
+                  <Trophy className="w-5 h-5 text-accent " />
                 </Button>
               </Link>
 
               {/* Notifications */}
-              {/* Notifications */}
-              <Button variant="ghost" size="icon" className="relative hover:bg-primary/10 transition-colors">
-                <Bell className="w-5 h-5" />
-                <span className="absolute top-1 right-1 w-2 h-2 bg-accent rounded-full animate-pulse-slow" />
-              </Button>
+              <NotificationSidebar />
 
 
             </div>

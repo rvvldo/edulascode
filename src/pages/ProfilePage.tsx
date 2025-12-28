@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -52,6 +52,14 @@ const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState<"profile" | "settings" | "help">("profile");
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    const tab = searchParams.get("tab");
+    if (tab === "settings" || tab === "help" || tab === "profile") {
+      setActiveTab(tab);
+    }
+  }, [searchParams]);
 
   // Load user data dari Firebase
   const { data: userData, loading } = useRealtimeData(`users/${currentUser?.uid}`);

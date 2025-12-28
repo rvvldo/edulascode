@@ -113,13 +113,13 @@ const StoryViewer = () => {
   // Typing animation
   useEffect(() => {
     if (!dialogue) return;
-    
+
     setDisplayedText("");
     setIsTyping(true);
-    
+
     let index = 0;
     const text = dialogue.text;
-    
+
     const interval = setInterval(() => {
       if (index < text.length) {
         setDisplayedText(text.slice(0, index + 1));
@@ -127,7 +127,7 @@ const StoryViewer = () => {
       } else {
         setIsTyping(false);
         clearInterval(interval);
-        
+
         // Show choices if at end of dialogues and choices exist
         if (currentDialogue === scene.dialogues.length - 1 && scene.choices) {
           setTimeout(() => setShowChoices(true), 500);
@@ -173,14 +173,14 @@ const StoryViewer = () => {
   };
 
   return (
-    <div 
+    <div
       className="min-h-screen relative overflow-hidden flex flex-col"
       style={{ background: scene.background }}
     >
       {/* Header */}
       <header className="relative z-10 flex items-center justify-between p-4">
-        <Button 
-          variant="glass" 
+        <Button
+          variant="glass"
           size="icon"
           onClick={() => navigate("/dashboard")}
         >
@@ -189,8 +189,8 @@ const StoryViewer = () => {
         <h1 className="font-display text-lg text-primary-foreground/90 truncate mx-4">
           {story.title}
         </h1>
-        <Button 
-          variant="glass" 
+        <Button
+          variant="glass"
           size="icon"
           onClick={() => setIsMuted(!isMuted)}
         >
@@ -215,18 +215,17 @@ const StoryViewer = () => {
       </div>
 
       {/* Dialogue Box */}
-      <div 
+      <div
         className="relative z-10 bg-card/95 backdrop-blur-md border-t border-border/50 p-6 cursor-pointer"
         onClick={handleContinue}
       >
         <div className="max-w-3xl mx-auto">
           {/* Character Name */}
           <div className="mb-3">
-            <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${
-              dialogue?.isNarrator 
-                ? "bg-muted text-muted-foreground" 
+            <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${dialogue?.isNarrator
+                ? "bg-muted text-muted-foreground"
                 : "bg-primary text-primary-foreground"
-            }`}>
+              }`}>
               {dialogue?.character}
             </span>
           </div>
