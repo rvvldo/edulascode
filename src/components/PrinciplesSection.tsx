@@ -51,20 +51,21 @@ export function PrinciplesSection() {
         </div>
 
         {/* Principles Grid */}
-        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {principles.map((principle, index) => (
             <div
               key={principle.title}
-              className="flex gap-5 p-6 rounded-2xl bg-card/50 backdrop-blur-sm border border-border/50 hover:border-primary/30 transition-all duration-300 group"
+              className="flex gap-6 p-8 rounded-3xl glass-effect border border-border/30 hover:border-primary/40 transition-all duration-500 group hover:shadow-card hover:-translate-y-1 glow-effect animate-slide-in-right"
+              style={{ animationDelay: `${index * 0.1}s` }}
             >
-              <div className={`w-16 h-16 rounded-2xl ${principle.color} flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform`}>
-                <principle.icon className="w-8 h-8" />
+              <div className={`w-20 h-20 rounded-2xl ${principle.color} flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-soft`}>
+                <principle.icon className="w-9 h-9" />
               </div>
               <div>
-                <h3 className="font-display text-xl font-semibold text-foreground mb-2">
+                <h3 className="font-display text-2xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors">
                   {principle.title}
                 </h3>
-                <p className="text-muted-foreground leading-relaxed">
+                <p className="text-muted-foreground leading-relaxed text-base">
                   {principle.description}
                 </p>
               </div>

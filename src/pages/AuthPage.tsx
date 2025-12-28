@@ -4,10 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Leaf, Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -15,24 +17,60 @@ const AuthPage = () => {
     institution: "",
   });
   const navigate = useNavigate();
+  const { login, register } = useAuth();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Simulate auth - in real app this would connect to backend
-    if (isLogin) {
+    setLoading(true);
+
+    try {
+      if (isLogin) {
+        // Login dengan Firebase
+        await login(formData.email, formData.password);
+        toast({
+          title: "Login Berhasil!",
+          description: "Selamat datang kembali di EDULAD.",
+        });
+        navigate("/dashboard");
+      } else {
+        // Register dengan Firebase
+        await register(formData.email, formData.password, formData.name);
+        toast({
+          title: "Registrasi Berhasil!",
+          description: "Akun Anda telah dibuat. Selamat berpetualang!",
+        });
+        navigate("/dashboard");
+      }
+    } catch (error: any) {
+      console.error("Auth error:", error);
+
+      // Handle Firebase error messages
+      let errorMessage = "Terjadi kesalahan. Silakan coba lagi.";
+
+      if (error.message) {
+        if (error.message.includes("invalid-email")) {
+          errorMessage = "Format email tidak valid.";
+        } else if (error.message.includes("user-not-found")) {
+          errorMessage = "Email tidak terdaftar.";
+        } else if (error.message.includes("wrong-password")) {
+          errorMessage = "Password salah.";
+        } else if (error.message.includes("email-already-in-use")) {
+          errorMessage = "Email sudah digunakan.";
+        } else if (error.message.includes("weak-password")) {
+          errorMessage = "Password terlalu lemah. Minimal 6 karakter.";
+        } else {
+          errorMessage = error.message;
+        }
+      }
+
       toast({
-        title: "Login Berhasil!",
-        description: "Selamat datang kembali di EDULAD.",
+        title: isLogin ? "Login Gagal" : "Registrasi Gagal",
+        description: errorMessage,
+        variant: "destructive",
       });
-    } else {
-      toast({
-        title: "Registrasi Berhasil!",
-        description: "Akun Anda telah dibuat. Selamat berpetualang!",
-      });
+    } finally {
+      setLoading(false);
     }
-    
-    navigate("/dashboard");
   };
 
   return (
@@ -69,8 +107,8 @@ const AuthPage = () => {
             {isLogin ? "Masuk ke Akun" : "Buat Akun Baru"}
           </h1>
           <p className="text-muted-foreground text-center mb-8">
-            {isLogin 
-              ? "Masuk untuk melanjutkan petualanganmu" 
+            {isLogin
+              ? "Masuk untuk melanjutkan petualanganmu"
               : "Daftar untuk memulai perjalanan edukasimu"
             }
           </p>
@@ -142,8 +180,8 @@ const AuthPage = () => {
               </div>
             </div>
 
-            <Button type="submit" variant="hero" size="lg" className="w-full mt-6">
-              {isLogin ? "Masuk" : "Daftar"}
+            <Button type="submit" variant="hero" size="lg" className="w-full mt-6" disabled={loading}>
+              {loading ? "Memproses..." : (isLogin ? "Masuk" : "Daftar")}
             </Button>
           </form>
 

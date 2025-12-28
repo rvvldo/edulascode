@@ -2,9 +2,10 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Leaf, Menu, X } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 const navItems = [
-  { label: "Mulai", href: "#hero" },
+  { label: "Beranda", href: "#hero" },
   { label: "Tentang", href: "#about" },
   { label: "Prinsip", href: "#principles" },
   { label: "Kontak", href: "#contact" },
@@ -12,6 +13,7 @@ const navItems = [
 
 export function LandingHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { currentUser } = useAuth();
 
   const scrollToSection = (href: string) => {
     const element = document.querySelector(href);
@@ -35,27 +37,33 @@ export function LandingHeader() {
             </span>
           </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-8">
-            {navItems.map((item) => (
-              <button
-                key={item.href}
-                onClick={() => scrollToSection(item.href)}
-                className="text-muted-foreground hover:text-foreground font-medium transition-colors relative group"
-              >
-                {item.label}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full" />
-              </button>
-            ))}
-          </nav>
-
           {/* CTA Button */}
-          <div className="hidden md:block">
-            <Link to="/auth">
-              <Button variant="hero" size="lg">
-                Daftar Sekarang
-              </Button>
-            </Link>
+          <div className="hidden md:grid grid-cols-[1fr_auto] items-center gap-12">
+            <nav className="hidden md:flex items-center gap-8">
+              {navItems.map((item) => (
+                <button
+                  key={item.href}
+                  onClick={() => scrollToSection(item.href)}
+                  className="text-muted-foreground hover:text-foreground font-medium transition-colors relative group"
+                >
+                  {item.label}
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full" />
+                </button>
+              ))}
+            </nav>
+            {currentUser ? (
+              <Link to="/dashboard">
+                <Button variant="hero" size="lg">
+                  Masuk
+                </Button>
+              </Link>
+            ) : (
+              <Link to="/auth">
+                <Button variant="hero" size="lg">
+                  Daftar Sekarang
+                </Button>
+              </Link>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -80,11 +88,19 @@ export function LandingHeader() {
                   {item.label}
                 </button>
               ))}
-              <Link to="/auth" className="mt-2">
-                <Button variant="hero" size="lg" className="w-full">
-                  Daftar Sekarang
-                </Button>
-              </Link>
+              {currentUser ? (
+                <Link to="/dashboard" className="mt-2">
+                  <Button variant="hero" size="lg" className="w-full">
+                    Masuk
+                  </Button>
+                </Link>
+              ) : (
+                <Link to="/auth" className="mt-2">
+                  <Button variant="hero" size="lg" className="w-full">
+                    Daftar Sekarang
+                  </Button>
+                </Link>
+              )}
             </nav>
           </div>
         )}

@@ -38,40 +38,40 @@ export function ContactSection() {
               Punya pertanyaan atau ingin berkolaborasi? Jangan ragu untuk menghubungi tim EDULAD.
             </p>
 
-            <div className="space-y-6">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                  <Mail className="w-5 h-5 text-primary" />
+            <div className="space-y-5">
+              <div className="flex items-center gap-5 group cursor-pointer">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform shadow-soft">
+                  <Mail className="w-6 h-6 text-primary" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Email</p>
-                  <p className="font-medium text-foreground">hello@edulad.id</p>
+                  <p className="text-sm font-medium text-muted-foreground mb-1">Email</p>
+                  <p className="font-semibold text-foreground text-lg group-hover:text-primary transition-colors">hello@edulad.id</p>
                 </div>
               </div>
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                  <Phone className="w-5 h-5 text-primary" />
+              <div className="flex items-center gap-5 group cursor-pointer">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform shadow-soft">
+                  <Phone className="w-6 h-6 text-primary" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Telepon</p>
-                  <p className="font-medium text-foreground">+62 21 1234 5678</p>
+                  <p className="text-sm font-medium text-muted-foreground mb-1">Telepon</p>
+                  <p className="font-semibold text-foreground text-lg group-hover:text-primary transition-colors">+62 21 1234 5678</p>
                 </div>
               </div>
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                  <MapPin className="w-5 h-5 text-primary" />
+              <div className="flex items-center gap-5 group cursor-pointer">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform shadow-soft">
+                  <MapPin className="w-6 h-6 text-primary" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Lokasi</p>
-                  <p className="font-medium text-foreground">Jakarta, Indonesia</p>
+                  <p className="text-sm font-medium text-muted-foreground mb-1">Lokasi</p>
+                  <p className="font-semibold text-foreground text-lg group-hover:text-primary transition-colors">Gedog Wetan, Jawa Timur</p>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Contact Form */}
-          <div className="bg-background rounded-2xl p-8 shadow-card">
-            <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="glass-effect rounded-3xl p-10 shadow-elevated border border-border/30">
+            <form onSubmit={handleSubmit} className="space-y-7">
               <div>
                 <label className="block text-sm font-medium text-foreground mb-2">
                   Nama Lengkap
@@ -81,7 +81,7 @@ export function ContactSection() {
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   required
-                  className="h-12"
+                  className="h-14 text-base bg-background/60 backdrop-blur-sm border-border/50 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all rounded-xl"
                 />
               </div>
               <div>
@@ -94,7 +94,7 @@ export function ContactSection() {
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   required
-                  className="h-12"
+                  className="h-14 text-base bg-background/60 backdrop-blur-sm border-border/50 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all rounded-xl"
                 />
               </div>
               <div>
@@ -106,12 +106,14 @@ export function ContactSection() {
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   required
-                  rows={5}
+                  rows={6}
+                  className="text-base bg-background/60 backdrop-blur-sm border-border/50 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all rounded-xl resize-none"
                 />
               </div>
-              <Button type="submit" variant="hero" size="lg" className="w-full">
-                Kirim Pesan
-                <Send className="w-4 h-4" />
+              <Button type="submit" variant="hero" size="lg" className="w-full group bg-gradient-to-r from-primary to-forest-light hover:shadow-elevated glow-effect relative overflow-hidden">
+                <span className="relative z-10">Kirim Pesan</span>
+                <Send className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform" />
+                <div className="absolute inset-0 bg-gradient-to-r from-forest-light to-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
               </Button>
             </form>
           </div>
@@ -119,17 +121,93 @@ export function ContactSection() {
       </div>
 
       {/* Footer */}
-      <footer className="mt-24 pt-12 border-t border-border/50">
+      {/* Footer */}
+      <footer className="mt-24 pt-16 border-t border-border/50">
         <div className="container mx-auto px-4 lg:px-8">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <Link to="/" className="flex items-center gap-2">
-              <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
-                <Leaf className="w-5 h-5 text-primary-foreground" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+            {/* Brand Column */}
+            <div>
+              <Link to="/" className="flex items-center gap-2 mb-6">
+                <img src="/icons.webp" alt="Edulad" className="w-8 h-8 object-contain hover:scale-105 transition-transform" />
+                <span className="font-display text-2xl font-bold text-foreground">EDULAD</span>
+              </Link>
+              <p className="text-muted-foreground leading-relaxed mb-6">
+                Platform terdepan untuk menghubungkan talenta muda dengan peluang emas. Temukan lomba, beasiswa, dan komunitas yang mendukung perjalanan suksesmu.
+              </p>
+              <div className="flex items-center gap-4">
+                {[
+                  { icon: Leaf, href: "#" }, // Placeholder for GitHub/Socials as requested in image but keeping Leaf as placeholder or finding correct icons
+                  { icon: Mail, href: "#" },
+                  { icon: Phone, href: "#" },
+                  { icon: MapPin, href: "#" }
+                ].map((social, i) => (
+                  <a
+                    key={i}
+                    href={social.href}
+                    className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all duration-300"
+                  >
+                    <social.icon className="w-5 h-5" />
+                  </a>
+                ))}
               </div>
-              <span className="font-display text-xl font-bold text-foreground">EDULAD</span>
-            </Link>
-            <p className="text-muted-foreground text-sm">
-              © 2024 EDULAD. Semua hak dilindungi.
+            </div>
+
+            {/* Platform Column */}
+            <div>
+              <h4 className="font-display text-lg font-bold text-foreground mb-6">Platform</h4>
+              <ul className="space-y-4">
+                {["Tentang Kami", "Fitur", "Karir", "Blog"].map((item) => (
+                  <li key={item}>
+                    <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+                      {item}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Dukungan Column */}
+            <div>
+              <h4 className="font-display text-lg font-bold text-foreground mb-6">Dukungan</h4>
+              <ul className="space-y-4">
+                {["Pusat Bantuan", "Syarat & Ketentuan", "Kebijakan Privasi", "Kontak"].map((item) => (
+                  <li key={item}>
+                    <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+                      {item}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Komunitas Column */}
+            <div>
+              <h4 className="font-display text-lg font-bold text-foreground mb-6">Komunitas</h4>
+              <ul className="space-y-4">
+                {["Event", "Newsletter"].map((item) => (
+                  <li key={item}>
+                    <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+                      {item}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          <div className="pt-8 border-t border-border/50 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8 text-sm text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <Mail className="w-4 h-4" />
+                <span>hello@edulad.id</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <MapPin className="w-4 h-4" />
+                <span>Malang, Jawa Timur</span>
+              </div>
+            </div>
+            <p className="text-sm text-muted-foreground text-center md:text-right">
+              © 2025 EDULAD Platform. All rights reserved.
             </p>
           </div>
         </div>

@@ -45,13 +45,13 @@ export function AboutSection() {
           {features.map((feature, index) => (
             <div
               key={feature.title}
-              className="group bg-background rounded-2xl p-6 shadow-soft hover:shadow-card transition-all duration-300 hover:-translate-y-1"
-              style={{ animationDelay: `${index * 0.1}s` }}
+              className="group glass-effect rounded-3xl p-7 hover:shadow-card transition-all duration-500 hover:-translate-y-2 border border-border/30 hover:border-primary/30 glow-effect animate-slide-up"
+              style={{ animationDelay: `${index * 0.15}s` }}
             >
-              <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-5 group-hover:bg-primary/20 transition-colors">
-                <feature.icon className="w-7 h-7 text-primary" />
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-soft">
+                <feature.icon className="w-8 h-8 text-primary group-hover:text-forest-light transition-colors" />
               </div>
-              <h3 className="font-display text-xl font-semibold text-foreground mb-3">
+              <h3 className="font-display text-xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors">
                 {feature.title}
               </h3>
               <p className="text-muted-foreground leading-relaxed">
