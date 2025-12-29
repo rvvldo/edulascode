@@ -16,6 +16,7 @@ import LeaderboardPage from "./pages/LeaderboardPage";
 import PublicProfilePage from "./pages/PublicProfilePage";
 import CentralAdminDashboard from "./pages/CentralAdminDashboard";
 import { ThemeProvider } from "@/contexts/ThemeContext";
+import { MusicProvider } from "@/contexts/MusicContext";
 
 const queryClient = new QueryClient();
 
@@ -23,67 +24,69 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
       <ThemeProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <DialogProvider />
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/auth" element={<AuthPage />} />
-              <Route
-                path="/dashboard"
-                element={
-                  <ProtectedRoute>
-                    <Dashboard />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/story/:id"
-                element={
-                  <ProtectedRoute>
-                    <StoryViewer />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/profile"
-                element={
-                  <ProtectedRoute>
-                    <ProfilePage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/leaderboard"
-                element={
-                  <ProtectedRoute>
-                    <LeaderboardPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/user/:id"
-                element={
-                  <ProtectedRoute>
-                    <PublicProfilePage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/central-admin"
-                element={
-                  <ProtectedRoute>
-                    <CentralAdminDashboard />
-                  </ProtectedRoute>
-                }
-              />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
+        <MusicProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <DialogProvider />
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/auth" element={<AuthPage />} />
+                <Route
+                  path="/dashboard"
+                  element={
+                    <ProtectedRoute>
+                      <Dashboard />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/story/:id"
+                  element={
+                    <ProtectedRoute>
+                      <StoryViewer />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/profile"
+                  element={
+                    <ProtectedRoute>
+                      <ProfilePage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/leaderboard"
+                  element={
+                    <ProtectedRoute>
+                      <LeaderboardPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/user/:id"
+                  element={
+                    <ProtectedRoute>
+                      <PublicProfilePage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/central-admin"
+                  element={
+                    <ProtectedRoute>
+                      <CentralAdminDashboard />
+                    </ProtectedRoute>
+                  }
+                />
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </BrowserRouter>
+          </TooltipProvider>
+        </MusicProvider>
       </ThemeProvider>
     </AuthProvider>
   </QueryClientProvider>

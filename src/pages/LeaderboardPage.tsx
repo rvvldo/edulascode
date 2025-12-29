@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useRealtimeData } from "@/hooks/useFirebase";
 import { useEffect } from "react";
 import { syncLeaderboardRanks } from "@/lib/firebase.service";
+import { MusicPlayer } from "@/components/MusicPlayer";
 
 const LeaderboardPage = () => {
     const { data: usersData, loading } = useRealtimeData("users");
@@ -126,9 +127,9 @@ const LeaderboardPage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-background relative overflow-hidden">
+        <div className="min-h-screen bg-background relative">
             {/* 3D Animated Background Layer */}
-            <div className="absolute inset-0 -z-10" style={{ perspective: '1200px' }}>
+            <div className="fixed inset-0 -z-10 overflow-hidden" style={{ perspective: '1200px' }}>
                 {/* Large 3D Floating Spheres - Neutral Theme */}
                 <div 
                     className="absolute top-10 left-10 w-[500px] h-[500px] rounded-full opacity-20"
@@ -210,7 +211,7 @@ const LeaderboardPage = () => {
                         key={`falling-leaf-${i}`}
                         className="absolute"
                         style={{
-                            left: `${Math.random() * 100}%`,
+                            left: `${5 + (Math.random() * 90)}%`,
                             top: `-${Math.random() * 20}%`,
                             animation: `fallLeaf ${8 + Math.random() * 8}s linear infinite`,
                             animationDelay: `${Math.random() * 10}s`,
@@ -284,7 +285,7 @@ const LeaderboardPage = () => {
             </div>
 
             {/* Floating Leaves Overlay - Visible Layer */}
-            <div className="fixed inset-0 pointer-events-none z-[5]">
+            <div className="fixed inset-0 pointer-events-none z-[5] overflow-hidden">
                 {/* Large Floating Leaves */}
                 {[
                     { top: '10%', left: '10%', size: 48, delay: 0, duration: 12 },
@@ -335,7 +336,7 @@ const LeaderboardPage = () => {
             </div>
 
             {/* Header */}
-            <header className="sticky top-0 z-50 bg-card/95 backdrop-blur-xl border-b border-border/50 shadow-lg">
+            <header className="fixed top-0 left-0 right-0 z-[60] glass-effect border-b border-border/50">
                 <div className="container mx-auto px-4 lg:px-8">
                     <div className="flex items-center justify-between h-16">
                         <div className="flex items-center gap-4">
@@ -357,7 +358,7 @@ const LeaderboardPage = () => {
                 </div>
             </header>
 
-            <main className="container mx-auto px-4 lg:px-8 py-8 pb-20 relative z-10">
+            <main className="container mx-auto px-4 lg:px-8 pt-24 py-8 pb-20 relative z-10">
 
                 {loading ? (
                     <div className="flex flex-col items-center justify-center py-20">
@@ -542,6 +543,9 @@ const LeaderboardPage = () => {
                     }
                 }
             `}</style>
+            
+            {/* Music Player */}
+            <MusicPlayer />
         </div>
     );
 };

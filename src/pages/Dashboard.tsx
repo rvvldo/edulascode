@@ -44,6 +44,7 @@ import {
 import { useAuth } from "@/contexts/AuthContext";
 import { useRealtimeData } from "@/hooks/useFirebase";
 import { NotificationSidebar } from "@/components/NotificationSidebar";
+import { MusicPlayer } from "@/components/MusicPlayer";
 
 // Static stories data with new thematic images
 const stories = [
@@ -150,9 +151,9 @@ const Dashboard = () => {
   const finishedStories = filteredStories.filter(story => completedStoryIds.includes(story.id));
 
   return (
-    <div className="min-h-screen bg-background pb-20 font-body">
+    <div className="min-h-screen bg-background font-body pt-20 ">
       {/* Header */}
-      <header className="sticky top-0 z-50 glass-effect border-b border-border/50">
+      <header className="fixed top-0 left-0 right-0 z-50 glass-effect border-b border-border/50">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="flex items-center justify-between h-16 lg:h-20">
             {/* Profile Dropdown */}
@@ -330,7 +331,7 @@ const Dashboard = () => {
       </div>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 lg:px-8 z-10 relative space-y-16">
+      <main className="container mx-auto px-4 lg:px-8 pt-24 lg:pt-2 pb-20 z-10 relative space-y-16">
 
         {/* ACTIVE STORIES SECTION */}
         <section>
@@ -479,6 +480,9 @@ const Dashboard = () => {
         )}
 
       </main>
+      
+      {/* Music Player */}
+      <MusicPlayer />
     </div>
   );
 };
