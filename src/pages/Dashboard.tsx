@@ -54,7 +54,7 @@ const stories = [
     category: "Hutan",
     difficulty: "Mudah",
     points: 100,
-    imageUrl: "/src/thumbnail/tumnel1.webp",
+    imageUrl: "/tumnel1.webp",
     color: "from-green-500/20 to-green-600/30",
   },
   {
@@ -64,7 +64,7 @@ const stories = [
     category: "Laut",
     difficulty: "Sedang",
     points: 150,
-    imageUrl: "/src/thumbnail/tumnel2.webp",
+    imageUrl: "/tumnel2.webp",
     color: "from-blue-500/20 to-cyan-500/30",
   },
   {
@@ -74,7 +74,7 @@ const stories = [
     category: "Satwa",
     difficulty: "Sulit",
     points: 200,
-    imageUrl: "/src/thumbnail/tumnel3.webp",
+    imageUrl: "/tumnel3.webp",
     color: "from-orange-500/20 to-amber-500/30",
   },
   {
@@ -84,7 +84,7 @@ const stories = [
     category: "Air",
     difficulty: "Sedang",
     points: 150,
-    imageUrl: "/src/thumbnail/tumnel1.webp",
+    imageUrl: "/tumnel1.webp",
     color: "from-sky-500/20 to-blue-500/30",
   },
   {
@@ -94,7 +94,7 @@ const stories = [
     category: "Polusi",
     difficulty: "Mudah",
     points: 100,
-    imageUrl: "/src/thumbnail/tumnel1.webp",
+    imageUrl: "/tumnel1.webp",
     color: "from-emerald-500/20 to-teal-500/30",
   },
   {
@@ -104,7 +104,7 @@ const stories = [
     category: "Satwa",
     difficulty: "Sulit",
     points: 200,
-    imageUrl: "/src/thumbnail/tumnel1.webp",
+    imageUrl: "/tumnel1.webp",
     color: "from-stone-500/20 to-amber-600/30",
   },
 ];
