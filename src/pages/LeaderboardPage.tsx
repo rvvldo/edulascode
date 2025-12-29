@@ -1,8 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, Trophy, Medal, Crown, User } from "lucide-react";
+import { ArrowLeft, Trophy, Crown, User, Leaf } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRealtimeData } from "@/hooks/useFirebase";
-import { Badge } from "@/components/ui/badge";
+import { useEffect } from "react";
+import { syncLeaderboardRanks } from "@/lib/firebase.service";
 
 const LeaderboardPage = () => {
     const { data: usersData, loading } = useRealtimeData("users");
@@ -16,6 +17,7 @@ const LeaderboardPage = () => {
                 name: user.displayName || "Anonymous",
                 score: user.totalScore || 0,
                 institution: user.institution || "Indonesia",
+                photoURL: user.photoURL || null,
                 rank: 0,
                 role: user.role
             }))
@@ -25,6 +27,15 @@ const LeaderboardPage = () => {
             .map((user, index) => ({ ...user, rank: index + 1 }))
         : [];
 
+    // Sync leaderboard ranks to user profiles when data changes
+    useEffect(() => {
+        if (usersData && !loading) {
+            syncLeaderboardRanks(usersData).catch(error => {
+                console.error('Failed to sync leaderboard ranks:', error);
+            });
+        }
+    }, [usersData, loading]);
+
     const topThree = leaderboardData.slice(0, 3);
     const restOfUsers = leaderboardData.slice(3);
 
@@ -32,83 +43,264 @@ const LeaderboardPage = () => {
         let sizeClass = "";
         let colorClass = "";
         let heightClass = "";
+        let podiumHeight = "";
+        let ringColor = "";
 
         if (position === 1) {
-            sizeClass = "w-24 h-24 sm:w-32 sm:h-32";
-            colorClass = "from-yellow-300 to-yellow-600 border-yellow-400";
-            heightClass = "scale-110 z-10 -mt-8"; // Elevated
+            sizeClass = "w-28 h-28 sm:w-36 sm:h-36";
+            colorClass = "from-yellow-400 via-yellow-500 to-yellow-600";
+            heightClass = "order-2";
+            podiumHeight = "h-48";
+            ringColor = "ring-yellow-400/50";
         } else if (position === 2) {
-            sizeClass = "w-20 h-20 sm:w-24 sm:h-24";
-            colorClass = "from-gray-300 to-gray-500 border-gray-400";
-            heightClass = "mt-4";
+            sizeClass = "w-24 h-24 sm:w-28 sm:h-28";
+            colorClass = "from-slate-300 via-slate-400 to-slate-500";
+            heightClass = "order-1";
+            podiumHeight = "h-36";
+            ringColor = "ring-slate-400/50";
         } else {
-            sizeClass = "w-20 h-20 sm:w-24 sm:h-24";
-            colorClass = "from-amber-600 to-amber-800 border-amber-700";
-            heightClass = "mt-8";
+            sizeClass = "w-24 h-24 sm:w-28 sm:h-28";
+            colorClass = "from-amber-600 via-amber-700 to-amber-800";
+            heightClass = "order-3";
+            podiumHeight = "h-28";
+            ringColor = "ring-amber-600/50";
         }
 
         return (
-            <div
-                className={`flex flex-col items-center cursor-pointer transition-transform hover:scale-105 ${heightClass}`}
-                onClick={() => navigate(`/user/${user.uid}`)}
-            >
-                <div className="relative">
+            <div className={`flex flex-col items-center ${heightClass} flex-1 max-w-[200px]`}>
+                {/* Avatar and Crown */}
+                <div className="relative mb-4 group cursor-pointer" onClick={() => navigate(`/user/${user.uid}`)}>
                     {position === 1 && (
-                        <Crown className="absolute -top-10 left-1/2 -translate-x-1/2 w-10 h-10 text-yellow-400 animate-bounce" fill="currentColor" />
+                        <div className="absolute -top-12 left-1/2 -translate-x-1/2 z-10">
+                            <Crown 
+                                className="w-12 h-12 text-yellow-400 drop-shadow-[0_0_8px_rgba(250,204,21,0.6)] animate-pulse" 
+                                fill="currentColor"
+                                style={{ animationDuration: '2s' }}
+                            />
+                        </div>
                     )}
-                    <div className={`rounded-full p-1 bg-gradient-to-br ${colorClass} shadow-xl`}>
-                        <div className={`${sizeClass} rounded-full bg-background border-4 border-transparent overflow-hidden flex items-center justify-center relative`}>
-                            {/* Placeholder Avatar if no image */}
-                            <User className="w-1/2 h-1/2 text-muted-foreground" />
+                    
+                    <div className={`rounded-full p-1 bg-gradient-to-br ${colorClass} shadow-2xl ${ringColor} ring-4 transition-transform group-hover:scale-110 duration-300`}>
+                        <div className={`${sizeClass} rounded-full bg-background border-4 border-white/20 overflow-hidden flex items-center justify-center relative`}>
+                            {user.photoURL ? (
+                                <img 
+                                    src={user.photoURL} 
+                                    alt={user.name}
+                                    className="w-full h-full object-cover"
+                                />
+                            ) : (
+                                <User className="w-1/2 h-1/2 text-muted-foreground" />
+                            )}
                         </div>
                     </div>
-                    <div className={`absolute -bottom-3 left-1/2 -translate-x-1/2 flex items-center justify-center w-8 h-8 rounded-full font-bold text-white shadow-lg bg-gradient-to-br ${colorClass}`}>
+                    
+                    {/* Position Badge */}
+                    <div className={`absolute -bottom-3 left-1/2 -translate-x-1/2 flex items-center justify-center w-10 h-10 rounded-full font-bold text-white shadow-xl bg-gradient-to-br ${colorClass} border-2 border-white`}>
                         {position}
                     </div>
                 </div>
 
-                <div className="text-center mt-6 space-y-1">
-                    <h3 className="font-bold text-lg sm:text-xl truncate max-w-[150px]">{user.name}</h3>
-                    <p className="text-sm text-muted-foreground truncate max-w-[150px]">{user.institution}</p>
-                    <Badge variant="secondary" className="mt-2 text-base px-4 py-1 bg-primary/10 text-primary hover:bg-primary/20">
+                {/* User Info */}
+                <div className="text-center space-y-2 mb-4">
+                    <h3 className="font-bold text-lg sm:text-xl truncate max-w-[180px] px-2">
+                        {user.name}
+                    </h3>
+                    <p className="text-sm text-muted-foreground truncate max-w-[180px] px-2">
+                        {user.institution}
+                    </p>
+                    <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full font-bold text-lg shadow-lg bg-gradient-to-r ${colorClass} text-white`}>
+                        <Trophy className="w-5 h-5" />
                         {user.score}
-                    </Badge>
+                    </div>
+                </div>
+
+                {/* Podium */}
+                <div className={`w-full ${podiumHeight} bg-gradient-to-b ${colorClass} rounded-t-2xl shadow-xl border-t-4 border-white/30 relative overflow-hidden transition-all duration-300`}>
+                    <div className="absolute inset-0 bg-white/10"></div>
+                    <div className="absolute top-4 left-1/2 -translate-x-1/2 text-white/90 font-bold text-4xl">
+                        #{position}
+                    </div>
                 </div>
             </div>
         );
     };
 
     return (
-        <div className="min-h-screen bg-background relative overflow-hidden">
-            {/* Background Elements */}
-            <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl -z-10" />
-            <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-accent/10 rounded-full blur-3xl -z-10" />
+        <div className="min-h-screen bg-gradient-to-b from-emerald-950 via-green-900 to-teal-950 relative overflow-hidden">
+            {/* 3D Animated Background Layer */}
+            <div className="absolute inset-0 -z-10" style={{ perspective: '1200px' }}>
+                {/* Large 3D Floating Spheres - Nature Theme */}
+                <div 
+                    className="absolute top-10 left-10 w-[500px] h-[500px] rounded-full opacity-25"
+                    style={{ 
+                        background: 'radial-gradient(circle at 30% 30%, rgba(34, 197, 94, 0.5), rgba(16, 185, 129, 0.3), transparent)',
+                        animation: 'float3d 15s ease-in-out infinite',
+                        transform: 'translateZ(100px)',
+                        filter: 'blur(60px)',
+                    }}
+                />
+                <div 
+                    className="absolute top-40 right-20 w-[400px] h-[400px] rounded-full opacity-20"
+                    style={{ 
+                        background: 'radial-gradient(circle at 30% 30%, rgba(20, 184, 166, 0.5), rgba(6, 182, 212, 0.3), transparent)',
+                        animation: 'float3d 18s ease-in-out infinite 3s',
+                        transform: 'translateZ(80px)',
+                        filter: 'blur(50px)',
+                    }}
+                />
+                <div 
+                    className="absolute bottom-20 left-1/3 w-[350px] h-[350px] rounded-full opacity-20"
+                    style={{ 
+                        background: 'radial-gradient(circle at 30% 30%, rgba(132, 204, 22, 0.5), rgba(101, 163, 13, 0.3), transparent)',
+                        animation: 'float3d 20s ease-in-out infinite 6s',
+                        transform: 'translateZ(60px)',
+                        filter: 'blur(40px)',
+                    }}
+                />
+                
+                {/* 3D Rotating Leaves */}
+                <div className="absolute top-1/4 right-1/4 w-40 h-40" style={{ transformStyle: 'preserve-3d' }}>
+                    <div 
+                        className="w-full h-full bg-gradient-to-br from-green-500/20 to-emerald-600/10 rounded-full"
+                        style={{ 
+                            animation: 'rotate3d 25s linear infinite',
+                            transformStyle: 'preserve-3d',
+                            boxShadow: '0 0 80px rgba(34, 197, 94, 0.4)',
+                        }}
+                    />
+                </div>
+                
+                <div className="absolute bottom-1/3 left-1/4 w-32 h-32" style={{ transformStyle: 'preserve-3d' }}>
+                    <div 
+                        className="w-full h-full bg-gradient-to-br from-teal-500/20 to-cyan-600/10 rounded-full"
+                        style={{ 
+                            animation: 'rotate3d 30s linear infinite reverse',
+                            transformStyle: 'preserve-3d',
+                            boxShadow: '0 0 60px rgba(20, 184, 166, 0.4)',
+                        }}
+                    />
+                </div>
+                
+                {/* 3D Floating Leaves - Multiple Sizes */}
+                <div className="absolute top-1/4 left-1/5" style={{ animation: 'floatLeaf 12s ease-in-out infinite' }}>
+                    <Leaf className="w-20 h-20 text-green-500/30 rotate-45" style={{ filter: 'drop-shadow(0 0 20px rgba(34, 197, 94, 0.5))' }} />
+                </div>
+                <div className="absolute top-1/3 right-1/4" style={{ animation: 'floatLeaf 14s ease-in-out infinite 2s' }}>
+                    <Leaf className="w-16 h-16 text-emerald-500/25 -rotate-12" style={{ filter: 'drop-shadow(0 0 15px rgba(16, 185, 129, 0.5))' }} />
+                </div>
+                <div className="absolute bottom-1/4 right-1/5" style={{ animation: 'floatLeaf 16s ease-in-out infinite 4s' }}>
+                    <Leaf className="w-24 h-24 text-teal-500/20 rotate-90" style={{ filter: 'drop-shadow(0 0 25px rgba(20, 184, 166, 0.5))' }} />
+                </div>
+                <div className="absolute top-2/3 left-1/4" style={{ animation: 'floatLeaf 13s ease-in-out infinite 6s' }}>
+                    <Leaf className="w-14 h-14 text-lime-500/30 -rotate-45" style={{ filter: 'drop-shadow(0 0 18px rgba(132, 204, 22, 0.5))' }} />
+                </div>
+                <div className="absolute top-1/2 right-1/3" style={{ animation: 'floatLeaf 15s ease-in-out infinite 8s' }}>
+                    <Leaf className="w-18 h-18 text-green-400/25 rotate-12" style={{ filter: 'drop-shadow(0 0 20px rgba(34, 197, 94, 0.5))' }} />
+                </div>
+                
+                {/* Trophy Icons with Nature Theme */}
+                <div className="absolute top-1/3 left-1/6" style={{ animation: 'float3d 12s ease-in-out infinite 2s' }}>
+                    <Trophy className="w-24 h-24 text-green-500/20" style={{ filter: 'drop-shadow(0 0 20px rgba(34, 197, 94, 0.5))' }} />
+                </div>
+                <div className="absolute bottom-1/4 right-1/6" style={{ animation: 'float3d 16s ease-in-out infinite 5s' }}>
+                    <Trophy className="w-20 h-20 text-emerald-500/20" style={{ filter: 'drop-shadow(0 0 20px rgba(16, 185, 129, 0.5))' }} />
+                </div>
+                <div className="absolute top-2/3 right-1/3" style={{ animation: 'float3d 14s ease-in-out infinite 8s' }}>
+                    <Crown className="w-16 h-16 text-lime-400/20" style={{ filter: 'drop-shadow(0 0 20px rgba(132, 204, 22, 0.5))' }} />
+                </div>
+                
+                {/* 3D Grid with Perspective - Green Theme */}
+                <div 
+                    className="absolute inset-0 opacity-10"
+                    style={{
+                        backgroundImage: `
+                            linear-gradient(to right, rgba(34, 197, 94, 0.4) 1px, transparent 1px),
+                            linear-gradient(to bottom, rgba(34, 197, 94, 0.4) 1px, transparent 1px)
+                        `,
+                        backgroundSize: '80px 80px',
+                        transform: 'perspective(800px) rotateX(60deg) translateZ(-200px)',
+                        transformOrigin: 'center bottom',
+                    }}
+                />
+                
+                {/* Animated Light Rays - Green */}
+                <div 
+                    className="absolute top-0 left-1/2 w-1 h-full opacity-10"
+                    style={{
+                        background: 'linear-gradient(to bottom, transparent, rgba(34, 197, 94, 0.6), transparent)',
+                        animation: 'slideLight 8s ease-in-out infinite',
+                        transform: 'translateX(-50%) rotate(15deg)',
+                        filter: 'blur(20px)',
+                    }}
+                />
+                <div 
+                    className="absolute top-0 left-1/3 w-1 h-full opacity-10"
+                    style={{
+                        background: 'linear-gradient(to bottom, transparent, rgba(20, 184, 166, 0.6), transparent)',
+                        animation: 'slideLight 10s ease-in-out infinite 2s',
+                        transform: 'translateX(-50%) rotate(-15deg)',
+                        filter: 'blur(20px)',
+                    }}
+                />
+                
+                {/* Depth Overlay */}
+                <div 
+                    className="absolute inset-0"
+                    style={{
+                        background: 'radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.5) 100%)',
+                    }}
+                />
+            </div>
 
             {/* Header */}
-            <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
+            <header className="sticky top-0 z-50 bg-emerald-950/95 backdrop-blur-xl border-b border-green-500/20 shadow-lg shadow-green-500/10">
                 <div className="container mx-auto px-4 lg:px-8">
-                    <div className="flex items-center gap-4 h-16">
-                        <Link to="/dashboard">
-                            <Button variant="ghost" size="icon">
-                                <ArrowLeft className="w-5 h-5" />
-                            </Button>
-                        </Link>
-                        <h1 className="font-display text-xl font-bold">Papan Juara</h1>
+                    <div className="flex items-center justify-between h-16">
+                        <div className="flex items-center gap-4">
+                            <Link to="/dashboard">
+                                <Button variant="ghost" size="icon" className="hover:bg-green-500/10 text-green-400">
+                                    <ArrowLeft className="w-5 h-5" />
+                                </Button>
+                            </Link>
+                            <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center shadow-lg shadow-green-500/50">
+                                    <Trophy className="w-6 h-6 text-white" />
+                                </div>
+                                <h1 className="font-display text-2xl font-bold bg-gradient-to-r from-green-400 via-emerald-400 to-teal-400 bg-clip-text text-transparent">
+                                    Papan Juara
+                                </h1>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </header>
 
-            <main className="container mx-auto px-4 lg:px-8 py-8 pb-20">
+            <main className="container mx-auto px-4 lg:px-8 py-8 pb-20 relative z-10">
 
                 {loading ? (
                     <div className="flex flex-col items-center justify-center py-20">
-                        <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4"></div>
-                        <p className="text-muted-foreground">Memuat data juara...</p>
+                        <div className="w-16 h-16 border-4 border-green-400 border-t-transparent rounded-full animate-spin mb-4 shadow-lg shadow-green-400/50"></div>
+                        <p className="text-emerald-200 font-medium">Memuat data juara...</p>
                     </div>
                 ) : leaderboardData.length > 0 ? (
                     <>
+                        {/* Title Section */}
+                        <div className="text-center mb-12 animate-fade-in">
+                            <h2 className="text-4xl sm:text-6xl font-display font-bold mb-3 bg-gradient-to-r from-green-400 via-emerald-400 to-teal-400 bg-clip-text text-transparent" style={{ 
+                                filter: 'drop-shadow(0 0 30px rgba(34, 197, 94, 0.6))',
+                                textShadow: '0 0 40px rgba(34, 197, 94, 0.4)',
+                            }}>
+                                Top Champions
+                            </h2>
+                            <p className="text-emerald-300 text-lg flex items-center justify-center gap-2">
+                                <Leaf className="w-5 h-5" />
+                                Para juara terbaik dalam misi penyelamatan lingkungan
+                                <Leaf className="w-5 h-5" />
+                            </p>
+                        </div>
+
                         {/* Podium Section */}
-                        <div className="flex justify-center items-end gap-4 sm:gap-12 mb-20 min-h-[300px] pt-12">
+                        <div className="flex justify-center items-end gap-4 sm:gap-8 mb-16 px-4">
                             {/* 2nd Place (Left) */}
                             {topThree[1] && <PodiumItem user={topThree[1]} position={2} />}
 
@@ -121,37 +313,127 @@ const LeaderboardPage = () => {
 
                         {/* List Section for Rank 4+ */}
                         {restOfUsers.length > 0 && (
-                            <div className="max-w-3xl mx-auto space-y-3 animate-fade-in-up">
-                                <h3 className="text-lg font-bold mb-4 opacity-80 pl-2">Peringkat Lainnya</h3>
-                                {restOfUsers.map((user) => (
+                            <div className="max-w-4xl mx-auto space-y-3 animate-fade-in-up">
+                                <div className="flex items-center gap-3 mb-6 px-2">
+                                    <div className="h-px flex-1 bg-gradient-to-r from-transparent via-green-500/30 to-transparent"></div>
+                                    <h3 className="text-lg font-bold text-green-400/80 uppercase tracking-wider flex items-center gap-2">
+                                        <Leaf className="w-4 h-4" />
+                                        Peringkat Lainnya
+                                        <Leaf className="w-4 h-4" />
+                                    </h3>
+                                    <div className="h-px flex-1 bg-gradient-to-r from-transparent via-green-500/30 to-transparent"></div>
+                                </div>
+                                
+                                {restOfUsers.map((user, index) => (
                                     <div
                                         key={user.uid}
-                                        className="group flex items-center gap-4 p-4 rounded-xl bg-card/40 backdrop-blur-sm border border-border/50 hover:bg-card/80 hover:scale-[1.01] transition-all cursor-pointer shadow-sm"
+                                        className="group flex items-center gap-4 p-4 rounded-2xl bg-emerald-900/40 backdrop-blur-sm border border-green-700/30 hover:border-green-500/50 hover:bg-emerald-900/60 hover:shadow-xl hover:shadow-green-500/10 hover:scale-[1.02] transition-all duration-300 cursor-pointer"
                                         onClick={() => navigate(`/user/${user.uid}`)}
+                                        style={{ animationDelay: `${index * 0.05}s` }}
                                     >
-                                        <div className="w-8 font-bold text-center text-muted-foreground">{user.rank}</div>
+                                        {/* Rank */}
+                                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500/20 to-emerald-600/10 flex items-center justify-center font-bold text-lg text-green-400 group-hover:from-green-500/30 group-hover:to-emerald-600/20 transition-all">
+                                            {user.rank}
+                                        </div>
+                                        
+                                        {/* Avatar */}
                                         <div className="flex-shrink-0">
-                                            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                                                <User className="w-5 h-5 text-primary" />
+                                            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-green-500/20 to-emerald-600/20 flex items-center justify-center ring-2 ring-emerald-900 group-hover:ring-green-500/50 transition-all overflow-hidden">
+                                                {user.photoURL ? (
+                                                    <img 
+                                                        src={user.photoURL} 
+                                                        alt={user.name}
+                                                        className="w-full h-full object-cover"
+                                                    />
+                                                ) : (
+                                                    <User className="w-6 h-6 text-green-400" />
+                                                )}
                                             </div>
                                         </div>
+                                        
+                                        {/* User Info */}
                                         <div className="flex-grow min-w-0">
-                                            <div className="font-semibold truncate group-hover:text-primary transition-colors">{user.name}</div>
-                                            <div className="text-xs text-muted-foreground truncate">{user.institution}</div>
+                                            <div className="font-bold text-base truncate text-emerald-100 group-hover:text-green-400 transition-colors">
+                                                {user.name}
+                                            </div>
+                                            <div className="text-sm text-emerald-300/70 truncate flex items-center gap-2">
+                                                <span>{user.institution}</span>
+                                            </div>
                                         </div>
-                                        <div className="font-display font-bold text-lg text-foreground">{user.score}</div>
+                                        
+                                        {/* Score */}
+                                        <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-green-500/10 to-emerald-600/10 group-hover:from-green-500/20 group-hover:to-emerald-600/20 transition-all">
+                                            <Trophy className="w-4 h-4 text-green-400" />
+                                            <span className="font-display font-bold text-lg text-green-300">
+                                                {user.score}
+                                            </span>
+                                        </div>
                                     </div>
                                 ))}
                             </div>
                         )}
                     </>
                 ) : (
-                    <div className="text-center py-20 opacity-50">
-                        <Trophy className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
-                        <p>Belum ada data peringkat</p>
+                    <div className="text-center py-20">
+                        <Trophy className="w-20 h-20 mx-auto mb-6 text-green-700" />
+                        <h3 className="text-2xl font-bold mb-2 text-emerald-200">Belum Ada Data Peringkat</h3>
+                        <p className="text-emerald-400">Jadilah yang pertama untuk masuk ke papan juara!</p>
                     </div>
                 )}
             </main>
+            
+            {/* Custom CSS for 3D animations */}
+            <style>{`
+                @keyframes float3d {
+                    0%, 100% {
+                        transform: translate3d(0, 0, 0) scale(1);
+                    }
+                    25% {
+                        transform: translate3d(30px, -40px, 80px) scale(1.1);
+                    }
+                    50% {
+                        transform: translate3d(-30px, -80px, 150px) scale(1.3);
+                    }
+                    75% {
+                        transform: translate3d(-40px, -40px, 80px) scale(1.1);
+                    }
+                }
+                
+                @keyframes floatLeaf {
+                    0%, 100% {
+                        transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+                    }
+                    25% {
+                        transform: translate3d(40px, -50px, 100px) rotate(90deg) scale(1.2);
+                    }
+                    50% {
+                        transform: translate3d(-40px, -100px, 180px) rotate(180deg) scale(1.4);
+                    }
+                    75% {
+                        transform: translate3d(-50px, -50px, 100px) rotate(270deg) scale(1.2);
+                    }
+                }
+                
+                @keyframes rotate3d {
+                    0% {
+                        transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+                    }
+                    100% {
+                        transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+                    }
+                }
+                
+                @keyframes slideLight {
+                    0%, 100% {
+                        transform: translateX(-50%) translateY(-100%) rotate(15deg);
+                        opacity: 0;
+                    }
+                    50% {
+                        transform: translateX(-50%) translateY(0%) rotate(15deg);
+                        opacity: 0.2;
+                    }
+                }
+            `}</style>
         </div>
     );
 };

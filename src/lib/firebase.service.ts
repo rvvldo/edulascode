@@ -221,3 +221,53 @@ export const getFileURL = async (path: string): Promise<string> => {
         throw error;
     }
 };
+
+/**
+ * Sync leaderboard ranks to user profiles
+ * Updates each user's leaderboardRank field based on their position in the leaderboard
+ * @param usersData - Object containing all users data
+ */
+export const syncLeaderboardRanks = async (usersData: any): Promise<void> => {
+    try {
+        console.log('Starting leaderboard rank sync...');
+        
+        if (!usersData) {
+            console.log('No users data to sync');
+            return;
+        }
+
+        // Convert users object to array and sort by score
+        const leaderboardData = Object.entries(usersData)
+            .map(([uid, user]: [string, any]) => ({
+                uid,
+                score: user.totalScore || 0,
+                role: user.role
+            }))
+            .filter(user => user.role !== 'admin' && user.role !== 'central_admin')
+            .sort((a, b) => b.score - a.score)
+            .slice(0, 50); // Top 50 only
+
+        // Update each user's rank
+        const updatePromises = leaderboardData.map((user, index) => {
+            const rank = index + 1;
+            return updateData(`users/${user.uid}`, { leaderboardRank: rank });
+        });
+
+        // Update users not in top 50 to have null rank
+        const topUserIds = new Set(leaderboardData.map(u => u.uid));
+        const otherUsersPromises = Object.entries(usersData)
+            .filter(([uid, user]: [string, any]) => 
+                !topUserIds.has(uid) && 
+                user.role !== 'admin' && 
+                user.role !== 'central_admin'
+            )
+            .map(([uid]) => updateData(`users/${uid}`, { leaderboardRank: null }));
+
+        await Promise.all([...updatePromises, ...otherUsersPromises]);
+        
+        console.log(`Leaderboard ranks synced for ${leaderboardData.length} users`);
+    } catch (error) {
+        console.error('Error syncing leaderboard ranks:', error);
+        throw error;
+    }
+};

@@ -73,11 +73,12 @@ const ProfilePage = () => {
     name: "",
     bio: "",
     institution: "",
+    class: "",
   });
 
   // Update formData dan load preferences ketika userData dimuat
   useEffect(() => {
-    if (userData) {
+    if (userData && !isEditing) {
       console.log('User data loaded:', userData);
       console.log('Photo URL:', userData.photoURL);
       
@@ -85,6 +86,7 @@ const ProfilePage = () => {
         name: userData.displayName || "",
         bio: userData.bio || "",
         institution: userData.institution || "",
+        class: userData.class || "",
       });
 
       // Load notification preference if exists
@@ -107,7 +109,7 @@ const ProfilePage = () => {
         loginStreak
       });
     }
-  }, [userData, checkAchievements]);
+  }, [userData, checkAchievements, isEditing]);
 
   // Save notification preference when changed
   const handleNotificationChange = async (enabled: boolean) => {
@@ -133,6 +135,7 @@ const ProfilePage = () => {
         displayName: formData.name,
         bio: formData.bio,
         institution: formData.institution,
+        class: formData.class,
       });
 
       setIsEditing(false);
@@ -379,6 +382,9 @@ const ProfilePage = () => {
                 
                 <h2 className="font-display text-xl font-bold text-foreground mt-4">{userData?.displayName || "User"}</h2>
                 <p className="text-sm text-muted-foreground">{userData?.institution || "-"}</p>
+                {userData?.class && (
+                  <p className="text-xs text-muted-foreground mt-1">Kelas: {userData.class}</p>
+                )}
               </div>
 
               {/* Stats */}
@@ -388,7 +394,9 @@ const ProfilePage = () => {
                   <div className="text-xs text-muted-foreground">Total Skor</div>
                 </div>
                 <div className="text-center p-3 bg-background rounded-xl">
-                  <div className="text-2xl font-bold text-accent">#{userData?.rank || 0}</div>
+                  <div className="text-2xl font-bold text-accent">
+                    {userData?.leaderboardRank ? `#${userData.leaderboardRank}` : '-'}
+                  </div>
                   <div className="text-xs text-muted-foreground">Peringkat</div>
                 </div>
               </div>
@@ -434,8 +442,15 @@ const ProfilePage = () => {
                     <h3 className="font-display text-xl font-bold">Informasi Profil</h3>
                     <Button
                       variant={isEditing ? "default" : "outline"}
-                      onClick={() => isEditing ? handleSave() : setIsEditing(true)}
+                      onClick={() => {
+                        if (isEditing) {
+                          handleSave();
+                        } else {
+                          setIsEditing(true);
+                        }
+                      }}
                       disabled={isSaving}
+                      className={isEditing ? "bg-primary hover:bg-primary/90" : ""}
                     >
                       {isEditing ? (
                         <>
@@ -460,7 +475,8 @@ const ProfilePage = () => {
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         disabled={!isEditing}
-                        className="h-12"
+                        className={`h-12 ${!isEditing ? 'bg-muted/50 cursor-not-allowed' : 'bg-background'}`}
+                        placeholder="Masukkan nama lengkap"
                       />
                     </div>
                     <div>
@@ -471,7 +487,20 @@ const ProfilePage = () => {
                         value={formData.institution}
                         onChange={(e) => setFormData({ ...formData, institution: e.target.value })}
                         disabled={!isEditing}
-                        className="h-12"
+                        className={`h-12 ${!isEditing ? 'bg-muted/50 cursor-not-allowed' : 'bg-background'}`}
+                        placeholder="Masukkan asal instansi"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-foreground mb-2">
+                        Kelas
+                      </label>
+                      <Input
+                        value={formData.class}
+                        onChange={(e) => setFormData({ ...formData, class: e.target.value })}
+                        disabled={!isEditing}
+                        className={`h-12 ${!isEditing ? 'bg-muted/50 cursor-not-allowed' : 'bg-background'}`}
+                        placeholder="Contoh: X-A, XI-B, XII-C"
                       />
                     </div>
                     <div>
@@ -482,7 +511,9 @@ const ProfilePage = () => {
                         value={formData.bio}
                         onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
                         disabled={!isEditing}
+                        className={`${!isEditing ? 'bg-muted/50 cursor-not-allowed' : 'bg-background'}`}
                         rows={4}
+                        placeholder="Ceritakan tentang diri Anda"
                       />
                     </div>
                   </div>
