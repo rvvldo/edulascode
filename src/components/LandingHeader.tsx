@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Leaf, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 
 const navItems = [
@@ -29,8 +29,12 @@ export function LandingHeader() {
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center shadow-soft group-hover:shadow-card transition-shadow">
-              <Leaf className="w-5 h-5 text-primary-foreground" />
+            <div className="w-10 h-10 rounded-3xl bg-primary/10 flex items-center justify-center shadow-soft group-hover:shadow-card transition-shadow overflow-hidden">
+              <img 
+                src="/icons.webp" 
+                alt="EDULAD Logo" 
+                className="w-10 h-10 object-contain"
+              />
             </div>
             <span className="font-display text-xl lg:text-2xl font-bold text-foreground">
               EDULAD

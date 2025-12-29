@@ -54,7 +54,7 @@ const stories = [
     category: "Hutan",
     difficulty: "Mudah",
     points: 100,
-    imageUrl: "/tumnel1.webp",
+    imageUrl: "/thumbnail/tumnel1.webp",
     color: "from-green-500/20 to-green-600/30",
   },
   {
@@ -64,7 +64,7 @@ const stories = [
     category: "Laut",
     difficulty: "Sedang",
     points: 150,
-    imageUrl: "/tumnel2.webp",
+    imageUrl: "/thumbnail/tumnel2.webp",
     color: "from-blue-500/20 to-cyan-500/30",
   },
   {
@@ -74,7 +74,7 @@ const stories = [
     category: "Satwa",
     difficulty: "Sulit",
     points: 200,
-    imageUrl: "/tumnel3.webp",
+    imageUrl: "/thumbnail/tumnel3.webp",
     color: "from-orange-500/20 to-amber-500/30",
   },
   {
@@ -84,7 +84,7 @@ const stories = [
     category: "Air",
     difficulty: "Sedang",
     points: 150,
-    imageUrl: "/tumnel1.webp",
+    imageUrl: "/thumbnail/tumnel4.webp",
     color: "from-sky-500/20 to-blue-500/30",
   },
   {
@@ -94,7 +94,7 @@ const stories = [
     category: "Polusi",
     difficulty: "Mudah",
     points: 100,
-    imageUrl: "/tumnel1.webp",
+    imageUrl: "/thumbnail/tumnel5.webp",
     color: "from-emerald-500/20 to-teal-500/30",
   },
   {
@@ -104,7 +104,7 @@ const stories = [
     category: "Satwa",
     difficulty: "Sulit",
     points: 200,
-    imageUrl: "/tumnel1.webp",
+    imageUrl: "/thumbnail/tumnel6.webp",
     color: "from-stone-500/20 to-amber-600/30",
   },
 ];
@@ -292,7 +292,7 @@ const Dashboard = () => {
         <div className="container mx-auto px-4 lg:px-8 relative z-10 pt-16 pb-12">
           <div className="flex flex-col md:flex-row items-center justify-between gap-12">
             <div className="max-w-2xl text-center md:text-left">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/90 backdrop-blur-md text-primary text-sm font-bold tracking-wide mb-6 border border-white/60 shadow-sm animate-fade-in">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/85 backdrop-blur-md text-primary text-sm font-bold tracking-wide mb-6 border border-white/60 shadow-sm animate-fade-in">
                 <Leaf className="w-4 h-4" />
                 <span>Platform Edukasi Lingkungan No. 1</span>
               </div>
