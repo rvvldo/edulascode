@@ -7,22 +7,45 @@ import { getStorage, FirebaseStorage } from 'firebase/storage';
 const firebaseConfig = {
     apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
     authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-    databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL,
+    databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL || "https://edulad-3b03a-default-rtdb.firebaseio.com",
     projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
     storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
     messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
     appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
-// Validate Firebase configuration
+// Log configuration for debugging (only in development)
+if (import.meta.env.DEV) {
+    console.log('Firebase Config Check:', {
+        hasApiKey: !!firebaseConfig.apiKey,
+        hasAuthDomain: !!firebaseConfig.authDomain,
+        hasDatabaseURL: !!firebaseConfig.databaseURL,
+        hasProjectId: !!firebaseConfig.projectId,
+        databaseURL: firebaseConfig.databaseURL
+    });
+}
+
+// Validate critical Firebase configuration
 if (!firebaseConfig.databaseURL) {
-    console.error('Firebase Database URL is missing!');
+    console.error('❌ Firebase Database URL is missing!');
     console.error('Please check your .env.local file and ensure VITE_FIREBASE_DATABASE_URL is set');
-    console.error('Current config:', firebaseConfig);
+    throw new Error('Firebase Database URL is required');
+}
+
+if (!firebaseConfig.projectId) {
+    console.error('❌ Firebase Project ID is missing!');
+    throw new Error('Firebase Project ID is required');
 }
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+let app;
+try {
+    app = initializeApp(firebaseConfig);
+    console.log('✅ Firebase initialized successfully');
+} catch (error) {
+    console.error('❌ Firebase initialization failed:', error);
+    throw error;
+}
 
 // Initialize Realtime Database dan get reference ke service
 export const database: Database = getDatabase(app);
