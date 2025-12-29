@@ -14,6 +14,13 @@ const firebaseConfig = {
     appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
+// Validate Firebase configuration
+if (!firebaseConfig.databaseURL) {
+    console.error('Firebase Database URL is missing!');
+    console.error('Please check your .env.local file and ensure VITE_FIREBASE_DATABASE_URL is set');
+    console.error('Current config:', firebaseConfig);
+}
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
