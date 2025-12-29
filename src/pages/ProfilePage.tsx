@@ -28,13 +28,9 @@ import { Switch } from "@/components/ui/switch";
 import { useTheme } from "@/contexts/ThemeContext";
 import ReportForm from "@/components/ReportForm";
 import { useDialogStore } from "@/hooks/useDialog";
-
-// Default achievements untuk user baru
-const defaultAchievements = [
-  { id: 1, name: "Pemula Hijau", icon: "🌱", description: "Selesaikan cerita pertama" },
-  { id: 2, name: "Penjaga Hutan", icon: "🌳", description: "Selesaikan 5 cerita kategori Hutan" },
-  { id: 3, name: "Sahabat Laut", icon: "🐋", description: "Selesaikan 3 cerita kategori Laut" },
-];
+import { AchievementDisplay } from "@/components/AchievementDisplay";
+import { AchievementsModal } from "@/components/AchievementsModal";
+import { useAchievements } from "@/hooks/useAchievements";
 
 // Mock leaderboard data
 const leaderboardData = [
@@ -58,8 +54,10 @@ const ProfilePage = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [searchParams] = useSearchParams();
   const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
+  const [achievementsModalOpen, setAchievementsModalOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { confirm } = useDialogStore();
+  const { checkAchievements } = useAchievements();
 
   useEffect(() => {
     const tab = searchParams.get("tab");
@@ -93,8 +91,23 @@ const ProfilePage = () => {
       if (userData.preferences?.notifications !== undefined) {
         setNotificationsEnabled(userData.preferences.notifications);
       }
+
+      // Check and unlock achievements based on user progress
+      const storiesCompleted = userData.completedStories ? Object.keys(userData.completedStories).length : 0;
+      const totalPoints = userData.totalPoints || 0;
+      const leaderboardRank = userData.leaderboardRank || null;
+      const storiesPerfect = userData.storiesPerfect || 0;
+      const loginStreak = userData.loginStreak || 0;
+
+      checkAchievements({
+        storiesCompleted,
+        totalPoints,
+        leaderboardRank,
+        storiesPerfect,
+        loginStreak
+      });
     }
-  }, [userData]);
+  }, [userData, checkAchievements]);
 
   // Save notification preference when changed
   const handleNotificationChange = async (enabled: boolean) => {
@@ -476,21 +489,7 @@ const ProfilePage = () => {
                 </div>
 
                 {/* Achievements */}
-                <div className="bg-card rounded-2xl p-6 shadow-soft border border-border/50">
-                  <h3 className="font-display text-xl font-bold mb-6">Pencapaian</h3>
-                  <div className="grid sm:grid-cols-3 gap-4">
-                    {(userData?.achievements || defaultAchievements).map((achievement: any) => (
-                      <div
-                        key={achievement.id}
-                        className="flex flex-col items-center text-center p-4 bg-background rounded-xl"
-                      >
-                        <span className="text-4xl mb-3">{achievement.icon}</span>
-                        <h4 className="font-semibold text-foreground mb-1">{achievement.name}</h4>
-                        <p className="text-xs text-muted-foreground">{achievement.description}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                <AchievementDisplay onClick={() => setAchievementsModalOpen(true)} />
               </div>
             )}
 
@@ -532,6 +531,12 @@ const ProfilePage = () => {
           </div>
         </div>
       </div>
+
+      {/* Achievements Modal */}
+      <AchievementsModal 
+        open={achievementsModalOpen} 
+        onOpenChange={setAchievementsModalOpen} 
+      />
     </div>
   );
 };

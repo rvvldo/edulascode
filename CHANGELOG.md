@@ -2,6 +2,21 @@
 
 ## [Latest Updates] - 2024
 
+### 🏆 Achievement System (NEW!)
+- ✅ **15 Lambang Pencapaian** dengan sistem unlock berbasis progress
+- ✅ **Kategori**: Starter, Story, Leaderboard, Social, Master
+- ✅ **Rarity System**: Common, Rare, Epic, Legendary
+- ✅ **Display System**: Pilih max 3 lambang untuk ditampilkan di profil
+- ✅ **Auto-unlock**: Otomatis check & unlock berdasarkan user progress
+- ✅ **Modal UI**: Grid 15 lambang dengan filter & detail view
+- ✅ **Firebase Integration**: Save unlocked & displayed achievements
+- **Files Added:**
+  - `src/data/achievements.ts`
+  - `src/hooks/useAchievements.tsx`
+  - `src/components/AchievementsModal.tsx`
+  - `src/components/AchievementDisplay.tsx`
+  - `ACHIEVEMENT_SYSTEM.md` (dokumentasi lengkap)
+
 ### 🎨 UI/UX Improvements
 
 #### Landing Page Logo Update
