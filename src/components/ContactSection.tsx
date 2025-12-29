@@ -7,19 +7,53 @@ import { useState } from "react";
 import { toast } from "@/hooks/use-toast";
 
 export function ContactSection() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     message: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Pesan Terkirim!",
-      description: "Terima kasih telah menghubungi kami. Kami akan segera merespons.",
-    });
-    setFormData({ name: "", email: "", message: "" });
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("https://formsubmit.co/ajax/edulad20@gmail.com", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          _subject: `New Message from ${formData.name}`,
+        })
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        toast({
+          title: "Pesan Terkirim!",
+          description: "Terima kasih telah menghubungi kami. Kami akan segera merespons.",
+        });
+        setFormData({ name: "", email: "", message: "" });
+      } else {
+        throw new Error(result.message || "Gagal mengirim pesan");
+      }
+    } catch (error) {
+      toast({
+        title: "Gagal Mengirim",
+        description: "Terjadi kesalahan saat mengirim pesan. Silakan coba lagi.",
+        variant: "destructive",
+      });
+      console.error("Email error:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -110,9 +144,15 @@ export function ContactSection() {
                   className="text-base bg-background/60 backdrop-blur-sm border-border/50 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all rounded-xl resize-none"
                 />
               </div>
-              <Button type="submit" variant="hero" size="lg" className="w-full group bg-gradient-to-r from-primary to-forest-light hover:shadow-elevated glow-effect relative overflow-hidden">
-                <span className="relative z-10">Kirim Pesan</span>
-                <Send className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform" />
+              <Button
+                type="submit"
+                variant="hero"
+                size="lg"
+                disabled={isSubmitting}
+                className="w-full group bg-gradient-to-r from-primary to-forest-light hover:shadow-elevated glow-effect relative overflow-hidden"
+              >
+                <span className="relative z-10">{isSubmitting ? "Mengirim..." : "Kirim Pesan"}</span>
+                {!isSubmitting && <Send className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform" />}
                 <div className="absolute inset-0 bg-gradient-to-r from-forest-light to-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
               </Button>
             </form>

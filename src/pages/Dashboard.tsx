@@ -113,6 +113,7 @@ const Dashboard = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("Semua");
   const [searchOpen, setSearchOpen] = useState(false);
+  const [userSearchQuery, setUserSearchQuery] = useState("");
 
   // Convert users object to array for search
   const userList = allUsers
@@ -196,30 +197,38 @@ const Dashboard = () => {
                     </span>
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-[300px] p-0" align="start">
+                <PopoverContent className="w-[450px] p-0" align="start">
                   <Command>
-                    <CommandInput placeholder="Ketik nama user..." />
+                    <CommandInput
+                      placeholder="Ketik nama user..."
+                      value={userSearchQuery}
+                      onValueChange={setUserSearchQuery}
+                    />
                     <CommandList>
-                      <CommandEmpty>Tidak ditemukan.</CommandEmpty>
-                      <CommandGroup heading="Pengguna">
-                        {userList.map((user) => (
-                          <CommandItem
-                            key={user.id}
-                            value={user.name}
-                            onSelect={() => {
-                              navigate(`/user/${user.id}`);
-                              setSearchOpen(false);
-                            }}
-                            className="cursor-pointer"
-                          >
-                            <User className="mr-2 h-4 w-4" />
-                            <div className="flex flex-col">
-                              <span>{user.name}</span>
-                              <span className="text-xs text-muted-foreground">{user.institution}</span>
-                            </div>
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
+                      {userSearchQuery.length > 0 && (
+                        <>
+                          <CommandEmpty>Tidak ditemukan.</CommandEmpty>
+                          <CommandGroup heading="Pengguna">
+                            {userList.map((user) => (
+                              <CommandItem
+                                key={user.id}
+                                value={user.name}
+                                onSelect={() => {
+                                  navigate(`/user/${user.id}`);
+                                  setSearchOpen(false);
+                                }}
+                                className="cursor-pointer"
+                              >
+                                <User className="mr-2 h-4 w-4" />
+                                <div className="flex flex-col">
+                                  <span>{user.name}</span>
+                                  <span className="text-xs text-muted-foreground">{user.institution}</span>
+                                </div>
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </>
+                      )}
                     </CommandList>
                   </Command>
                 </PopoverContent>
