@@ -10,7 +10,13 @@ import {
     DatabaseReference,
     DataSnapshot,
 } from 'firebase/database';
-import { database } from './firebase.config';
+import {
+    ref as storageRef,
+    uploadBytes,
+    getDownloadURL,
+    deleteObject,
+} from 'firebase/storage';
+import { database, storage } from './firebase.config';
 
 /**
  * Create (tambah) data baru ke Firebase Realtime Database
@@ -146,4 +152,72 @@ export const unsubscribeFromData = (path: string): void => {
  */
 export const getRef = (path: string): DatabaseReference => {
     return ref(database, path);
+};
+
+/**
+ * Upload file ke Firebase Storage
+ * @param file - File yang akan diupload
+ * @param path - Path di storage (contoh: 'profile-photos/userId.jpg')
+ * @returns URL download file
+ */
+export const uploadFile = async (file: File, path: string): Promise<string> => {
+    try {
+        console.log('Starting upload:', { path, fileName: file.name, fileSize: file.size, fileType: file.type });
+        
+        const fileRef = storageRef(storage, path);
+        
+        // Tambahkan metadata
+        const metadata = {
+            contentType: file.type,
+            customMetadata: {
+                uploadedAt: new Date().toISOString(),
+            }
+        };
+        
+        const snapshot = await uploadBytes(fileRef, file, metadata);
+        console.log('Upload complete, getting download URL...');
+        
+        const downloadURL = await getDownloadURL(snapshot.ref);
+        console.log('File berhasil diupload ke:', path, 'URL:', downloadURL);
+        
+        return downloadURL;
+    } catch (error) {
+        console.error('Error saat upload file:', error);
+        if (error instanceof Error) {
+            console.error('Error message:', error.message);
+            console.error('Error stack:', error.stack);
+        }
+        throw error;
+    }
+};
+
+/**
+ * Hapus file dari Firebase Storage
+ * @param path - Path file di storage
+ */
+export const deleteFile = async (path: string): Promise<void> => {
+    try {
+        const fileRef = storageRef(storage, path);
+        await deleteObject(fileRef);
+        console.log('File berhasil dihapus dari:', path);
+    } catch (error) {
+        console.error('Error saat hapus file:', error);
+        throw error;
+    }
+};
+
+/**
+ * Get download URL dari file di Storage
+ * @param path - Path file di storage
+ * @returns URL download file
+ */
+export const getFileURL = async (path: string): Promise<string> => {
+    try {
+        const fileRef = storageRef(storage, path);
+        const downloadURL = await getDownloadURL(fileRef);
+        return downloadURL;
+    } catch (error) {
+        console.error('Error saat get file URL:', error);
+        throw error;
+    }
 };

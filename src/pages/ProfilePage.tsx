@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,6 +16,9 @@ import {
   Award,
   Star,
   Leaf,
+  Camera,
+  Trash2,
+  Upload,
 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
@@ -24,6 +27,7 @@ import { updateData } from "@/lib/firebase.service";
 import { Switch } from "@/components/ui/switch";
 import { useTheme } from "@/contexts/ThemeContext";
 import ReportForm from "@/components/ReportForm";
+import { useDialogStore } from "@/hooks/useDialog";
 
 // Default achievements untuk user baru
 const defaultAchievements = [
@@ -53,6 +57,9 @@ const ProfilePage = () => {
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [searchParams] = useSearchParams();
+  const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const { confirm } = useDialogStore();
 
   useEffect(() => {
     const tab = searchParams.get("tab");
@@ -73,6 +80,9 @@ const ProfilePage = () => {
   // Update formData dan load preferences ketika userData dimuat
   useEffect(() => {
     if (userData) {
+      console.log('User data loaded:', userData);
+      console.log('Photo URL:', userData.photoURL);
+      
       setFormData({
         name: userData.displayName || "",
         bio: userData.bio || "",
@@ -138,6 +148,127 @@ const ProfilePage = () => {
     }
   };
 
+  const handlePhotoUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file || !currentUser) return;
+
+    // Validasi tipe file
+    if (!file.type.startsWith('image/')) {
+      toast({
+        title: "File Tidak Valid",
+        description: "Harap pilih file gambar (JPG, PNG, dll).",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Validasi ukuran file (max 1MB untuk Base64)
+    if (file.size > 1 * 1024 * 1024) {
+      toast({
+        title: "File Terlalu Besar",
+        description: "Ukuran file maksimal 1MB.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsUploadingPhoto(true);
+    try {
+      console.log('Converting image to Base64...');
+      
+      // Convert image ke Base64
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      
+      reader.onload = async () => {
+        try {
+          const base64String = reader.result as string;
+          console.log('Image converted to Base64, length:', base64String.length);
+
+          // Simpan Base64 string langsung ke Database
+          await updateData(`users/${currentUser.uid}`, {
+            photoURL: base64String,
+          });
+          
+          console.log('Database updated with Base64 photo');
+
+          toast({
+            title: "Foto Berhasil Diupload",
+            description: "Foto profil Anda telah diperbarui.",
+          });
+          
+          // Reset file input
+          if (fileInputRef.current) {
+            fileInputRef.current.value = '';
+          }
+          
+          setIsUploadingPhoto(false);
+        } catch (error) {
+          console.error("Error saving photo:", error);
+          toast({
+            title: "Gagal Menyimpan Foto",
+            description: error instanceof Error ? error.message : "Terjadi kesalahan saat menyimpan foto.",
+            variant: "destructive",
+          });
+          setIsUploadingPhoto(false);
+        }
+      };
+      
+      reader.onerror = () => {
+        console.error("Error reading file");
+        toast({
+          title: "Gagal Membaca File",
+          description: "Terjadi kesalahan saat membaca file.",
+          variant: "destructive",
+        });
+        setIsUploadingPhoto(false);
+      };
+    } catch (error) {
+      console.error("Error uploading photo:", error);
+      toast({
+        title: "Gagal Upload Foto",
+        description: error instanceof Error ? error.message : "Terjadi kesalahan saat mengupload foto.",
+        variant: "destructive",
+      });
+      setIsUploadingPhoto(false);
+    }
+  };
+
+  const handlePhotoDelete = async () => {
+    if (!currentUser || !userData?.photoURL) return;
+
+    const confirmed = await confirm(
+      "Apakah Anda yakin ingin menghapus foto profil?",
+      "Hapus Foto Profil"
+    );
+    
+    if (!confirmed) return;
+
+    setIsUploadingPhoto(true);
+    try {
+      console.log('Deleting photo from database...');
+      
+      // Hapus photoURL dari Database
+      await updateData(`users/${currentUser.uid}`, {
+        photoURL: null,
+      });
+
+      toast({
+        title: "Foto Berhasil Dihapus",
+        description: "Foto profil Anda telah dihapus.",
+      });
+    } catch (error) {
+      console.error("Error deleting photo:", error);
+      toast({
+        title: "Gagal Hapus Foto",
+        description: error instanceof Error ? error.message : "Terjadi kesalahan saat menghapus foto.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsUploadingPhoto(false);
+    }
+  };
+
   const getRankIcon = (rank: number) => {
     if (rank === 1) return <Trophy className="w-5 h-5 text-yellow-500" />;
     if (rank === 2) return <Medal className="w-5 h-5 text-gray-400" />;
@@ -182,10 +313,58 @@ const ProfilePage = () => {
             <div className="bg-card rounded-2xl p-6 shadow-soft border border-border/50 sticky top-24">
               {/* Avatar */}
               <div className="flex flex-col items-center mb-6">
-                <div className="w-24 h-24 rounded-full bg-primary/20 flex items-center justify-center mb-4">
-                  <User className="w-12 h-12 text-primary" />
+                <div className="relative group">
+                  <div className="w-24 h-24 rounded-full bg-primary/20 flex items-center justify-center overflow-hidden ring-4 ring-background">
+                    {userData?.photoURL ? (
+                      <img 
+                        src={userData.photoURL} 
+                        alt="Profile" 
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <User className="w-12 h-12 text-primary" />
+                    )}
+                  </div>
+                  
+                  {/* Upload/Delete Buttons */}
+                  <div className="absolute inset-0 rounded-full bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                    <Button
+                      size="icon"
+                      variant="ghost"
+                      className="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 text-white"
+                      onClick={() => fileInputRef.current?.click()}
+                      disabled={isUploadingPhoto}
+                    >
+                      {isUploadingPhoto ? (
+                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      ) : (
+                        <Camera className="w-4 h-4" />
+                      )}
+                    </Button>
+                    {userData?.photoURL && (
+                      <Button
+                        size="icon"
+                        variant="ghost"
+                        className="w-8 h-8 rounded-full bg-red-500/80 hover:bg-red-600 text-white"
+                        onClick={handlePhotoDelete}
+                        disabled={isUploadingPhoto}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    )}
+                  </div>
+                  
+                  {/* Hidden File Input */}
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handlePhotoUpload}
+                    className="hidden"
+                  />
                 </div>
-                <h2 className="font-display text-xl font-bold text-foreground">{userData?.displayName || "User"}</h2>
+                
+                <h2 className="font-display text-xl font-bold text-foreground mt-4">{userData?.displayName || "User"}</h2>
                 <p className="text-sm text-muted-foreground">{userData?.institution || "-"}</p>
               </div>
 

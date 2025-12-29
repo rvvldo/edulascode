@@ -399,14 +399,12 @@ const StoryViewer = () => {
         <div className="absolute bottom-24 lg:bottom-1/3 left-1/2 -translate-x-1/2 w-full max-w-4xl flex justify-between px-4 pointer-events-none">
           {/* Lesta Mascot (Left or Right) */}
           <div className="w-40 h-64 lg:w-56 lg:h-72 relative animate-float transition-all duration-500" style={{ order: 2 }}>
-            {/* Placeholder for Lesta Image */}
-            <div className="w-full h-full bg-contain bg-no-repeat bg-center drop-shadow-2xl"
-              style={{ backgroundImage: "url('/lesta-mascot.png')" }}>
-              {/* Fallback Emoji if no image */}
-              <div className="flex items-center justify-center w-full h-full text-9xl">
-                🦉
-              </div>
-            </div>
+            {/* Maskot Image */}
+            <img 
+              src="/maskot.webp" 
+              alt="Lesta Mascot" 
+              className="w-full h-full object-contain drop-shadow-2xl"
+            />
           </div>
         </div>
 

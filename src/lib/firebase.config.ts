@@ -1,6 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getDatabase, Database } from 'firebase/database';
 import { getAuth, Auth } from 'firebase/auth';
+import { getStorage, FirebaseStorage } from 'firebase/storage';
 
 // Firebase configuration dari environment variables
 const firebaseConfig = {
@@ -21,6 +22,9 @@ export const database: Database = getDatabase(app);
 
 // Initialize Firebase Authentication dan get reference ke service
 export const auth: Auth = getAuth(app);
+
+// Initialize Firebase Storage dan get reference ke service
+export const storage: FirebaseStorage = getStorage(app);
 
 // Export app untuk keperluan lain
 export default app;

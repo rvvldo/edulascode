@@ -32,11 +32,13 @@ import { useRealtimeData } from "@/hooks/useFirebase";
 import { updateData, deleteData } from "@/lib/firebase.service";
 import { toast } from "@/components/ui/use-toast";
 import { Badge } from "@/components/ui/badge";
+import { useDialogStore } from "@/hooks/useDialog";
 
 const CentralAdminDashboard = () => {
     const { currentUser, logout } = useAuth();
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState("performance");
+    const { confirm } = useDialogStore();
 
     // Fetch Data
     const { data: systemData } = useRealtimeData("system");
@@ -90,7 +92,11 @@ const CentralAdminDashboard = () => {
 
     // Actions
     const handleDeleteUser = async (id: string) => {
-        if (confirm("Hapus user ini?")) {
+        const confirmed = await confirm(
+            "User dan semua datanya akan dihapus permanen",
+            "Hapus User?"
+        );
+        if (confirmed) {
             await deleteData(`users/${id}`);
             toast({ title: "User Dihapus" });
         }
@@ -295,7 +301,11 @@ const CentralAdminDashboard = () => {
                                         </Button>
                                         {report.status === 'done' && (
                                             <Button size="sm" variant="destructive" onClick={async () => {
-                                                if (confirm("Hapus laporan ini permanen?")) {
+                                                const confirmed = await confirm(
+                                                    "Laporan yang dihapus tidak dapat dikembalikan",
+                                                    "Hapus Laporan?"
+                                                );
+                                                if (confirmed) {
                                                     await deleteData(`reports/${report.id}`);
                                                     toast({ title: "Laporan Dihapus" });
                                                 }

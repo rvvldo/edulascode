@@ -159,8 +159,16 @@ const Dashboard = () => {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="flex items-center gap-2 px-2 hover:bg-primary/10 transition-colors rounded-full">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center ring-2 ring-background shadow-md">
-                    <User className="w-5 h-5 text-white" />
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center ring-2 ring-background shadow-md overflow-hidden">
+                    {userData?.photoURL ? (
+                      <img 
+                        src={userData.photoURL} 
+                        alt="Profile" 
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <User className="w-5 h-5 text-white" />
+                    )}
                   </div>
                   <span className="font-medium hidden lg:block ml-1">{userData?.displayName || "Pengguna"}</span>
                   <ChevronDown className="w-4 h-4 text-muted-foreground hidden lg:block" />
