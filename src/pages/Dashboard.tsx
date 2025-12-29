@@ -54,7 +54,7 @@ const stories = [
     category: "Hutan",
     difficulty: "Mudah",
     points: 100,
-    imageUrl: "https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&q=80&w=1000",
+    imageUrl: "/src/thumbnail/tumnel1.webp",
     color: "from-green-500/20 to-green-600/30",
   },
   {
@@ -64,7 +64,7 @@ const stories = [
     category: "Laut",
     difficulty: "Sedang",
     points: 150,
-    imageUrl: "https://images.unsplash.com/photo-1546026423-cc4642628d2b?auto=format&fit=crop&q=80&w=1000",
+    imageUrl: "/src/thumbnail/tumnel2.webp",
     color: "from-blue-500/20 to-cyan-500/30",
   },
   {
@@ -74,7 +74,7 @@ const stories = [
     category: "Satwa",
     difficulty: "Sulit",
     points: 200,
-    imageUrl: "https://images.unsplash.com/photo-1560272564-c83b66b1ad12?auto=format&fit=crop&q=80&w=1000",
+    imageUrl: "/src/thumbnail/tumnel3.webp",
     color: "from-orange-500/20 to-amber-500/30",
   },
   {
@@ -84,7 +84,7 @@ const stories = [
     category: "Air",
     difficulty: "Sedang",
     points: 150,
-    imageUrl: "https://images.unsplash.com/photo-1538300342682-cf57afb9728b?auto=format&fit=crop&q=80&w=1000",
+    imageUrl: "/src/thumbnail/tumnel1.webp",
     color: "from-sky-500/20 to-blue-500/30",
   },
   {
@@ -94,7 +94,7 @@ const stories = [
     category: "Polusi",
     difficulty: "Mudah",
     points: 100,
-    imageUrl: "https://images.unsplash.com/photo-1618477461853-5f8dd3791983?auto=format&fit=crop&q=80&w=1000",
+    imageUrl: "/src/thumbnail/tumnel1.webp",
     color: "from-emerald-500/20 to-teal-500/30",
   },
   {
@@ -104,7 +104,7 @@ const stories = [
     category: "Satwa",
     difficulty: "Sulit",
     points: 200,
-    imageUrl: "https://images.unsplash.com/photo-1535083252457-6080fe29be45?auto=format&fit=crop&q=80&w=1000",
+    imageUrl: "/src/thumbnail/tumnel1.webp",
     color: "from-stone-500/20 to-amber-600/30",
   },
 ];
