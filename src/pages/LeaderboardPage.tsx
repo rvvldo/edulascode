@@ -5,6 +5,7 @@ import { useRealtimeData } from "@/hooks/useFirebase";
 import { useEffect } from "react";
 import { syncLeaderboardRanks } from "@/lib/firebase.service";
 import { MusicPlayer } from "@/components/MusicPlayer";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 const LeaderboardPage = () => {
     const { data: usersData, loading } = useRealtimeData("users");
@@ -361,11 +362,16 @@ const LeaderboardPage = () => {
             <main className="container mx-auto px-4 lg:px-8 pt-24 py-8 pb-20 relative z-10">
 
                 {loading ? (
-                    <div className="flex flex-col items-center justify-center py-20">
-                        <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4"></div>
-                        <p className="text-muted-foreground font-medium">Memuat data juara...</p>
-                    </div>
-                ) : leaderboardData.length > 0 ? (
+                        <div className="flex flex-col items-center justify-center py-20">
+                            <DotLottieReact
+                            src="https://lottie.host/8ac7a7f8-9e01-4e19-82c4-7381d9fc3218/D4UsU6eeiC.lottie"
+                            loop
+                            autoplay
+                            style={{ width: 120, height: 120 }}
+                            />
+                            <p className="mt-6 text-muted-foreground font-medium">Memuat data juara...</p>
+                        </div>
+                        ) : leaderboardData.length > 0 ? (
                     <>
                         {/* Title Section */}
                         <div className="text-center mb-12 animate-fade-in">

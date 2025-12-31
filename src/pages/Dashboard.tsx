@@ -295,7 +295,7 @@ const Dashboard = () => {
             <div className="max-w-2xl text-center md:text-left">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/85 backdrop-blur-md text-primary text-sm font-bold tracking-wide mb-6 border border-white/60 shadow-sm animate-fade-in">
                 <Leaf className="w-4 h-4" />
-                <span>Platform Edukasi Lingkungan No. 1</span>
+                <span>Edulad Edukasi Lingkungan No. 1</span>
               </div>
               <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight text-foreground drop-shadow-sm animate-slide-up">
                 Jelajahi Dunia, <br />
