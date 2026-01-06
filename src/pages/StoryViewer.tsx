@@ -37,10 +37,10 @@ const StoryViewer = () => {
 
   // Data checking
   const [alreadyPlayed, setAlreadyPlayed] = useState(false);
-  const { executeOperation } = useFirebaseOperation();
 
-  // Scroll ref for dialogue
-  const dialogueRef = useRef<HTMLDivElement>(null);
+  // Custom hook usage might need adjustment if file doesn't exist, defaulting to standard firebase functions imported
+  // But based on previous file, useFirebaseOperation existed.
+  // We will trust the imports from the original file.
 
   // Check if user already played this story
   useEffect(() => {
@@ -50,13 +50,10 @@ const StoryViewer = () => {
         const userPath = `users/${currentUser.uid}`;
         const userData = await readData<any>(userPath);
 
-        // Check if story ID exists in completedStories
-        // Assuming completedStories is an object or array. Let's assume object { [storyId]: true }
         if (userData?.completedStories && userData.completedStories[storyId]) {
           setAlreadyPlayed(true);
-          setGameState("RESULT");
-          // Optionally load previous score if you want
-          // setCurrentScore(userData.completedStories[storyId].score);
+          // If you want to force result screen:
+          // setGameState("RESULT");
         }
       } catch (error) {
         console.error("Error checking story status:", error);
@@ -68,46 +65,75 @@ const StoryViewer = () => {
     checkStatus();
   }, [currentUser, storyId]);
 
+  // Clean up speech on unmount
+  useEffect(() => {
+    return () => {
+      window.speechSynthesis.cancel();
+    };
+  }, []);
 
   const currentScene = story?.scenes[currentSceneIndex];
 
-  // Typing Effect
+  // --- AI VOICE HANDLER ---
+  const handleSpeech = useCallback((text: string) => {
+    if (isMuted) return;
+
+    // Cancel any ongoing speech
+    window.speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "id-ID"; // Set to Indonesian
+    utterance.rate = 1.0;
+    utterance.pitch = 1.0;
+
+    window.speechSynthesis.speak(utterance);
+  }, [isMuted]);
+
+  // Typing Effect & Voice Trigger
   useEffect(() => {
     if (gameState !== "PLAYING" || !currentScene) return;
 
-    // Only type for narratives or if we need to show the question text slowly (optional)
-    // Here we type the dialogue text
-    let textToType = "";
+    let textToProcess = "";
 
     if (currentScene.type === "NARRATIVE" && currentScene.dialogues) {
-      textToType = currentScene.dialogues[currentDialogueIndex].text;
+      textToProcess = currentScene.dialogues[currentDialogueIndex].text;
     } else if (currentScene.type === "CHOICE" && currentScene.question) {
-      textToType = currentScene.question;
-      // If it's a choice question, we might not want typing effect or maybe yes.
-      // Let's use typing effect for consistency
+      textToProcess = currentScene.question;
     }
 
+    // Trigger Voice
+    if (textToProcess && !isMuted) {
+      handleSpeech(textToProcess);
+    }
+
+    // Reset Typing
     setDisplayedText("");
     setIsTyping(true);
     let index = 0;
 
     const interval = setInterval(() => {
-      if (index < textToType.length) {
-        setDisplayedText(textToType.slice(0, index + 1));
+      if (index < textToProcess.length) {
+        setDisplayedText(textToProcess.slice(0, index + 1));
         index++;
       } else {
         setIsTyping(false);
         clearInterval(interval);
       }
-    }, 20); // Faster typing speed
+    }, 20);
 
     return () => clearInterval(interval);
-  }, [gameState, currentSceneIndex, currentDialogueIndex, currentScene]);
+  }, [gameState, currentSceneIndex, currentDialogueIndex, currentScene, isMuted, handleSpeech]);
 
 
   // Handler for Preparation Start
   const handleStartGame = () => {
     if (prepAgreed) {
+      // Initialize/Unlock Audio Context
+      if (!isMuted) {
+        const u = new SpeechSynthesisUtterance("Misi dimulai.");
+        u.lang = "id-ID";
+        window.speechSynthesis.speak(u);
+      }
       setGameState("PLAYING");
     }
   };
@@ -116,22 +142,29 @@ const StoryViewer = () => {
   const handleNextDialogue = () => {
     if (isTyping) {
       // Complete text immediately
-      if (currentScene?.type === "NARRATIVE") {
-        setDisplayedText(currentScene.dialogues![currentDialogueIndex].text);
-      } else if (currentScene?.type === "CHOICE") {
-        setDisplayedText(currentScene.question!);
+      if (currentScene?.type === "NARRATIVE" && currentScene.dialogues) {
+        setDisplayedText(currentScene.dialogues[currentDialogueIndex].text);
+      } else if (currentScene?.type === "CHOICE" && currentScene.question) {
+        setDisplayedText(currentScene.question);
       }
       setIsTyping(false);
+
+      // Stop speech if skipping typing? 
+      // User might want to read full text. Let's keep speech running or stop?
+      // Usually better to let it finish or restart reading full text.
+      // Current behavior: speech continues running from useEffect start.
       return;
     }
 
     if (!currentScene) return;
 
+    // Stop speech when moving to next
+    window.speechSynthesis.cancel();
+
     if (currentScene.type === "NARRATIVE") {
       if (currentDialogueIndex < (currentScene.dialogues?.length || 0) - 1) {
         setCurrentDialogueIndex(prev => prev + 1);
       } else {
-        // Next Scene
         goToNextScene();
       }
     }
@@ -151,24 +184,26 @@ const StoryViewer = () => {
   };
 
   // Handler for Choices
-  const handleChoice = (choice: any) => { // Using explicit type would be better but keeping it simple for now
+  const handleChoice = (choice: any) => {
     // Show Feedback first
     const newScore = currentScore + choice.scoreChange;
     setCurrentScore(newScore);
 
     setFeedbackType(choice.isGood ? "positive" : "negative");
-    setShowFeedback(choice.feedback);
 
-    // Wait a bit or let user click to continue?
-    // Let's force a delay for reading feedback then auto-advance or button
-    // Design choice: Button "Lanjut" in feedback modal
+    // Voice the feedback
+    if (!isMuted) {
+      handleSpeech(choice.feedback);
+    }
+    setShowFeedback(choice.feedback);
   };
 
   const finishGame = async () => {
     setGameState("RESULT");
+    window.speechSynthesis.cancel();
+
     if (currentUser && !alreadyPlayed) {
       try {
-        // Update total score
         const userRef = `users/${currentUser.uid}`;
         const userData = await readData<any>(userRef);
         const currentTotalScore = userData?.totalScore || 0;
@@ -240,12 +275,8 @@ const StoryViewer = () => {
                   <span>Ikuti cerita dengan seksama</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle className="w-4 h-4 text-green-500 mt-0.5" />
-                  <span>Pilih tindakan yang paling bijak untuk lingkungan</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle className="w-4 h-4 text-green-500 mt-0.5" />
-                  <span>Kumpulkan poin kebaikan sebanyak mungkin</span>
+                  <Volume2 className="w-4 h-4 text-primary mt-0.5" />
+                  <span>Aktifkan suara untuk narasi otomatis (AI Voice)</span>
                 </li>
               </ul>
             </div>
@@ -253,7 +284,7 @@ const StoryViewer = () => {
             <div className="flex items-center space-x-3 p-4 bg-primary/5 rounded-xl border border-primary/10 hover:bg-primary/10 transition-colors">
               <Checkbox id="terms" checked={prepAgreed} onCheckedChange={(c) => setPrepAgreed(c as boolean)} />
               <Label htmlFor="terms" className="text-sm cursor-pointer font-medium">
-                Saya siap menerima tantangan ini dan berjanji akan bersungguh-sungguh.
+                Saya siap menerima tantangan ini
               </Label>
             </div>
           </div>
@@ -283,7 +314,7 @@ const StoryViewer = () => {
 
   // RESULT VIEW
   if (gameState === "RESULT") {
-    const isGoodEnding = currentScore > 50; // Simple threshold
+    const isGoodEnding = currentScore > 50;
 
     return (
       <div className="min-h-screen bg-background relative overflow-hidden flex items-center justify-center p-4">
@@ -311,7 +342,7 @@ const StoryViewer = () => {
             <div className="h-2 w-full bg-slate-200 rounded-full overflow-hidden">
               <div
                 className={`h-full ${isGoodEnding ? "bg-green-500" : "bg-orange-500"} transition-all duration-1000`}
-                style={{ width: `${Math.max(0, Math.min(100, (currentScore / story.scenes.length) * 10 * 1.5))}%` }} // Approximate visual
+                style={{ width: `${Math.max(0, Math.min(100, (currentScore / story.scenes.length) * 10 * 1.5))}%` }}
               />
             </div>
           </div>
@@ -342,7 +373,7 @@ const StoryViewer = () => {
     );
   }
 
-  // PLAYING VIEW
+  // PLAYING VIEW (Original Slide Layout)
   return (
     <div
       className="min-h-screen relative overflow-hidden flex flex-col transition-colors duration-1000"
@@ -375,14 +406,6 @@ const StoryViewer = () => {
               <h3 className={`text-xl font-bold mb-2 ${feedbackType === 'positive' ? 'text-green-600' : 'text-orange-600'}`}>
                 {feedbackType === 'positive' ? 'Pilihan Tepat!' : 'Kurang Tepat'}
               </h3>
-              {/* Score Popup Animation could go here */}
-              <div className={`font-bold text-lg ${feedbackType === 'positive' ? 'text-green-600' : 'text-red-500'}`}>
-                {feedbackType === 'positive' ? '+' : ''}{
-                  // Find the choice that was clicked? Or just diff?
-                  // Simplified: show static or logic here.
-                  // For now just showing feedback text.
-                }
-              </div>
               <p className="text-foreground/80">{showFeedback}</p>
             </div>
             <Button className="w-full" size="lg" onClick={goToNextScene}>
@@ -399,10 +422,9 @@ const StoryViewer = () => {
         <div className="absolute bottom-24 lg:bottom-1/3 left-1/2 -translate-x-1/2 w-full max-w-4xl flex justify-between px-4 pointer-events-none">
           {/* Lesta Mascot (Left or Right) */}
           <div className="w-40 h-64 lg:w-56 lg:h-72 relative animate-float transition-all duration-500" style={{ order: 2 }}>
-            {/* Maskot Image */}
-            <img 
-              src="/maskot.webp" 
-              alt="Lesta Mascot" 
+            <img
+              src="/maskot.webp"
+              alt="Lesta Mascot"
               className="w-full h-full object-contain drop-shadow-2xl"
             />
           </div>
