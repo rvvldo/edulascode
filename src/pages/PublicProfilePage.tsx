@@ -9,6 +9,7 @@ import {
 import { useRealtimeData } from "@/hooks/useFirebase";
 import { ACHIEVEMENTS, getRarityColor } from "@/data/achievements";
 import { useEffect, useState } from "react";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 const PublicProfilePage = () => {
     const { id } = useParams();
@@ -70,7 +71,12 @@ const PublicProfilePage = () => {
         return (
             <div className="min-h-screen flex items-center justify-center bg-background">
                 <div className="text-center">
-                    <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                    <DotLottieReact
+                              src="https://lottie.host/8ac7a7f8-9e01-4e19-82c4-7381d9fc3218/D4UsU6eeiC.lottie"
+                              loop
+                              autoplay
+                              style={{ width: 120, height: 120 }}
+                            />
                     <p className="text-muted-foreground">Memuat profil...</p>
                 </div>
             </div>
@@ -78,15 +84,21 @@ const PublicProfilePage = () => {
     }
 
     if (!userData) {
-        return (
-            <div className="min-h-screen flex items-center justify-center bg-background">
-                <div className="text-center">
-                    <h2 className="text-2xl font-bold mb-2">Pengguna Tidak Ditemukan</h2>
-                    <Button onClick={() => navigate("/dashboard")}>Kembali ke Dashboard</Button>
-                </div>
-            </div>
-        );
-    }
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-background">
+      <div className="flex flex-col items-center text-center">
+        <DotLottieReact
+          src="https://lottie.host/ee72df6e-7258-420f-9130-2539fa06ee6e/bjsBEs5pjE.lottie"
+          loop
+          autoplay
+          className="w-40 h-40"
+        />
+        <h2 className="text-2xl font-bold mb-2">Pengguna Tidak Ditemukan</h2>
+        <Button onClick={() => navigate("/dashboard")}>Kembali ke Dashboard</Button>
+      </div>
+    </div>
+  );
+}
 
     return (
         <div className="min-h-screen bg-background">

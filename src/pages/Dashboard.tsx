@@ -45,6 +45,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useRealtimeData } from "@/hooks/useFirebase";
 import { NotificationSidebar } from "@/components/NotificationSidebar";
 import { MusicPlayer } from "@/components/MusicPlayer";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 // Static stories data with new thematic images
 const stories = [
@@ -236,7 +237,15 @@ const Dashboard = () => {
                     <CommandList>
                       {userSearchQuery.length > 0 && (
                         <>
-                          <CommandEmpty className="py-6 text-center text-sm text-muted-foreground">Tidak ditemukan.</CommandEmpty>
+                          <CommandEmpty className="py-6 flex flex-col items-center justify-center gap-4">
+                            <DotLottieReact
+                              src="https://lottie.host/ee72df6e-7258-420f-9130-2539fa06ee6e/bjsBEs5pjE.lottie"
+                              loop
+                              autoplay
+                              className="w-32 h-32" // Atur ukuran sesuai kebutuhan
+                            />
+                            <p className="text-sm text-muted-foreground">Pengguna tidak ditemukan.</p>
+                          </CommandEmpty>
                           <CommandGroup heading="Pengguna">
                             {userList.map((user) => (
                               <CommandItem
@@ -320,10 +329,13 @@ const Dashboard = () => {
             {/* Decorative Elements */}
             <div className="hidden md:block relative w-80 h-80 animate-fade-in" style={{ animationDelay: "0.3s" }}>
               <div className="absolute inset-0 bg-gradient-to-tr from-green-500 to-teal-400 rounded-full blur-[60px] opacity-20 animate-pulse-slow"></div>
-              <div className="relative z-10 w-full h-full bg-[url('/lesta-mascot.png')] bg-contain bg-center bg-no-repeat animate-float">
-                <div className="flex items-center justify-center w-full h-full text-9xl drop-shadow-2xl grayscale-[0.2] hover:grayscale-0 transition-all duration-500 cursor-pointer transform hover:scale-105">
-                  🌏
-                </div>
+              <div className="relative z-10 w-full h-full flex items-center justify-center animate-float">
+                <DotLottieReact
+                  src="https://lottie.host/0e336f31-24bc-4cab-97e4-1e85bf47714d/YyKyPnypsV.lottie"
+                  loop
+                  autoplay
+                  className="w-64 h-64 md:w-80 md:h-80" // Sesuaikan ukuran
+                />
               </div>
             </div>
           </div>

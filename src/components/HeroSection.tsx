@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 export function HeroSection() {
   return (
@@ -40,12 +41,17 @@ export function HeroSection() {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-5 animate-fade-in mb-20" style={{ animationDelay: "0.3s" }}>
-            <Link to="/dashboard">
-              <Button variant="hero" size="xl" className="group relative overflow-hidden bg-gradient-to-r from-primary to-forest-light hover:shadow-elevated glow-effect">
-                <span className="relative z-10">Mulai Petualangan</span>
-                <ArrowRight className="w-5 h-5 relative z-10 transition-transform group-hover:translate-x-1" />
-                <div className="absolute inset-0 bg-gradient-to-r from-forest-light to-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              </Button>
+            <Link
+              to="/dashboard"
+              className="inline-block w-48 h-48 md:w-60 md:h-60 transition-transform hover:scale-105 active:scale-95 cursor-pointer"
+              aria-label="Mulai Petualangan"
+            >
+              <DotLottieReact
+                src="https://lottie.host/5dd8f96c-5d47-44e2-a9a9-8c1bd583d3d6/02yHMpIzeb.lottie"
+                loop
+                autoplay
+                className="w-full h-full"
+              />
             </Link>
             <Button
               variant="outline"
