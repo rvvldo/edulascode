@@ -82,7 +82,7 @@ const ProfilePage = () => {
     if (userData && !isEditing) {
       console.log('User data loaded:', userData);
       console.log('Photo URL:', userData.photoURL);
-      
+
       setFormData({
         name: userData.displayName || "",
         bio: userData.bio || "",
@@ -192,11 +192,11 @@ const ProfilePage = () => {
     setIsUploadingPhoto(true);
     try {
       console.log('Converting image to Base64...');
-      
+
       // Convert image ke Base64
       const reader = new FileReader();
       reader.readAsDataURL(file);
-      
+
       reader.onload = async () => {
         try {
           const base64String = reader.result as string;
@@ -206,19 +206,19 @@ const ProfilePage = () => {
           await updateData(`users/${currentUser.uid}`, {
             photoURL: base64String,
           });
-          
+
           console.log('Database updated with Base64 photo');
 
           toast({
             title: "Foto Berhasil Diupload",
             description: "Foto profil Anda telah diperbarui.",
           });
-          
+
           // Reset file input
           if (fileInputRef.current) {
             fileInputRef.current.value = '';
           }
-          
+
           setIsUploadingPhoto(false);
         } catch (error) {
           console.error("Error saving photo:", error);
@@ -230,7 +230,7 @@ const ProfilePage = () => {
           setIsUploadingPhoto(false);
         }
       };
-      
+
       reader.onerror = () => {
         console.error("Error reading file");
         toast({
@@ -258,13 +258,13 @@ const ProfilePage = () => {
       "Apakah Anda yakin ingin menghapus foto profil?",
       "Hapus Foto Profil"
     );
-    
+
     if (!confirmed) return;
 
     setIsUploadingPhoto(true);
     try {
       console.log('Deleting photo from database...');
-      
+
       // Hapus photoURL dari Database
       await updateData(`users/${currentUser.uid}`, {
         photoURL: null,
@@ -338,16 +338,16 @@ const ProfilePage = () => {
                 <div className="relative group">
                   <div className="w-24 h-24 rounded-full bg-primary/20 flex items-center justify-center overflow-hidden ring-4 ring-background">
                     {userData?.photoURL ? (
-                      <img 
-                        src={userData.photoURL} 
-                        alt="Profile" 
+                      <img
+                        src={userData.photoURL}
+                        alt="Profile"
                         className="w-full h-full object-cover"
                       />
                     ) : (
                       <User className="w-12 h-12 text-primary" />
                     )}
                   </div>
-                  
+
                   {/* Upload/Delete Buttons */}
                   <div className="absolute inset-0 rounded-full bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                     <Button
@@ -375,7 +375,7 @@ const ProfilePage = () => {
                       </Button>
                     )}
                   </div>
-                  
+
                   {/* Hidden File Input */}
                   <input
                     ref={fileInputRef}
@@ -385,7 +385,7 @@ const ProfilePage = () => {
                     className="hidden"
                   />
                 </div>
-                
+
                 <h2 className="font-display text-xl font-bold text-foreground mt-4">{userData?.displayName || "User"}</h2>
                 <p className="text-sm text-muted-foreground">{userData?.institution || "-"}</p>
                 {userData?.class && (
@@ -570,11 +570,11 @@ const ProfilePage = () => {
       </div>
 
       {/* Achievements Modal */}
-      <AchievementsModal 
-        open={achievementsModalOpen} 
-        onOpenChange={setAchievementsModalOpen} 
+      <AchievementsModal
+        open={achievementsModalOpen}
+        onOpenChange={setAchievementsModalOpen}
       />
-      
+
       {/* Music Player */}
       <MusicPlayer />
     </div>

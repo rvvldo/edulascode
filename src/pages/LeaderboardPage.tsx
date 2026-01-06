@@ -1,3 +1,4 @@
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, Trophy, Crown, User, Leaf } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -5,14 +6,96 @@ import { useRealtimeData } from "@/hooks/useFirebase";
 import { useEffect } from "react";
 import { syncLeaderboardRanks } from "@/lib/firebase.service";
 import { MusicPlayer } from "@/components/MusicPlayer";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+
+// ✅ PISAHKAN PODIUM ITEM + GUNAKAN React.memo
+const PodiumItem = React.memo(({ user, position, navigate }: { user: any; position: 1 | 2 | 3; navigate: (path: string) => void }) => {
+    let sizeClass = "";
+    let colorClass = "";
+    let heightClass = "";
+    let podiumHeight = "";
+    let ringColor = "";
+
+    if (position === 1) {
+        sizeClass = "w-28 h-28 sm:w-36 sm:h-36";
+        colorClass = "from-yellow-400 via-yellow-500 to-yellow-600";
+        heightClass = "order-2";
+        podiumHeight = "h-48";
+        ringColor = "ring-yellow-400/50";
+    } else if (position === 2) {
+        sizeClass = "w-24 h-24 sm:w-28 sm:h-28";
+        colorClass = "from-slate-300 via-slate-400 to-slate-500";
+        heightClass = "order-1";
+        podiumHeight = "h-36";
+        ringColor = "ring-slate-400/50";
+    } else {
+        sizeClass = "w-24 h-24 sm:w-28 sm:h-28";
+        colorClass = "from-amber-600 via-amber-700 to-amber-800";
+        heightClass = "order-3";
+        podiumHeight = "h-28";
+        ringColor = "ring-amber-600/50";
+    }
+
+    return (
+        <div className={`flex flex-col items-center ${heightClass} flex-1 max-w-[200px]`}>
+            {/* Avatar and Crown */}
+            <div className="relative mb-4 group cursor-pointer" onClick={() => navigate(`/user/${user.uid}`)}>
+                {position === 1 && (
+                    <div className="absolute -top-12 left-1/2 -translate-x-1/2 z-10 w-12 h-12">
+                        {/* ✅ LOTTIE TANPA SPASI */}
+                        <DotLottieReact
+                            src="https://lottie.host/02aace42-701c-4d99-b00f-378895304118/TxGc52vruN.lottie"
+                            loop
+                            autoplay
+                            className="w-full h-full"
+                        />
+                    </div>
+                )}
+
+                <div className={`rounded-full p-1 bg-gradient-to-br ${colorClass} shadow-2xl ${ringColor} ring-4 transition-transform group-hover:scale-110 duration-300`}>
+                    <div className={`${sizeClass} rounded-full bg-background border-4 border-white/20 overflow-hidden flex items-center justify-center relative`}>
+                        {user.photoURL ? (
+                            <img src={user.photoURL} alt={user.name} className="w-full h-full object-cover" />
+                        ) : (
+                            <User className="w-1/2 h-1/2 text-muted-foreground" />
+                        )}
+                    </div>
+                </div>
+
+                {/* Position Badge */}
+                <div className={`absolute -bottom-3 left-1/2 -translate-x-1/2 flex items-center justify-center w-10 h-10 rounded-full font-bold text-white shadow-xl bg-gradient-to-br ${colorClass} border-2 border-white`}>
+                    {position}
+                </div>
+            </div>
+
+            {/* User Info */}
+            <div className="text-center space-y-2 mb-4">
+                <h3 className="font-bold text-lg sm:text-xl truncate max-w-[180px] px-2">{user.name}</h3>
+                <p className="text-sm text-muted-foreground truncate max-w-[180px] px-2">{user.institution}</p>
+                <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full font-bold text-lg shadow-lg bg-gradient-to-r ${colorClass} text-white`}>
+                    <Trophy className="w-5 h-5" />
+                    {user.score}
+                </div>
+            </div>
+
+            {/* Podium */}
+            <div className={`w-full ${podiumHeight} bg-gradient-to-b ${colorClass} rounded-t-2xl shadow-xl border-t-4 border-white/30 relative overflow-hidden transition-all duration-300`}>
+                <div className="absolute inset-0 bg-white/10"></div>
+                <div className="absolute top-4 left-1/2 -translate-x-1/2 text-white/90 font-bold text-4xl">#{position}</div>
+            </div>
+        </div>
+    );
+});
 
 const LeaderboardPage = () => {
     const { data: usersData, loading } = useRealtimeData("users");
     const navigate = useNavigate();
 
-    // Convert users object to array and sort by score
-    const leaderboardData = usersData
-        ? Object.entries(usersData)
+    // ✅ GUNAKAN useMemo AGAR TIDAK RE-CREATE TIAP RENDER
+    const leaderboardData = React.useMemo(() => {
+        if (!usersData) return [];
+
+        return Object.entries(usersData)
             .map(([uid, user]: [string, any]) => ({
                 uid,
                 name: user.displayName || "Anonymous",
@@ -20,19 +103,18 @@ const LeaderboardPage = () => {
                 institution: user.institution || "Indonesia",
                 photoURL: user.photoURL || null,
                 rank: 0,
-                role: user.role
+                role: user.role,
             }))
-            .filter(user => user.role !== 'admin' && user.role !== 'central_admin') // Filter out admins if needed
+            .filter((user) => user.role !== "admin" && user.role !== "central_admin")
             .sort((a, b) => b.score - a.score)
             .slice(0, 50)
-            .map((user, index) => ({ ...user, rank: index + 1 }))
-        : [];
+            .map((user, index) => ({ ...user, rank: index + 1 }));
+    }, [usersData]);
 
-    // Sync leaderboard ranks to user profiles when data changes
     useEffect(() => {
         if (usersData && !loading) {
-            syncLeaderboardRanks(usersData).catch(error => {
-                console.error('Failed to sync leaderboard ranks:', error);
+            syncLeaderboardRanks(usersData).catch((error) => {
+                console.error("Failed to sync leaderboard ranks:", error);
             });
         }
     }, [usersData, loading]);
@@ -40,148 +122,62 @@ const LeaderboardPage = () => {
     const topThree = leaderboardData.slice(0, 3);
     const restOfUsers = leaderboardData.slice(3);
 
-    const PodiumItem = ({ user, position }: { user: any, position: 1 | 2 | 3 }) => {
-        let sizeClass = "";
-        let colorClass = "";
-        let heightClass = "";
-        let podiumHeight = "";
-        let ringColor = "";
-
-        if (position === 1) {
-            sizeClass = "w-28 h-28 sm:w-36 sm:h-36";
-            colorClass = "from-yellow-400 via-yellow-500 to-yellow-600";
-            heightClass = "order-2";
-            podiumHeight = "h-48";
-            ringColor = "ring-yellow-400/50";
-        } else if (position === 2) {
-            sizeClass = "w-24 h-24 sm:w-28 sm:h-28";
-            colorClass = "from-slate-300 via-slate-400 to-slate-500";
-            heightClass = "order-1";
-            podiumHeight = "h-36";
-            ringColor = "ring-slate-400/50";
-        } else {
-            sizeClass = "w-24 h-24 sm:w-28 sm:h-28";
-            colorClass = "from-amber-600 via-amber-700 to-amber-800";
-            heightClass = "order-3";
-            podiumHeight = "h-28";
-            ringColor = "ring-amber-600/50";
-        }
-
-        return (
-            <div className={`flex flex-col items-center ${heightClass} flex-1 max-w-[200px]`}>
-                {/* Avatar and Crown */}
-                <div className="relative mb-4 group cursor-pointer" onClick={() => navigate(`/user/${user.uid}`)}>
-                    {position === 1 && (
-                        <div className="absolute -top-12 left-1/2 -translate-x-1/2 z-10">
-                            <Crown 
-                                className="w-12 h-12 text-yellow-400 drop-shadow-[0_0_8px_rgba(250,204,21,0.6)] animate-pulse" 
-                                fill="currentColor"
-                                style={{ animationDuration: '2s' }}
-                            />
-                        </div>
-                    )}
-                    
-                    <div className={`rounded-full p-1 bg-gradient-to-br ${colorClass} shadow-2xl ${ringColor} ring-4 transition-transform group-hover:scale-110 duration-300`}>
-                        <div className={`${sizeClass} rounded-full bg-background border-4 border-white/20 overflow-hidden flex items-center justify-center relative`}>
-                            {user.photoURL ? (
-                                <img 
-                                    src={user.photoURL} 
-                                    alt={user.name}
-                                    className="w-full h-full object-cover"
-                                />
-                            ) : (
-                                <User className="w-1/2 h-1/2 text-muted-foreground" />
-                            )}
-                        </div>
-                    </div>
-                    
-                    {/* Position Badge */}
-                    <div className={`absolute -bottom-3 left-1/2 -translate-x-1/2 flex items-center justify-center w-10 h-10 rounded-full font-bold text-white shadow-xl bg-gradient-to-br ${colorClass} border-2 border-white`}>
-                        {position}
-                    </div>
-                </div>
-
-                {/* User Info */}
-                <div className="text-center space-y-2 mb-4">
-                    <h3 className="font-bold text-lg sm:text-xl truncate max-w-[180px] px-2">
-                        {user.name}
-                    </h3>
-                    <p className="text-sm text-muted-foreground truncate max-w-[180px] px-2">
-                        {user.institution}
-                    </p>
-                    <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full font-bold text-lg shadow-lg bg-gradient-to-r ${colorClass} text-white`}>
-                        <Trophy className="w-5 h-5" />
-                        {user.score}
-                    </div>
-                </div>
-
-                {/* Podium */}
-                <div className={`w-full ${podiumHeight} bg-gradient-to-b ${colorClass} rounded-t-2xl shadow-xl border-t-4 border-white/30 relative overflow-hidden transition-all duration-300`}>
-                    <div className="absolute inset-0 bg-white/10"></div>
-                    <div className="absolute top-4 left-1/2 -translate-x-1/2 text-white/90 font-bold text-4xl">
-                        #{position}
-                    </div>
-                </div>
-            </div>
-        );
-    };
-
     return (
         <div className="min-h-screen bg-background relative">
             {/* 3D Animated Background Layer */}
             <div className="fixed inset-0 -z-10 overflow-hidden" style={{ perspective: '1200px' }}>
                 {/* Large 3D Floating Spheres - Neutral Theme */}
-                <div 
+                <div
                     className="absolute top-10 left-10 w-[500px] h-[500px] rounded-full opacity-20"
-                    style={{ 
+                    style={{
                         background: 'radial-gradient(circle at 30% 30%, rgba(var(--primary-rgb), 0.3), rgba(var(--accent-rgb), 0.2), transparent)',
                         animation: 'float3d 15s ease-in-out infinite',
                         transform: 'translateZ(100px)',
                         filter: 'blur(60px)',
                     }}
                 />
-                <div 
+                <div
                     className="absolute top-40 right-20 w-[400px] h-[400px] rounded-full opacity-15"
-                    style={{ 
+                    style={{
                         background: 'radial-gradient(circle at 30% 30%, rgba(var(--accent-rgb), 0.3), rgba(var(--primary-rgb), 0.2), transparent)',
                         animation: 'float3d 18s ease-in-out infinite 3s',
                         transform: 'translateZ(80px)',
                         filter: 'blur(50px)',
                     }}
                 />
-                <div 
+                <div
                     className="absolute bottom-20 left-1/3 w-[350px] h-[350px] rounded-full opacity-15"
-                    style={{ 
+                    style={{
                         background: 'radial-gradient(circle at 30% 30%, rgba(var(--primary-rgb), 0.25), rgba(var(--accent-rgb), 0.15), transparent)',
                         animation: 'float3d 20s ease-in-out infinite 6s',
                         transform: 'translateZ(60px)',
                         filter: 'blur(40px)',
                     }}
                 />
-                
+
                 {/* 3D Rotating Elements */}
                 <div className="absolute top-1/4 right-1/4 w-40 h-40" style={{ transformStyle: 'preserve-3d' }}>
-                    <div 
+                    <div
                         className="w-full h-full bg-gradient-to-br from-primary/10 to-accent/5 rounded-full"
-                        style={{ 
+                        style={{
                             animation: 'rotate3d 25s linear infinite',
                             transformStyle: 'preserve-3d',
                             boxShadow: '0 0 60px rgba(var(--primary-rgb), 0.2)',
                         }}
                     />
                 </div>
-                
+
                 <div className="absolute bottom-1/3 left-1/4 w-32 h-32" style={{ transformStyle: 'preserve-3d' }}>
-                    <div 
+                    <div
                         className="w-full h-full bg-gradient-to-br from-accent/10 to-primary/5 rounded-full"
-                        style={{ 
+                        style={{
                             animation: 'rotate3d 30s linear infinite reverse',
                             transformStyle: 'preserve-3d',
                             boxShadow: '0 0 50px rgba(var(--accent-rgb), 0.2)',
                         }}
                     />
                 </div>
-                
+
                 {/* 3D Floating Leaves - Multiple Sizes */}
                 <div className="absolute top-1/4 left-1/5" style={{ animation: 'floatLeaf 12s ease-in-out infinite' }}>
                     <Leaf className="w-32 h-32 text-green-500/40 rotate-45" style={{ filter: 'drop-shadow(0 0 30px rgba(34, 197, 94, 0.8))' }} />
@@ -204,7 +200,7 @@ const LeaderboardPage = () => {
                 <div className="absolute top-1/5 right-1/6" style={{ animation: 'floatLeaf 11s ease-in-out infinite 3s' }}>
                     <Leaf className="w-22 h-22 text-teal-500/35 -rotate-90" style={{ filter: 'drop-shadow(0 0 26px rgba(20, 184, 166, 0.8))' }} />
                 </div>
-                
+
                 {/* Falling Leaves - 3D Effect */}
                 {[...Array(15)].map((_, i) => (
                     <div
@@ -217,18 +213,18 @@ const LeaderboardPage = () => {
                             animationDelay: `${Math.random() * 10}s`,
                         }}
                     >
-                        <Leaf 
+                        <Leaf
                             className={`text-green-${400 + Math.floor(Math.random() * 3) * 100}/30`}
-                            style={{ 
+                            style={{
                                 width: `${20 + Math.random() * 30}px`,
                                 height: `${20 + Math.random() * 30}px`,
                                 filter: 'drop-shadow(0 0 10px rgba(34, 197, 94, 0.4))',
                                 transform: `rotate(${Math.random() * 360}deg)`,
-                            }} 
+                            }}
                         />
                     </div>
                 ))}
-                
+
                 {/* Trophy Icons with Nature Theme */}
                 <div className="absolute top-1/3 left-1/6" style={{ animation: 'float3d 12s ease-in-out infinite 2s' }}>
                     <Trophy className="w-28 h-28 text-green-400/30" style={{ filter: 'drop-shadow(0 0 30px rgba(34, 197, 94, 0.8))' }} />
@@ -239,9 +235,9 @@ const LeaderboardPage = () => {
                 <div className="absolute top-2/3 right-1/3" style={{ animation: 'float3d 14s ease-in-out infinite 8s' }}>
                     <Crown className="w-20 h-20 text-lime-400/30" style={{ filter: 'drop-shadow(0 0 26px rgba(132, 204, 22, 0.8))' }} />
                 </div>
-                
+
                 {/* 3D Grid with Perspective */}
-                <div 
+                <div
                     className="absolute inset-0 opacity-5"
                     style={{
                         backgroundImage: `
@@ -254,9 +250,9 @@ const LeaderboardPage = () => {
                         color: 'var(--primary)',
                     }}
                 />
-                
+
                 {/* Animated Light Rays */}
-                <div 
+                <div
                     className="absolute top-0 left-1/2 w-1 h-full opacity-5"
                     style={{
                         background: 'linear-gradient(to bottom, transparent, var(--primary), transparent)',
@@ -265,7 +261,7 @@ const LeaderboardPage = () => {
                         filter: 'blur(20px)',
                     }}
                 />
-                <div 
+                <div
                     className="absolute top-0 left-1/3 w-1 h-full opacity-5"
                     style={{
                         background: 'linear-gradient(to bottom, transparent, var(--accent), transparent)',
@@ -274,9 +270,9 @@ const LeaderboardPage = () => {
                         filter: 'blur(20px)',
                     }}
                 />
-                
+
                 {/* Depth Overlay */}
-                <div 
+                <div
                     className="absolute inset-0"
                     style={{
                         background: 'radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.3) 100%)',
@@ -302,17 +298,17 @@ const LeaderboardPage = () => {
                             animation: `floatLeaf ${leaf.duration}s ease-in-out infinite ${leaf.delay}s`,
                         }}
                     >
-                        <Leaf 
-                            style={{ 
+                        <Leaf
+                            style={{
                                 width: `${leaf.size}px`,
                                 height: `${leaf.size}px`,
                                 filter: 'drop-shadow(0 0 20px rgba(34, 197, 94, 1))',
                                 color: 'rgba(34, 197, 94, 0.6)',
-                            }} 
+                            }}
                         />
                     </div>
                 ))}
-                
+
                 {/* Falling Leaves */}
                 {[...Array(20)].map((_, i) => (
                     <div
@@ -323,13 +319,13 @@ const LeaderboardPage = () => {
                             animation: `fallLeaf ${10 + (i % 6)}s linear infinite ${i * 0.8}s`,
                         }}
                     >
-                        <Leaf 
-                            style={{ 
+                        <Leaf
+                            style={{
                                 width: `${30 + (i % 4) * 10}px`,
                                 height: `${30 + (i % 4) * 10}px`,
                                 filter: 'drop-shadow(0 0 15px rgba(34, 197, 94, 0.9))',
                                 color: 'rgba(34, 197, 94, 0.7)',
-                            }} 
+                            }}
                         />
                     </div>
                 ))}
@@ -362,8 +358,14 @@ const LeaderboardPage = () => {
 
                 {loading ? (
                     <div className="flex flex-col items-center justify-center py-20">
-                        <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4"></div>
-                        <p className="text-muted-foreground font-medium">Memuat data juara...</p>
+                        {/* ✅ PERBAIKI JUGA URL DI SINI */}
+                        <DotLottieReact
+                            src="https://lottie.host/8ac7a7f8-9e01-4e19-82c4-7381d9fc3218/D4UsU6eeiC.lottie"
+                            loop
+                            autoplay
+                            style={{ width: 120, height: 120 }}
+                        />
+                        <p className="mt-6 text-muted-foreground font-medium">Memuat data juara...</p>
                     </div>
                 ) : leaderboardData.length > 0 ? (
                     <>
@@ -381,14 +383,9 @@ const LeaderboardPage = () => {
 
                         {/* Podium Section */}
                         <div className="flex justify-center items-end gap-4 sm:gap-8 mb-16 px-4">
-                            {/* 2nd Place (Left) */}
-                            {topThree[1] && <PodiumItem user={topThree[1]} position={2} />}
-
-                            {/* 1st Place (Center) */}
-                            {topThree[0] && <PodiumItem user={topThree[0]} position={1} />}
-
-                            {/* 3rd Place (Right) */}
-                            {topThree[2] && <PodiumItem user={topThree[2]} position={3} />}
+                            {topThree[1] && <PodiumItem key={topThree[1].uid} user={topThree[1]} position={2} navigate={navigate} />}
+                            {topThree[0] && <PodiumItem key={topThree[0].uid} user={topThree[0]} position={1} navigate={navigate} />}
+                            {topThree[2] && <PodiumItem key={topThree[2].uid} user={topThree[2]} position={3} navigate={navigate} />}
                         </div>
 
                         {/* List Section for Rank 4+ */}
@@ -403,7 +400,7 @@ const LeaderboardPage = () => {
                                     </h3>
                                     <div className="h-px flex-1 bg-gradient-to-r from-transparent via-border to-transparent"></div>
                                 </div>
-                                
+
                                 {restOfUsers.map((user, index) => (
                                     <div
                                         key={user.uid}
@@ -415,13 +412,13 @@ const LeaderboardPage = () => {
                                         <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-accent/10 flex items-center justify-center font-bold text-lg text-foreground group-hover:from-primary/30 group-hover:to-accent/20 transition-all">
                                             {user.rank}
                                         </div>
-                                        
+
                                         {/* Avatar */}
                                         <div className="flex-shrink-0">
                                             <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center ring-2 ring-background group-hover:ring-primary/50 transition-all overflow-hidden">
                                                 {user.photoURL ? (
-                                                    <img 
-                                                        src={user.photoURL} 
+                                                    <img
+                                                        src={user.photoURL}
                                                         alt={user.name}
                                                         className="w-full h-full object-cover"
                                                     />
@@ -430,7 +427,7 @@ const LeaderboardPage = () => {
                                                 )}
                                             </div>
                                         </div>
-                                        
+
                                         {/* User Info */}
                                         <div className="flex-grow min-w-0">
                                             <div className="font-bold text-base truncate text-foreground group-hover:text-primary transition-colors">
@@ -440,7 +437,7 @@ const LeaderboardPage = () => {
                                                 <span>{user.institution}</span>
                                             </div>
                                         </div>
-                                        
+
                                         {/* Score */}
                                         <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-primary/10 to-accent/10 group-hover:from-primary/20 group-hover:to-accent/20 transition-all">
                                             <Trophy className="w-4 h-4 text-primary" />
@@ -461,7 +458,7 @@ const LeaderboardPage = () => {
                     </div>
                 )}
             </main>
-            
+
             {/* Custom CSS for 3D animations */}
             <style>{`
                 @keyframes float3d {
@@ -543,7 +540,7 @@ const LeaderboardPage = () => {
                     }
                 }
             `}</style>
-            
+
             {/* Music Player */}
             <MusicPlayer />
         </div>

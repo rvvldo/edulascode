@@ -45,6 +45,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useRealtimeData } from "@/hooks/useFirebase";
 import { NotificationSidebar } from "@/components/NotificationSidebar";
 import { MusicPlayer } from "@/components/MusicPlayer";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 // Static stories data with new thematic images
 const stories = [
@@ -114,7 +115,7 @@ const Dashboard = () => {
   const { currentUser, logout } = useAuth();
   const navigate = useNavigate();
   const { data: userData } = useRealtimeData(`users/${currentUser?.uid}`);
-  const { data: allUsers } = useRealtimeData("users"); // Fetch all users for search
+  const { data: allUsers } = useRealtimeData("users");
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("Semua");
   const [searchOpen, setSearchOpen] = useState(false);
@@ -162,9 +163,9 @@ const Dashboard = () => {
                 <Button variant="ghost" className="flex items-center gap-2 px-2 hover:bg-primary/10 transition-colors rounded-full">
                   <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center ring-2 ring-background shadow-md overflow-hidden">
                     {userData?.photoURL ? (
-                      <img 
-                        src={userData.photoURL} 
-                        alt="Profile" 
+                      <img
+                        src={userData.photoURL}
+                        alt="Profile"
                         className="w-full h-full object-cover"
                       />
                     ) : (
@@ -236,7 +237,15 @@ const Dashboard = () => {
                     <CommandList>
                       {userSearchQuery.length > 0 && (
                         <>
-                          <CommandEmpty className="py-6 text-center text-sm text-muted-foreground">Tidak ditemukan.</CommandEmpty>
+                          <CommandEmpty className="py-6 flex flex-col items-center justify-center gap-4">
+                            <DotLottieReact
+                              src="https://lottie.host/ee72df6e-7258-420f-9130-2539fa06ee6e/bjsBEs5pjE.lottie"
+                              loop
+                              autoplay
+                              className="w-32 h-32" // Atur ukuran sesuai kebutuhan
+                            />
+                            <p className="text-sm text-muted-foreground">Pengguna tidak ditemukan.</p>
+                          </CommandEmpty>
                           <CommandGroup heading="Pengguna">
                             {userList.map((user) => (
                               <CommandItem
@@ -320,10 +329,13 @@ const Dashboard = () => {
             {/* Decorative Elements */}
             <div className="hidden md:block relative w-80 h-80 animate-fade-in" style={{ animationDelay: "0.3s" }}>
               <div className="absolute inset-0 bg-gradient-to-tr from-green-500 to-teal-400 rounded-full blur-[60px] opacity-20 animate-pulse-slow"></div>
-              <div className="relative z-10 w-full h-full bg-[url('/lesta-mascot.png')] bg-contain bg-center bg-no-repeat animate-float">
-                <div className="flex items-center justify-center w-full h-full text-9xl drop-shadow-2xl grayscale-[0.2] hover:grayscale-0 transition-all duration-500 cursor-pointer transform hover:scale-105">
-                  🌏
-                </div>
+              <div className="relative z-10 w-full h-full flex items-center justify-center animate-float">
+                <DotLottieReact
+                  src="https://lottie.host/0e336f31-24bc-4cab-97e4-1e85bf47714d/YyKyPnypsV.lottie"
+                  loop
+                  autoplay
+                  className="w-64 h-64 md:w-80 md:h-80" // Sesuaikan ukuran
+                />
               </div>
             </div>
           </div>
@@ -400,13 +412,13 @@ const Dashboard = () => {
                         <div className="flex gap-1">
                           {[1, 2, 3].map((star) => (
                             <div key={star} className={`h-1.5 w-6 rounded-full ${story.difficulty === 'Mudah' && star === 1 ? 'bg-green-400' :
-                                story.difficulty === 'Sedang' && star <= 2 ? 'bg-amber-400' :
-                                  story.difficulty === 'Sulit' ? 'bg-red-400' : 'bg-white/20'
+                              story.difficulty === 'Sedang' && star <= 2 ? 'bg-amber-400' :
+                                story.difficulty === 'Sulit' ? 'bg-red-400' : 'bg-white/20'
                               }`}></div>
                           ))}
                         </div>
                         <span className={`text-xs font-medium mt-1 ${story.difficulty === 'Mudah' ? 'text-green-400' :
-                            story.difficulty === 'Sedang' ? 'text-amber-400' : 'text-red-400'
+                          story.difficulty === 'Sedang' ? 'text-amber-400' : 'text-red-400'
                           }`}>{story.difficulty}</span>
                       </div>
 
@@ -480,7 +492,7 @@ const Dashboard = () => {
         )}
 
       </main>
-      
+
       {/* Music Player */}
       <MusicPlayer />
     </div>

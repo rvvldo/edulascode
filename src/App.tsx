@@ -17,6 +17,7 @@ import PublicProfilePage from "./pages/PublicProfilePage";
 import CentralAdminDashboard from "./pages/CentralAdminDashboard";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { MusicProvider } from "@/contexts/MusicContext";
+import GlobalLoading from "@/components/GlobalLoading";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,7 @@ const App = () => (
             <Toaster />
             <Sonner />
             <DialogProvider />
+            <GlobalLoading />
             <BrowserRouter>
               <Routes>
                 <Route path="/" element={<Index />} />
