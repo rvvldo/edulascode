@@ -147,7 +147,7 @@ export function AchievementsModal({ open, onOpenChange }: AchievementsModalProps
           </TabsList>
         </Tabs>
 
-        <ScrollArea className="h-[500px] px-6">
+        <ScrollArea className="h-[500px] px-6 ">
           <div className="grid grid-cols-3 gap-4 pb-6">
             {filteredAchievements.map((achievement) => {
               const unlocked = isUnlocked(achievement.id);

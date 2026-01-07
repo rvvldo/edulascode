@@ -9,6 +9,7 @@ import { storiesData } from "@/data/stories";
 import { useAuth } from "@/contexts/AuthContext";
 import { useFirebaseOperation } from "@/hooks/useFirebase";
 import { updateData, readData } from "@/lib/firebase.service";
+import { generateSpeech } from "@/lib/elevenlabs";
 
 // Enum for game states
 type GameState = "PREPARATION" | "PLAYING" | "RESULT";
@@ -66,28 +67,59 @@ const StoryViewer = () => {
   }, [currentUser, storyId]);
 
   // Clean up speech on unmount
+  const currentAudioRef = useRef<HTMLAudioElement | null>(null);
+
+  const stopAudio = useCallback(() => {
+    if (currentAudioRef.current) {
+      currentAudioRef.current.pause();
+      currentAudioRef.current.currentTime = 0;
+      currentAudioRef.current = null;
+    }
+    window.speechSynthesis.cancel();
+  }, []);
+
   useEffect(() => {
     return () => {
-      window.speechSynthesis.cancel();
+      stopAudio();
     };
-  }, []);
+  }, [stopAudio]);
 
   const currentScene = story?.scenes[currentSceneIndex];
 
   // --- AI VOICE HANDLER ---
-  const handleSpeech = useCallback((text: string) => {
+  // --- AI VOICE HANDLER ---
+  const handleSpeech = useCallback(async (text: string) => {
     if (isMuted) return;
 
     // Cancel any ongoing speech
-    window.speechSynthesis.cancel();
+    stopAudio();
 
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = "id-ID"; // Set to Indonesian
-    utterance.rate = 1.0;
-    utterance.pitch = 1.0;
-
-    window.speechSynthesis.speak(utterance);
-  }, [isMuted]);
+    // Try ElevenLabs first
+    const audio = await generateSpeech(text);
+    
+    if (audio) {
+      currentAudioRef.current = audio;
+      audio.play().catch(console.error);
+      
+      // Handle when audio finishes
+      audio.onended = () => {
+        currentAudioRef.current = null;
+      };
+      
+      // Debug Toast
+      // toast.success("ElevenLabs Audio Playing"); 
+    } else {
+      console.warn("Falling back to browser speech");
+      toast.info("Menggunakan Browser Voice (Fallback)");
+      
+      // Fallback to browser synthesis
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = "id-ID"; // Set to Indonesian
+      utterance.rate = 1.0;
+      utterance.pitch = 1.0;
+      window.speechSynthesis.speak(utterance);
+    }
+  }, [isMuted, stopAudio]);
 
   // Typing Effect & Voice Trigger
   useEffect(() => {
@@ -130,9 +162,10 @@ const StoryViewer = () => {
     if (prepAgreed) {
       // Initialize/Unlock Audio Context
       if (!isMuted) {
-        const u = new SpeechSynthesisUtterance("Misi dimulai.");
-        u.lang = "id-ID";
-        window.speechSynthesis.speak(u);
+        // Just use fallback/quick msg for start or handleSpeech?
+        // Using handleSpeech might cause lag if checking API. 
+        // Let's use handleSpeech to be consistent with voice.
+        handleSpeech("Misi dimulai.");
       }
       setGameState("PLAYING");
     }
@@ -159,7 +192,8 @@ const StoryViewer = () => {
     if (!currentScene) return;
 
     // Stop speech when moving to next
-    window.speechSynthesis.cancel();
+    // Stop speech when moving to next
+    stopAudio();
 
     if (currentScene.type === "NARRATIVE") {
       if (currentDialogueIndex < (currentScene.dialogues?.length || 0) - 1) {
@@ -200,7 +234,8 @@ const StoryViewer = () => {
 
   const finishGame = async () => {
     setGameState("RESULT");
-    window.speechSynthesis.cancel();
+    setGameState("RESULT");
+    stopAudio();
 
     if (currentUser && !alreadyPlayed) {
       try {
