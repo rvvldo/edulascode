@@ -246,7 +246,7 @@ const StoryViewer = () => {
         <div
           className="absolute inset-0 z-0 opacity-30"
           style={{
-            background: story.scenes[0].background,
+            background: `${story.scenes[0].background} center / cover no-repeat`,
             filter: "blur(8px)"
           }}
         />
@@ -321,7 +321,9 @@ const StoryViewer = () => {
         <div
           className="absolute inset-0 z-0 opacity-20"
           style={{
-            background: isGoodEnding ? "linear-gradient(to bottom, #10b981, #059669)" : "linear-gradient(to bottom, #f59e0b, #d97706)",
+            background: isGoodEnding
+              ? "linear-gradient(to bottom, #10b981, #059669) center / cover no-repeat"
+              : "linear-gradient(to bottom, #f59e0b, #d97706) center / cover no-repeat",
           }}
         />
 
@@ -377,7 +379,9 @@ const StoryViewer = () => {
   return (
     <div
       className="min-h-screen relative overflow-hidden flex flex-col transition-colors duration-1000"
-      style={{ background: currentScene?.background || "#1a1a1a" }}
+      style={{ 
+        background: `${currentScene?.background || "#1a1a1a"} center / cover no-repeat` 
+      }}
     >
       {/* Header UI */}
       <header className="relative z-10 flex items-center justify-between p-4 lg:p-6">
@@ -431,8 +435,15 @@ const StoryViewer = () => {
         </div>
 
         {/* DIALOGUE & INTERACTION AREA */}
-        <div className="relative z-20 bg-background/95 backdrop-blur-xl border-t border-border/50 min-h-[35vh] flex flex-col shadow-[0_-10px_40px_rgba(0,0,0,0.3)] rounded-t-[2rem]">
-
+<div className="relative z-20 
+  bg-transparent 
+  backdrop-blur-xl 
+  border-t border-border/20 
+  min-h-[35vh] 
+  flex flex-col 
+  shadow-[0_-10px_40px_rgba(0,0,0,0.15)] 
+  rounded-t-[2rem]
+  px-2 py-4">
           {/* Progress Bar */}
           <div className="w-full bg-muted/30 h-1.5 overflow-hidden">
             <div

@@ -51,7 +51,7 @@ export const storiesData: Record<number, Story> = {
             {
                 id: 1,
                 type: "NARRATIVE",
-                background: "linear-gradient(180deg, #1a472a 0%, #2d5a3d 50%, #1a3a2a 100%)",
+                background: "url('/background/kalimantan.jpg')",
                 dialogues: [
                     { character: "Narator", text: "Di jantung Kalimantan, di mana pohon-pohon meranti menjulang tinggi menyentuh langit, hiduplah ekosistem yang damai.", isNarrator: true },
                     { character: "Lesta", text: "Halo teman! Aku Lesta. Hari ini kita akan menemani Raka, seorang penjaga hutan muda." },
@@ -61,7 +61,7 @@ export const storiesData: Record<number, Story> = {
             {
                 id: 2,
                 type: "CHOICE",
-                background: "linear-gradient(180deg, #1a472a 0%, #2d5a3d 50%, #1a3a2a 100%)",
+                background: "url('/background/kalimantan.jpg')",
                 question: "Saat patroli, Raka menemukan tumpukan sampah plastik di pinggir sungai hutan. Apa yang harus dia lakukan?",
                 choices: [
                     { text: "Biarkan saja, itu bukan tugasku.", isGood: false, scoreChange: -10, feedback: "Sayang sekali. Sampah itu bisa terbawa arus dan mencemari lautan." },
@@ -71,7 +71,7 @@ export const storiesData: Record<number, Story> = {
             {
                 id: 3,
                 type: "NARRATIVE",
-                background: "linear-gradient(180deg, #2d3a1f 0%, #3d4a2a 50%, #2a3520 100%)",
+                background: "url('/background/kalimantan.jpg')",
                 dialogues: [
                     { character: "Narator", text: "Raka melanjutkan perjalanan. Tiba-tiba terdengar suara dentuman keras.", isNarrator: true },
                     { character: "Raka", text: "Suara apa itu? Terdengar seperti pohon tumbang, tapi ini bukan musim badai." },
@@ -81,7 +81,7 @@ export const storiesData: Record<number, Story> = {
             {
                 id: 4,
                 type: "CHOICE",
-                background: "linear-gradient(180deg, #2d3a1f 0%, #3d4a2a 50%, #2a3520 100%)",
+                background: "url('/background/kalimantan.jpg')",
                 question: "Raka melihat jejak ban truk masuk ke area terlarang. Apa tindakannya?",
                 choices: [
                     { text: "Mengikuti jejak tersebut dengan hati-hati.", isGood: true, scoreChange: 10, feedback: "Tepat! Kita perlu mengumpulkan bukti." },
@@ -91,7 +91,7 @@ export const storiesData: Record<number, Story> = {
             {
                 id: 5,
                 type: "NARRATIVE",
-                background: "linear-gradient(180deg, #3a2a1a 0%, #4a3a2a 50%, #2a1a10 100%)",
+                background: "url('/background/kalimantan.jpg')",
                 dialogues: [
                     { character: "Narator", text: "Di sebuah bukaan hutan, Raka melihat sekelompok orang sedang menebang pohon ulin.", isNarrator: true },
                     { character: "Pembalak 1", text: "Cepat! Sebelum petugas patroli datang!" },
@@ -101,7 +101,7 @@ export const storiesData: Record<number, Story> = {
             {
                 id: 6,
                 type: "CHOICE",
-                background: "linear-gradient(180deg, #3a2a1a 0%, #4a3a2a 50%, #2a1a10 100%)",
+                background: "url('/background/kalimantan.jpg')",
                 question: "Situasi berbahaya. Apa strategi terbaik Raka?",
                 choices: [
                     { text: "Langsung melabrak mereka sendirian.", isGood: false, scoreChange: -5, feedback: "Terlalu berisiko! Keselamatanmu adalah prioritas." },
@@ -111,7 +111,7 @@ export const storiesData: Record<number, Story> = {
             {
                 id: 7,
                 type: "NARRATIVE",
-                background: "linear-gradient(180deg, #3a2a1a 0%, #4a3a2a 50%, #2a1a10 100%)",
+                background: "url('/background/kalimantan.jpg')",
                 dialogues: [
                     { character: "Narator", text: "Saat mengamati, Raka melihat seekor anak orangutan terpisah dari induknya karena pohonnya ditebang.", isNarrator: true },
                     { character: "Orangutan", text: "*Suara mencicit ketakutan*" },
@@ -121,7 +121,7 @@ export const storiesData: Record<number, Story> = {
             {
                 id: 8,
                 type: "CHOICE",
-                background: "linear-gradient(180deg, #3a2a1a 0%, #4a3a2a 50%, #2a1a10 100%)",
+                background: "url('/background/kalimantan.jpg')",
                 question: "Anak orangutan itu terlihat akan lari ke arah para pembalak. Raka harus...",
                 choices: [
                     { text: "Melempar batu untuk mengalihkan perhatian pembalak.", isGood: true, scoreChange: 10, feedback: "Ide bagus! Perhatian mereka teralihkan." },
@@ -131,7 +131,7 @@ export const storiesData: Record<number, Story> = {
             {
                 id: 9,
                 type: "NARRATIVE",
-                background: "linear-gradient(180deg, #2d3a1f 0%, #3d4a2a 50%, #2a3520 100%)",
+                background: "url('/background/kalimantan.jpg')",
                 dialogues: [
                     { character: "Narator", text: "Berhasil! Orangutan itu lari menjauh dari bahaya. Raka mundur perlahan.", isNarrator: true },
                     { character: "Raka", text: "Hampir saja. Sekarang aku harus kembali ke pos untuk meminta bantuan." }
@@ -140,7 +140,7 @@ export const storiesData: Record<number, Story> = {
             {
                 id: 10,
                 type: "CHOICE",
-                background: "linear-gradient(180deg, #2d3a1f 0%, #3d4a2a 50%, #2a3520 100%)",
+                background: "url('/background/kalimantan.jpg')",
                 question: "Di perjalanan pulang, Raka menemukan jerat hewan yang dipasang pemburu.",
                 choices: [
                     { text: "Merusak jerat tersebut.", isGood: true, scoreChange: 10, feedback: "Satu nyawa satwa terselamatkan dari jeratan maut." },
@@ -150,7 +150,7 @@ export const storiesData: Record<number, Story> = {
             {
                 id: 11,
                 type: "NARRATIVE",
-                background: "linear-gradient(180deg, #1a472a 0%, #2d5a3d 50%, #1a3a2a 100%)",
+                background: "url('/background/kalimantan.jpg')",
                 dialogues: [
                     { character: "Narator", text: "Raka sampai di pos dan bertemu Kepala Polisi Hutan.", isNarrator: true },
                     { character: "Komandan", text: "Laporanmu sangat detail, Raka. Kami akan segera bergerak." },
@@ -160,7 +160,7 @@ export const storiesData: Record<number, Story> = {
             {
                 id: 12,
                 type: "CHOICE",
-                background: "linear-gradient(180deg, #1a472a 0%, #2d5a3d 50%, #1a3a2a 100%)",
+                background: "url('/background/kalimantan.jpg')",
                 question: "Komandan meminta Raka menunjuk jalan potong. Raka tahu jalan cepat tapi curam, atau jalan datar tapi memutar.",
                 choices: [
                     { text: "Pilih jalan cepat meski curam.", isGood: true, scoreChange: 10, feedback: "Waktu adalah kunci! Pilihan berani." },
@@ -170,7 +170,7 @@ export const storiesData: Record<number, Story> = {
             {
                 id: 13,
                 type: "NARRATIVE",
-                background: "linear-gradient(180deg, #3a2a1a 0%, #4a3a2a 50%, #2a1a10 100%)",
+                background: "url('/background/kalimantan.jpg')",
                 dialogues: [
                     { character: "Narator", text: "Tim berhasil menyergap para pembalak sebelum mereka pergi.", isNarrator: true },
                     { character: "Pembalak", text: "Sial! Kita terkepung!" },
@@ -180,7 +180,7 @@ export const storiesData: Record<number, Story> = {
             {
                 id: 14,
                 type: "CHOICE",
-                background: "linear-gradient(180deg, #3a2a1a 0%, #4a3a2a 50%, #2a1a10 100%)",
+                background: "url('/background/kalimantan.jpg')",
                 question: "Salah satu pembalak mencoba menyuap Raka agar memberinya celah kabur.",
                 choices: [
                     { text: "Menolak tegas tawaran itu.", isGood: true, scoreChange: 10, feedback: "Integritasmu tak ternilai harganya!" },
@@ -190,7 +190,7 @@ export const storiesData: Record<number, Story> = {
             {
                 id: 15,
                 type: "NARRATIVE",
-                background: "linear-gradient(180deg, #2d3a1f 0%, #3d4a2a 50%, #2a3520 100%)",
+                background: "url('/background/kalimantan.jpg')",
                 dialogues: [
                     { character: "Narator", text: "Para pembalak pun diamankan. Namun, kerusakan yang mereka buat cukup parah.", isNarrator: true },
                     { character: "Raka", text: "Butuh puluhan tahun untuk pohon-pohon ini tumbuh kembali..." },
@@ -200,7 +200,7 @@ export const storiesData: Record<number, Story> = {
             {
                 id: 16,
                 type: "CHOICE",
-                background: "linear-gradient(180deg, #2d3a1f 0%, #3d4a2a 50%, #2a3520 100%)",
+                background: "url('/background/kalimantan.jpg')",
                 question: "Ada bibit pohon yang tersisa di pos. Apa yang sebaiknya dilakukan di area bekas tebangan?",
                 choices: [
                     { text: "Segera menanam bibit baru bersama tim.", isGood: true, scoreChange: 10, feedback: "Reboisasi adalah langkah awal pemulihan." },
@@ -210,7 +210,7 @@ export const storiesData: Record<number, Story> = {
             {
                 id: 17,
                 type: "NARRATIVE",
-                background: "linear-gradient(180deg, #1a5c3a 0%, #2d7a4d 50%, #1a4a3a 100%)",
+                background: "url('/background/kalimantan.jpg')",
                 dialogues: [
                     { character: "Narator", text: "Beberapa hari kemudian, Raka kembali ke hutan untuk memantau.", isNarrator: true },
                     { character: "Raka", text: "Hei, lihat! Induk orangutan itu kembali mencari anaknya." },
@@ -220,7 +220,7 @@ export const storiesData: Record<number, Story> = {
             {
                 id: 18,
                 type: "CHOICE",
-                background: "linear-gradient(180deg, #1a5c3a 0%, #2d7a4d 50%, #1a4a3a 100%)",
+                background: "url('/background/kalimantan.jpg')",
                 question: "Raka ingin memastikan mereka aman. Dia sebaiknya...",
                 choices: [
                     { text: "Mengamati dari jauh menggunakan teropong.", isGood: true, scoreChange: 10, feedback: "Benar, jangan mengganggu interaksi alami mereka." },
@@ -230,7 +230,7 @@ export const storiesData: Record<number, Story> = {
             {
                 id: 19,
                 type: "NARRATIVE",
-                background: "linear-gradient(180deg, #1a472a 0%, #2d5a3d 50%, #1a3a2a 100%)",
+                background: "url('/background/kalimantan.jpg')",
                 dialogues: [
                     { character: "Narator", text: "Petualangan Raka kali ini memberikan pelajaran berharga.", isNarrator: true },
                     { character: "Lesta", text: "Hutan ini masih butuh pahlawan sepertimu." }
@@ -239,7 +239,7 @@ export const storiesData: Record<number, Story> = {
             {
                 id: 20,
                 type: "CHOICE",
-                background: "linear-gradient(180deg, #1a472a 0%, #2d5a3d 50%, #1a3a2a 100%)",
+                background: "url('/background/kalimantan.jpg')",
                 question: "Apa komitmenmu setelah melihat kejadian ini?",
                 choices: [
                     { text: "Aku akan aktif menyebarkan kesadaran lingkungan.", isGood: true, scoreChange: 10, feedback: "Semangat yang luar biasa!" },
@@ -290,13 +290,13 @@ export const storiesData: Record<number, Story> = {
         mascotName: "Lesta",
         preparationText: "Selamat datang di Hutan Sumatera. Harimau Sumatera berada di ambang kepunahan. Dimas memerlukan bantuanmu untuk melacak harimau dan menghalau pemburu. Hati-hati, misi ini berisiko tinggi!",
         scenes: [
-            { id: 1, type: "NARRATIVE", background: "linear-gradient(180deg, #d97706 0%, #b45309 100%)", dialogues: [{ character: "Dimas", text: "Kita menemukan jejak kaki besar. Ini pasti Harimau Sumatera." }] },
-            { id: 2, type: "CHOICE", background: "linear-gradient(180deg, #d97706 0%, #b45309 100%)", question: "Kita perlu memasang kamera trap. Di mana lokasi terbaik?", choices: [{ text: "Di jalur lintasan satwa.", isGood: true, scoreChange: 10, feedback: "Peluang terekam lebih besar." }, { text: "Di dekat sungai yang ramai pengunjung.", isGood: false, scoreChange: -5, feedback: "Terlalu banyak gangguan manusia." }] },
-            { id: 3, type: "NARRATIVE", background: "linear-gradient(180deg, #f59e0b 0%, #d97706 100%)", dialogues: [{ character: "Lesta", text: "Ada bau asap... sepertinya ada yang membakar lahan." }] },
+            { id: 1, type: "NARRATIVE", background: "url('/background/Sumatera.jpg')", dialogues: [{ character: "Dimas", text: "Kita menemukan jejak kaki besar. Ini pasti Harimau Sumatera." }] },
+            { id: 2, type: "CHOICE", background: "url('/background/Sumatera.jpg')", question: "Kita perlu memasang kamera trap. Di mana lokasi terbaik?", choices: [{ text: "Di jalur lintasan satwa.", isGood: true, scoreChange: 10, feedback: "Peluang terekam lebih besar." }, { text: "Di dekat sungai yang ramai pengunjung.", isGood: false, scoreChange: -5, feedback: "Terlalu banyak gangguan manusia." }] },
+            { id: 3, type: "NARRATIVE", background: "url('/background/Sumatera.jpg')", dialogues: [{ character: "Lesta", text: "Ada bau asap... sepertinya ada yang membakar lahan." }] },
             // ... Filling remaining scenes with simplified structure for brevity but functionality
-            { id: 4, type: "CHOICE", background: "linear-gradient(180deg, #f59e0b 0%, #d97706 100%)", question: "Apa yang harus kita lakukan pada api kecil itu?", choices: [{ text: "Padamkan selagi bisa.", isGood: true, scoreChange: 10, feedback: "Mencegah kebakaran besar." }, { text: "Lari menyelamatkan diri.", isGood: false, scoreChange: -5, feedback: "Api bisa menyebar cepat." }] },
-            { id: 5, type: "NARRATIVE", background: "linear-gradient(180deg, #b45309 0%, #78350f 100%)", dialogues: [{ character: "Dimas", text: "Ditemukan selongsong peluru. Ada pemburu di dekat sini." }] },
-            { id: 6, type: "CHOICE", background: "linear-gradient(180deg, #b45309 0%, #78350f 100%)", question: "Kita berpapasan dengan warga yang membawa senapan angin. Kamu...", choices: [{ text: "Tanya baik-baik tujuannya.", isGood: true, scoreChange: 10, feedback: "Pendekatan persuasif." }, { text: "Langsung sita senapannya.", isGood: false, scoreChange: -10, feedback: "Bisa memicu perkelahian." }] },
+            { id: 4, type: "CHOICE", background: "url('/background/Sumatera.jpg')", question: "Apa yang harus kita lakukan pada api kecil itu?", choices: [{ text: "Padamkan selagi bisa.", isGood: true, scoreChange: 10, feedback: "Mencegah kebakaran besar." }, { text: "Lari menyelamatkan diri.", isGood: false, scoreChange: -5, feedback: "Api bisa menyebar cepat." }] },
+            { id: 5, type: "NARRATIVE", background: "url('/background/Sumatera.jpg')", dialogues: [{ character: "Dimas", text: "Ditemukan selongsong peluru. Ada pemburu di dekat sini." }] },
+            { id: 6, type: "CHOICE", background: "url('/background/Sumatera.jpg')", question: "Kita berpapasan dengan warga yang membawa senapan angin. Kamu...", choices: [{ text: "Tanya baik-baik tujuannya.", isGood: true, scoreChange: 10, feedback: "Pendekatan persuasif." }, { text: "Langsung sita senapannya.", isGood: false, scoreChange: -10, feedback: "Bisa memicu perkelahian." }] },
             { id: 7, type: "NARRATIVE", background: "linear-gradient(180deg, #d97706 0%, #b45309 100%)", dialogues: [{ character: "Lesta", text: "Malam telah tiba di hutan rimba." }] },
             { id: 8, type: "CHOICE", background: "linear-gradient(180deg, #d97706 0%, #b45309 100%)", question: "Saat berkemah, sampah makanan sebaiknya...", choices: [{ text: "Digantung tinggi atau disimpan rapat.", isGood: true, scoreChange: 10, feedback: "Agar tidak mengundang satwa liar." }, { text: "Dibuang di belakang tenda.", isGood: false, scoreChange: -10, feedback: "Berbahaya mengundang predator." }] },
             { id: 9, type: "NARRATIVE", background: "linear-gradient(180deg, #78350f 0%, #451a03 100%)", dialogues: [{ character: "Dimas", text: "Kamera trap merekam harimau terluka kakinya." }] },
