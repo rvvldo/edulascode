@@ -41,8 +41,7 @@ export function HeroSection() {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-5 animate-fade-in mb-20" style={{ animationDelay: "0.3s" }}>
-            <Link
-              to="/dashboard"
+            <Link to="/dashboard"
               className="inline-block w-48 h-48 md:w-60 md:h-60 transition-transform hover:scale-105 active:scale-95 cursor-pointer"
               aria-label="Mulai Petualangan"
             >

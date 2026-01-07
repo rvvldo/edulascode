@@ -115,7 +115,7 @@ const Dashboard = () => {
   const { currentUser, logout } = useAuth();
   const navigate = useNavigate();
   const { data: userData } = useRealtimeData(`users/${currentUser?.uid}`);
-  const { data: allUsers } = useRealtimeData("users"); // Fetch all users for search
+  const { data: allUsers } = useRealtimeData("users");
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("Semua");
   const [searchOpen, setSearchOpen] = useState(false);
@@ -163,9 +163,9 @@ const Dashboard = () => {
                 <Button variant="ghost" className="flex items-center gap-2 px-2 hover:bg-primary/10 transition-colors rounded-full">
                   <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center ring-2 ring-background shadow-md overflow-hidden">
                     {userData?.photoURL ? (
-                      <img 
-                        src={userData.photoURL} 
-                        alt="Profile" 
+                      <img
+                        src={userData.photoURL}
+                        alt="Profile"
                         className="w-full h-full object-cover"
                       />
                     ) : (
@@ -412,13 +412,13 @@ const Dashboard = () => {
                         <div className="flex gap-1">
                           {[1, 2, 3].map((star) => (
                             <div key={star} className={`h-1.5 w-6 rounded-full ${story.difficulty === 'Mudah' && star === 1 ? 'bg-green-400' :
-                                story.difficulty === 'Sedang' && star <= 2 ? 'bg-amber-400' :
-                                  story.difficulty === 'Sulit' ? 'bg-red-400' : 'bg-white/20'
+                              story.difficulty === 'Sedang' && star <= 2 ? 'bg-amber-400' :
+                                story.difficulty === 'Sulit' ? 'bg-red-400' : 'bg-white/20'
                               }`}></div>
                           ))}
                         </div>
                         <span className={`text-xs font-medium mt-1 ${story.difficulty === 'Mudah' ? 'text-green-400' :
-                            story.difficulty === 'Sedang' ? 'text-amber-400' : 'text-red-400'
+                          story.difficulty === 'Sedang' ? 'text-amber-400' : 'text-red-400'
                           }`}>{story.difficulty}</span>
                       </div>
 
@@ -492,7 +492,7 @@ const Dashboard = () => {
         )}
 
       </main>
-      
+
       {/* Music Player */}
       <MusicPlayer />
     </div>

@@ -8,7 +8,7 @@ import { syncLeaderboardRanks } from "@/lib/firebase.service";
 import { MusicPlayer } from "@/components/MusicPlayer";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
-// ✅ PISAHKAN PODIUM ITEM + GUNAKAN React.memo
+// ✅ PODIUM ITEM — hanya satu kali, di awal file
 const PodiumItem = React.memo(({ user, position, navigate }: { user: any; position: 1 | 2 | 3; navigate: (path: string) => void }) => {
   let sizeClass = "";
   let colorClass = "";
@@ -42,7 +42,6 @@ const PodiumItem = React.memo(({ user, position, navigate }: { user: any; positi
       <div className="relative mb-4 group cursor-pointer" onClick={() => navigate(`/user/${user.uid}`)}>
         {position === 1 && (
           <div className="absolute -top-12 left-1/2 -translate-x-1/2 z-10 w-12 h-12">
-            {/* ✅ LOTTIE TANPA SPASI */}
             <DotLottieReact
               src="https://lottie.host/02aace42-701c-4d99-b00f-378895304118/TxGc52vruN.lottie"
               loop
@@ -87,12 +86,11 @@ const PodiumItem = React.memo(({ user, position, navigate }: { user: any; positi
   );
 });
 
-// ✅ EKSPOR UTAMA
+// ✅ UTAMA: LeaderboardPage
 const LeaderboardPage = () => {
   const { data: usersData, loading } = useRealtimeData("users");
   const navigate = useNavigate();
 
-  // ✅ GUNAKAN useMemo AGAR TIDAK RE-CREATE TIAP RENDER
   const leaderboardData = React.useMemo(() => {
     if (!usersData) return [];
 
@@ -125,16 +123,213 @@ const LeaderboardPage = () => {
 
   return (
     <div className="min-h-screen bg-background relative">
-      {/* Background (tidak diubah) */}
+      {/* Background */}
       <div className="fixed inset-0 -z-10 overflow-hidden" style={{ perspective: "1200px" }}>
-        {/* ... (semua background 3D kamu tetap sama) ... */}
-        {/* [PASTE SELURUH ISI BACKGROUND DARI KODE ASLI DI SINI] */}
-        {/* Untuk ringkas, tidak diulang, tapi pastikan tidak dihapus */}
+        {/* Large 3D Floating Spheres */}
+        <div
+          className="absolute top-10 left-10 w-[500px] h-[500px] rounded-full opacity-20"
+          style={{
+            background: "radial-gradient(circle at 30% 30%, rgba(var(--primary-rgb), 0.3), rgba(var(--accent-rgb), 0.2), transparent)",
+            animation: "float3d 15s ease-in-out infinite",
+            transform: "translateZ(100px)",
+            filter: "blur(60px)",
+          }}
+        />
+        <div
+          className="absolute top-40 right-20 w-[400px] h-[400px] rounded-full opacity-15"
+          style={{
+            background: "radial-gradient(circle at 30% 30%, rgba(var(--accent-rgb), 0.3), rgba(var(--primary-rgb), 0.2), transparent)",
+            animation: "float3d 18s ease-in-out infinite 3s",
+            transform: "translateZ(80px)",
+            filter: "blur(50px)",
+          }}
+        />
+        <div
+          className="absolute bottom-20 left-1/3 w-[350px] h-[350px] rounded-full opacity-15"
+          style={{
+            background: "radial-gradient(circle at 30% 30%, rgba(var(--primary-rgb), 0.25), rgba(var(--accent-rgb), 0.15), transparent)",
+            animation: "float3d 20s ease-in-out infinite 6s",
+            transform: "translateZ(60px)",
+            filter: "blur(40px)",
+          }}
+        />
+
+        {/* 3D Rotating Elements */}
+        <div className="absolute top-1/4 right-1/4 w-40 h-40" style={{ transformStyle: "preserve-3d" }}>
+          <div
+            className="w-full h-full bg-gradient-to-br from-primary/10 to-accent/5 rounded-full"
+            style={{
+              animation: "rotate3d 25s linear infinite",
+              transformStyle: "preserve-3d",
+              boxShadow: "0 0 60px rgba(var(--primary-rgb), 0.2)",
+            }}
+          />
+        </div>
+
+        <div className="absolute bottom-1/3 left-1/4 w-32 h-32" style={{ transformStyle: "preserve-3d" }}>
+          <div
+            className="w-full h-full bg-gradient-to-br from-accent/10 to-primary/5 rounded-full"
+            style={{
+              animation: "rotate3d 30s linear infinite reverse",
+              transformStyle: "preserve-3d",
+              boxShadow: "0 0 50px rgba(var(--accent-rgb), 0.2)",
+            }}
+          />
+        </div>
+
+        {/* Floating Leaves (static) */}
+        <div className="absolute top-1/4 left-1/5" style={{ animation: "floatLeaf 12s ease-in-out infinite" }}>
+          <Leaf className="w-32 h-32 text-green-500/40 rotate-45" style={{ filter: "drop-shadow(0 0 30px rgba(34, 197, 94, 0.8))" }} />
+        </div>
+        <div className="absolute top-1/3 right-1/4" style={{ animation: "floatLeaf 14s ease-in-out infinite 2s" }}>
+          <Leaf className="w-28 h-28 text-emerald-400/35 -rotate-12" style={{ filter: "drop-shadow(0 0 25px rgba(16, 185, 129, 0.8))" }} />
+        </div>
+        <div className="absolute bottom-1/4 right-1/5" style={{ animation: "floatLeaf 16s ease-in-out infinite 4s" }}>
+          <Leaf className="w-36 h-36 text-teal-400/30 rotate-90" style={{ filter: "drop-shadow(0 0 35px rgba(20, 184, 166, 0.8))" }} />
+        </div>
+        <div className="absolute top-2/3 left-1/4" style={{ animation: "floatLeaf 13s ease-in-out infinite 6s" }}>
+          <Leaf className="w-24 h-24 text-lime-400/40 -rotate-45" style={{ filter: "drop-shadow(0 0 28px rgba(132, 204, 22, 0.8))" }} />
+        </div>
+        <div className="absolute top-1/2 right-1/3" style={{ animation: "floatLeaf 15s ease-in-out infinite 8s" }}>
+          <Leaf className="w-30 h-30 text-green-400/35 rotate-12" style={{ filter: "drop-shadow(0 0 30px rgba(34, 197, 94, 0.8))" }} />
+        </div>
+        <div className="absolute bottom-1/3 left-1/6" style={{ animation: "floatLeaf 17s ease-in-out infinite 10s" }}>
+          <Leaf className="w-26 h-26 text-emerald-500/40 rotate-180" style={{ filter: "drop-shadow(0 0 32px rgba(16, 185, 129, 0.8))" }} />
+        </div>
+        <div className="absolute top-1/5 right-1/6" style={{ animation: "floatLeaf 11s ease-in-out infinite 3s" }}>
+          <Leaf className="w-22 h-22 text-teal-500/35 -rotate-90" style={{ filter: "drop-shadow(0 0 26px rgba(20, 184, 166, 0.8))" }} />
+        </div>
+
+        {/* Falling Leaves (dynamic) */}
+        {[...Array(15)].map((_, i) => (
+          <div
+            key={`falling-leaf-${i}`}
+            className="absolute"
+            style={{
+              left: `${5 + Math.random() * 85}%`,
+              top: `-${Math.random() * 20}%`,
+              animation: `fallLeaf ${8 + Math.random() * 8}s linear infinite`,
+              animationDelay: `${Math.random() * 10}s`,
+            }}
+          >
+            <Leaf
+              className={`text-green-${400 + Math.floor(Math.random() * 3) * 100}/30`}
+              style={{
+                width: `${20 + Math.random() * 30}px`,
+                height: `${20 + Math.random() * 30}px`,
+                filter: "drop-shadow(0 0 10px rgba(34, 197, 94, 0.4))",
+                transform: `rotate(${Math.random() * 360}deg)`,
+              }}
+            />
+          </div>
+        ))}
+
+        {/* Trophy & Crown */}
+        <div className="absolute top-1/3 left-1/6" style={{ animation: "float3d 12s ease-in-out infinite 2s" }}>
+          <Trophy className="w-28 h-28 text-green-400/30" style={{ filter: "drop-shadow(0 0 30px rgba(34, 197, 94, 0.8))" }} />
+        </div>
+        <div className="absolute bottom-1/4 right-1/6" style={{ animation: "float3d 16s ease-in-out infinite 5s" }}>
+          <Trophy className="w-24 h-24 text-emerald-400/30" style={{ filter: "drop-shadow(0 0 28px rgba(16, 185, 129, 0.8))" }} />
+        </div>
+        <div className="absolute top-2/3 right-1/3" style={{ animation: "float3d 14s ease-in-out infinite 8s" }}>
+          <Crown className="w-20 h-20 text-lime-400/30" style={{ filter: "drop-shadow(0 0 26px rgba(132, 204, 22, 0.8))" }} />
+        </div>
+
+        {/* 3D Grid */}
+        <div
+          className="absolute inset-0 opacity-5"
+          style={{
+            backgroundImage: `
+              linear-gradient(to right, currentColor 1px, transparent 1px),
+              linear-gradient(to bottom, currentColor 1px, transparent 1px)
+            `,
+            backgroundSize: "80px 80px",
+            transform: "perspective(800px) rotateX(60deg) translateZ(-200px)",
+            transformOrigin: "center bottom",
+            color: "var(--primary)",
+          }}
+        />
+
+        {/* Light Rays */}
+        <div
+          className="absolute top-0 left-1/2 w-1 h-full opacity-5"
+          style={{
+            background: "linear-gradient(to bottom, transparent, var(--primary), transparent)",
+            animation: "slideLight 8s ease-in-out infinite",
+            transform: "translateX(-50%) rotate(15deg)",
+            filter: "blur(20px)",
+          }}
+        />
+        <div
+          className="absolute top-0 left-1/3 w-1 h-full opacity-5"
+          style={{
+            background: "linear-gradient(to bottom, transparent, var(--accent), transparent)",
+            animation: "slideLight 10s ease-in-out infinite 2s",
+            transform: "translateX(-50%) rotate(-15deg)",
+            filter: "blur(20px)",
+          }}
+        />
+
+        {/* Depth Overlay */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: "radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.3) 100%)",
+          }}
+        />
       </div>
 
-      {/* Floating Leaves Overlay */}
+      {/* Floating Leaves Overlay — Visible layer */}
       <div className="fixed inset-0 pointer-events-none z-[5] overflow-hidden">
-        {/* ... (tetap sama) ... */}
+        {[
+          { top: "10%", left: "10%", size: 48, delay: 0, duration: 12 },
+          { top: "20%", right: "15%", size: 40, delay: 2, duration: 14 },
+          { bottom: "25%", right: "10%", size: 52, delay: 4, duration: 16 },
+          { top: "60%", left: "12%", size: 36, delay: 6, duration: 13 },
+          { top: "40%", right: "25%", size: 44, delay: 8, duration: 15 },
+        ].map((leaf, i) => (
+          <div
+            key={`static-leaf-${i}`}
+            className="absolute"
+            style={{
+              top: leaf.top,
+              left: leaf.left,
+              right: "auto",
+              bottom: "auto",
+              animation: `floatLeaf ${leaf.duration}s ease-in-out infinite ${leaf.delay}s`,
+            }}
+          >
+            <Leaf
+              style={{
+                width: `${leaf.size}px`,
+                height: `${leaf.size}px`,
+                filter: "drop-shadow(0 0 20px rgba(34, 197, 94, 1))",
+                color: "rgba(34, 197, 94, 0.6)",
+              }}
+            />
+          </div>
+        ))}
+
+        {/* Falling visible leaves */}
+        {[...Array(20)].map((_, i) => (
+          <div
+            key={`fall-leaf-${i}`}
+            className="absolute"
+            style={{
+              left: `${5 + (i * 4.5)}%`,
+              animation: `fallLeaf ${10 + (i % 6)}s linear infinite ${i * 0.8}s`,
+            }}
+          >
+            <Leaf
+              style={{
+                width: `${30 + (i % 4) * 10}px`,
+                height: `${30 + (i % 4) * 10}px`,
+                filter: "drop-shadow(0 0 15px rgba(34, 197, 94, 0.9))",
+                color: "rgba(34, 197, 94, 0.7)",
+              }}
+            />
+          </div>
+        ))}
       </div>
 
       {/* Header */}
@@ -161,7 +356,6 @@ const LeaderboardPage = () => {
       <main className="container mx-auto px-4 lg:px-8 pt-24 py-8 pb-20 relative z-10">
         {loading ? (
           <div className="flex flex-col items-center justify-center py-20">
-            {/* ✅ PERBAIKI JUGA URL DI SINI */}
             <DotLottieReact
               src="https://lottie.host/8ac7a7f8-9e01-4e19-82c4-7381d9fc3218/D4UsU6eeiC.lottie"
               loop
@@ -183,7 +377,6 @@ const LeaderboardPage = () => {
               </p>
             </div>
 
-            {/* ✅ PODIUM DENGAN key BERDASARKAN uid */}
             <div className="flex justify-center items-end gap-4 sm:gap-8 mb-16 px-4">
               {topThree[1] && <PodiumItem key={topThree[1].uid} user={topThree[1]} position={2} navigate={navigate} />}
               {topThree[0] && <PodiumItem key={topThree[0].uid} user={topThree[0]} position={1} navigate={navigate} />}
@@ -247,13 +440,38 @@ const LeaderboardPage = () => {
         )}
       </main>
 
-      {/* CSS Animations (tetap sama) */}
+      {/* Animations */}
       <style>{`
-        @keyframes float3d { /* ... */ }
-        @keyframes floatLeaf { /* ... */ }
-        @keyframes rotate3d { /* ... */ }
-        @keyframes slideLight { /* ... */ }
-        @keyframes fallLeaf { /* ... */ }
+        @keyframes float3d {
+          0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+          25% { transform: translate3d(30px, -40px, 80px) scale(1.1); }
+          50% { transform: translate3d(-30px, -80px, 150px) scale(1.3); }
+          75% { transform: translate3d(-40px, -40px, 80px) scale(1.1); }
+        }
+        @keyframes floatLeaf {
+          0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
+          25% { transform: translate3d(40px, -50px, 100px) rotate(90deg) scale(1.2); }
+          50% { transform: translate3d(-40px, -100px, 180px) rotate(180deg) scale(1.4); }
+          75% { transform: translate3d(-50px, -50px, 100px) rotate(270deg) scale(1.2); }
+        }
+        @keyframes rotate3d {
+          0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+          100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
+        }
+        @keyframes slideLight {
+          0%, 100% { transform: translateX(-50%) translateY(-100%) rotate(15deg); opacity: 0; }
+          50% { transform: translateX(-50%) translateY(0%) rotate(15deg); opacity: 0.2; }
+        }
+        @keyframes fallLeaf {
+          0% { transform: translate3d(0, -100px, 0) rotateX(0) rotateY(0) rotateZ(0); opacity: 0; }
+          10% { opacity: 1; }
+          20% { transform: translate3d(-50px, 20vh, 50px) rotateX(180deg) rotateY(90deg) rotateZ(45deg); }
+          40% { transform: translate3d(30px, 40vh, -30px) rotateX(360deg) rotateY(180deg) rotateZ(90deg); }
+          60% { transform: translate3d(-40px, 60vh, 40px) rotateX(540deg) rotateY(270deg) rotateZ(135deg); }
+          80% { transform: translate3d(20px, 80vh, -20px) rotateX(720deg) rotateY(360deg) rotateZ(180deg); }
+          90% { opacity: 1; }
+          100% { transform: translate3d(0, 100vh, 0) rotateX(900deg) rotateY(450deg) rotateZ(225deg); opacity: 0; }
+        }
       `}</style>
 
       <MusicPlayer />

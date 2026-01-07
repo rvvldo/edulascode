@@ -18,7 +18,7 @@ const PublicProfilePage = () => {
 
     // Fetch user data based on ID from URL
     const { data: userData, loading } = useRealtimeData(`users/${id}`);
-    
+
     // Fetch all users to calculate real rank
     const { data: allUsersData } = useRealtimeData("users");
 
@@ -29,7 +29,7 @@ const PublicProfilePage = () => {
             console.log('PublicProfile - Total Score:', userData.totalScore);
             console.log('PublicProfile - Leaderboard Rank:', userData.leaderboardRank);
             console.log('PublicProfile - Achievements:', userData.achievements);
-            
+
             if (userData?.achievements?.displayed) {
                 const displayed = userData.achievements.displayed.map((achievementId: string) => {
                     const achievement = ACHIEVEMENTS.find(a => a.id === achievementId);
@@ -46,7 +46,7 @@ const PublicProfilePage = () => {
     // Calculate actual rank from leaderboard
     const calculateActualRank = () => {
         if (!allUsersData || !userData) return null;
-        
+
         // Create leaderboard sorted by score
         const sortedUsers = Object.entries(allUsersData)
             .map(([uid, user]: [string, any]) => ({
@@ -59,9 +59,9 @@ const PublicProfilePage = () => {
 
         // Find user's position
         const userIndex = sortedUsers.findIndex(u => u.uid === id);
-        
+
         if (userIndex === -1) return null;
-        
+
         return userIndex + 1; // Rank is index + 1
     };
 
@@ -72,33 +72,32 @@ const PublicProfilePage = () => {
             <div className="min-h-screen flex items-center justify-center bg-background">
                 <div className="text-center">
                     <DotLottieReact
-                              src="https://lottie.host/8ac7a7f8-9e01-4e19-82c4-7381d9fc3218/D4UsU6eeiC.lottie"
-                              loop
-                              autoplay
-                              style={{ width: 120, height: 120 }}
-                            />
-                    <p className="text-muted-foreground">Memuat profil...</p>
+                        src="https://lottie.host/8ac7a7f8-9e01-4e19-82c4-7381d9fc3218/D4UsU6eeiC.lottie"
+                        loop
+                        autoplay
+                        style={{ width: 120, height: 120 }}
+                    />
                 </div>
             </div>
         );
     }
 
     if (!userData) {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="flex flex-col items-center text-center">
-        <DotLottieReact
-          src="https://lottie.host/ee72df6e-7258-420f-9130-2539fa06ee6e/bjsBEs5pjE.lottie"
-          loop
-          autoplay
-          className="w-40 h-40"
-        />
-        <h2 className="text-2xl font-bold mb-2">Pengguna Tidak Ditemukan</h2>
-        <Button onClick={() => navigate("/dashboard")}>Kembali ke Dashboard</Button>
-      </div>
-    </div>
-  );
-}
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-background">
+                <div className="flex flex-col items-center text-center">
+                    <DotLottieReact
+                        src="https://lottie.host/ee72df6e-7258-420f-9130-2539fa06ee6e/bjsBEs5pjE.lottie"
+                        loop
+                        autoplay
+                        className="w-40 h-40"
+                    />
+                    <h2 className="text-2xl font-bold mb-2">Pengguna Tidak Ditemukan</h2>
+                    <Button onClick={() => navigate("/dashboard")}>Kembali ke Dashboard</Button>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-background">
@@ -125,9 +124,9 @@ const PublicProfilePage = () => {
                             <div className="flex flex-col items-center mb-6">
                                 <div className="w-24 h-24 rounded-full bg-primary/20 flex items-center justify-center overflow-hidden ring-4 ring-background">
                                     {userData?.photoURL ? (
-                                        <img 
-                                            src={userData.photoURL} 
-                                            alt="Profile" 
+                                        <img
+                                            src={userData.photoURL}
+                                            alt="Profile"
                                             className="w-full h-full object-cover"
                                         />
                                     ) : (
@@ -157,7 +156,7 @@ const PublicProfilePage = () => {
                                         <div className="text-xs text-muted-foreground">Peringkat</div>
                                     </div>
                                 </div>
-                                
+
                                 {/* Additional Stats */}
                                 <div className="grid grid-cols-2 gap-3">
                                     <div className="text-center p-3 bg-background rounded-xl">
@@ -182,7 +181,7 @@ const PublicProfilePage = () => {
                         {/* Bio Section */}
                         <div className="bg-card rounded-2xl p-6 shadow-soft border border-border/50">
                             <h3 className="font-display text-xl font-bold mb-4">Tentang</h3>
-                            
+
                             {/* Info Grid */}
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 pb-4 border-b border-border/50">
                                 <div>
@@ -208,7 +207,7 @@ const PublicProfilePage = () => {
                                     </div>
                                 )}
                             </div>
-                            
+
                             {/* Bio */}
                             <div>
                                 <p className="text-xs text-muted-foreground mb-2">Bio</p>
@@ -239,7 +238,7 @@ const PublicProfilePage = () => {
                                     </div>
                                 </div>
                             </div>
-                            
+
                             {displayedAchievements.length > 0 ? (
                                 <div className="grid grid-cols-3 gap-4">
                                     {displayedAchievements.map((achievement: any) => (
