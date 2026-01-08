@@ -26,7 +26,7 @@ export const generateSpeech = async (text: string, voiceId: string = DEFAULT_VOI
       },
       body: JSON.stringify({
         text,
-        model_id: "eleven_multilingual_v2", // Best for multiple languages including Indonesian
+        model_id: "eleven_turbo_v2_5", // Turbo v2.5 supports 32 languages including Indonesian and is much faster (~100ms latency)
         voice_settings: {
           stability: 0.5,
           similarity_boost: 0.5,

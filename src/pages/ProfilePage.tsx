@@ -20,6 +20,7 @@ import {
   Trash2,
   Upload,
 } from "lucide-react";
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { toast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRealtimeData } from "@/hooks/useFirebase";
@@ -295,15 +296,20 @@ const ProfilePage = () => {
 
   // Show loading state
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Memuat profil...</p>
-        </div>
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-background">
+      <div className="text-center">
+        <DotLottieReact
+          src="https://lottie.host/8ac7a7f8-9e01-4e19-82c4-7381d9fc3218/D4UsU6eeiC.lottie"
+          loop
+          autoplay
+          style={{ width: 120, height: 120 }}
+        />
+        <p className="mt-4 text-muted-foreground">Memuat profil</p>
       </div>
-    );
-  }
+    </div>
+  );
+}
 
   return (
     <div className="min-h-screen bg-background ">
