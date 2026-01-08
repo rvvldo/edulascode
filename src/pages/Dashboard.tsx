@@ -316,12 +316,12 @@ const Dashboard = () => {
 
               {/* Search for mobile */}
               <div className="md:hidden relative max-w-sm mx-auto animate-slide-up" style={{ animationDelay: "0.2s" }}>
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground transition-colors" />
                 <Input
-                  placeholder="Cari misi petualangan..."
+                  placeholder="Cari konten..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-12 h-14 rounded-2xl shadow-lg border-border/60 bg-white/80 backdrop-blur-xl"
+                  className="pl-9 h-11 w-full rounded-xl bg-card border-border shadow-sm focus:ring-2 focus:ring-primary/20 transition-all font-medium text-sm placeholder:text-muted-foreground/70"
                 />
               </div>
             </div>
@@ -348,8 +348,10 @@ const Dashboard = () => {
         {/* ACTIVE STORIES SECTION */}
         <section>
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-display font-bold flex items-center gap-3">
-              <span className="bg-primary text-white p-2.5 rounded-xl shadow-lg shadow-primary/30"><Play className="w-5 h-5 fill-current" /></span>
+            <h2 className="text-xl md:text-3xl font-display font-bold flex items-center gap-2 md:gap-3">
+              <span className="bg-primary text-white p-2 md:p-2.5 rounded-lg md:rounded-xl shadow-lg shadow-primary/30 flex items-center justify-center">
+                <Play className="w-3.5 h-3.5 md:w-5 md:h-5 fill-current" />
+              </span>
               Misi Tersedia
             </h2>
 
@@ -445,11 +447,15 @@ const Dashboard = () => {
         {finishedStories.length > 0 && (
           <section className="pt-10 border-t border-border/60">
             <div className="flex items-center gap-4 mb-8 opacity-80">
-              <h2 className="text-2xl font-display font-bold flex items-center gap-3">
-                <span className="bg-muted p-2 rounded-xl"><History className="w-5 h-5 text-muted-foreground" /></span>
+              <h2 className="text-xl md:text-2xl font-display font-bold flex items-center gap-2 md:gap-3">
+                <span className="bg-muted p-2 rounded-lg md:rounded-xl flex items-center justify-center">
+                  <History className="w-4 h-4 md:w-5 md:h-5 text-muted-foreground" />
+                </span>
                 Riwayat Petualangan
               </h2>
-              <span className="text-xs font-bold bg-muted px-2.5 py-1 rounded-full text-muted-foreground uppercase tracking-wide">{finishedStories.length} Selesai</span>
+              <span className="text-[10px] md:text-xs font-bold bg-muted px-2.5 py-1 rounded-full text-muted-foreground uppercase tracking-wide whitespace-nowrap">
+                {finishedStories.length} Selesai
+              </span>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

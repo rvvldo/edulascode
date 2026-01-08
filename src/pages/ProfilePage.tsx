@@ -296,20 +296,20 @@ const ProfilePage = () => {
 
   // Show loading state
   if (loading) {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <DotLottieReact
-          src="https://lottie.host/8ac7a7f8-9e01-4e19-82c4-7381d9fc3218/D4UsU6eeiC.lottie"
-          loop
-          autoplay
-          style={{ width: 120, height: 120 }}
-        />
-        <p className="mt-4 text-muted-foreground">Memuat profil</p>
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center">
+          <DotLottieReact
+            src="https://lottie.host/8ac7a7f8-9e01-4e19-82c4-7381d9fc3218/D4UsU6eeiC.lottie"
+            loop
+            autoplay
+            style={{ width: 120, height: 120 }}
+          />
+          <p className="mt-4 text-muted-foreground">Memuat profil</p>
+        </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background ">
@@ -334,11 +334,11 @@ const ProfilePage = () => {
         </div>
       </header>
 
-      <div className="container mx-auto px-4 lg:px-8 pt-24 py-8 pb-20">
+      <div className="container mx-auto px-4 lg:px-8 pt-20 pb-10 lg:pt-24 lg:pb-20">
         <div className="grid lg:grid-cols-4 gap-8">
           {/* Sidebar */}
           <div className="lg:col-span-1">
-            <div className="bg-card rounded-2xl p-6 shadow-soft border border-border/50 sticky top-24">
+            <div className="bg-card rounded-2xl p-4 md:p-6 shadow-soft border border-border/50 sticky top-24">
               {/* Avatar */}
               <div className="flex flex-col items-center mb-6">
                 <div className="relative group">
@@ -449,7 +449,7 @@ const ProfilePage = () => {
             {activeTab === "profile" && (
               <div className="space-y-6">
                 {/* Profile Info */}
-                <div className="bg-card rounded-2xl p-6 shadow-soft border border-border/50">
+                <div className="bg-card rounded-2xl p-4 md:p-6 shadow-soft border border-border/50">
                   <div className="flex items-center justify-between mb-6">
                     <h3 className="font-display text-xl font-bold">Informasi Profil</h3>
                     <Button
@@ -540,7 +540,7 @@ const ProfilePage = () => {
 
             {/* Settings Tab */}
             {activeTab === "settings" && (
-              <div className="bg-card rounded-2xl p-6 shadow-soft border border-border/50">
+              <div className="bg-card rounded-2xl p-4 md:p-6 shadow-soft border border-border/50">
                 <h3 className="font-display text-xl font-bold mb-6">Pengaturan</h3>
 
                 <div className="space-y-6">
