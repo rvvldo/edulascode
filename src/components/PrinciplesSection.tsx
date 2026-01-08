@@ -29,7 +29,7 @@ const principles = [
 
 export function PrinciplesSection() {
   return (
-    <section id="principles" className="py-24 bg-background relative overflow-hidden">
+    <section id="principles" className="py-16 md:py-24 bg-background relative overflow-hidden">
       {/* Background Decoration */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 right-0 w-96 h-96 bg-sage/30 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
@@ -42,10 +42,10 @@ export function PrinciplesSection() {
           <span className="text-primary font-semibold text-sm uppercase tracking-wider">
             Prinsip Kami
           </span>
-          <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mt-4 mb-6">
+          <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mt-3 md:mt-4 mb-4 md:mb-6">
             Nilai-Nilai yang Kami Junjung
           </h2>
-          <p className="text-muted-foreground text-lg">
+          <p className="text-muted-foreground text-base md:text-lg px-2">
             Setiap cerita dan pengalaman di EDULAD dibangun berdasarkan prinsip-prinsip yang mendukung pelestarian alam.
           </p>
         </div>
@@ -55,7 +55,7 @@ export function PrinciplesSection() {
           {principles.map((principle, index) => (
             <div
               key={principle.title}
-              className="flex gap-6 p-8 rounded-3xl glass-effect border border-border/30 hover:border-primary/40 transition-all duration-500 group hover:shadow-card hover:-translate-y-1 glow-effect animate-slide-in-right"
+              className="flex flex-col sm:flex-row gap-4 sm:gap-6 p-6 sm:p-8 rounded-3xl glass-effect border border-border/30 hover:border-primary/40 transition-all duration-500 group hover:shadow-card hover:-translate-y-1 glow-effect animate-slide-in-right"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               <div className={`w-20 h-20 rounded-2xl ${principle.color} flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-soft`}>

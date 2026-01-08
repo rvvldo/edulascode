@@ -96,22 +96,22 @@ const StoryViewer = () => {
 
     // Try ElevenLabs first
     const audio = await generateSpeech(text);
-    
+
     if (audio) {
       currentAudioRef.current = audio;
       audio.play().catch(console.error);
-      
+
       // Handle when audio finishes
       audio.onended = () => {
         currentAudioRef.current = null;
       };
-      
+
       // Debug Toast
       // toast.success("ElevenLabs Audio Playing"); 
     } else {
       console.warn("Falling back to browser speech");
       toast.info("Menggunakan Browser Voice (Fallback)");
-      
+
       // Fallback to browser synthesis
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = "id-ID"; // Set to Indonesian
@@ -286,7 +286,7 @@ const StoryViewer = () => {
           }}
         />
 
-        <div className="relative z-10 bg-card/95 backdrop-blur-md rounded-3xl shadow-2xl max-w-2xl w-full p-8 border border-border/50 animate-fade-in">
+        <div className="relative z-10 bg-card/95 backdrop-blur-md rounded-3xl shadow-2xl max-w-2xl w-[90%] md:w-full p-5 md:p-8 border border-border/50 animate-fade-in max-h-[90vh] overflow-y-auto">
           <div className="mb-6 text-center">
             <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold mb-3">
               {story.category}
@@ -297,7 +297,7 @@ const StoryViewer = () => {
 
           <div className="space-y-6 mb-8">
             <div className="bg-muted/50 p-6 rounded-2xl border border-border/50">
-              <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
+              <h3 className="font-semibold text-lg mb-2 md:mb-4 flex items-center gap-2">
                 <Play className="w-5 h-5 text-primary" />
                 Persiapan Misi
               </h3>
@@ -324,13 +324,13 @@ const StoryViewer = () => {
             </div>
           </div>
 
-          <div className="flex gap-4">
-            <Button variant="outline" size="lg" className="flex-1" onClick={() => navigate("/dashboard")}>
+          <div className="flex flex-col-reverse md:flex-row gap-3 md:gap-4">
+            <Button variant="outline" size="lg" className="flex-1 w-full" onClick={() => navigate("/dashboard")}>
               Batal
             </Button>
             <Button
               size="lg"
-              className="flex-1 font-bold text-lg"
+              className="flex-1 font-bold text-lg w-full"
               disabled={!prepAgreed || (alreadyPlayed && !loading)}
               onClick={handleStartGame}
             >
@@ -414,8 +414,8 @@ const StoryViewer = () => {
   return (
     <div
       className="min-h-screen relative overflow-hidden flex flex-col transition-colors duration-1000"
-      style={{ 
-        background: `${currentScene?.background || "#1a1a1a"} center / cover no-repeat` 
+      style={{
+        background: `${currentScene?.background || "#1a1a1a"} center / cover no-repeat`
       }}
     >
       {/* Header UI */}
@@ -458,9 +458,9 @@ const StoryViewer = () => {
       <div className="flex-1 relative flex flex-col justify-end pb-0">
 
         {/* Mascot / Characters */}
-        <div className="absolute bottom-24 lg:bottom-1/3 left-1/2 -translate-x-1/2 w-full max-w-4xl flex justify-between px-4 pointer-events-none">
+        <div className="absolute bottom-[30vh] lg:bottom-1/3 left-1/2 -translate-x-1/2 w-full max-w-4xl flex justify-between px-4 pointer-events-none z-10">
           {/* Lesta Mascot (Left or Right) */}
-          <div className="w-40 h-64 lg:w-56 lg:h-72 relative animate-float transition-all duration-500" style={{ order: 2 }}>
+          <div className="w-32 h-48 md:w-40 md:h-64 lg:w-56 lg:h-72 relative animate-float transition-all duration-500" style={{ order: 2 }}>
             <img
               src="/maskot.webp"
               alt="Lesta Mascot"
@@ -470,7 +470,7 @@ const StoryViewer = () => {
         </div>
 
         {/* DIALOGUE & INTERACTION AREA */}
-<div className="relative z-20 
+        <div className="relative z-20 
   bg-transparent 
   backdrop-blur-xl 
   border-t border-border/20 

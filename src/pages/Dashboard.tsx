@@ -293,7 +293,7 @@ const Dashboard = () => {
 
       {/* Hero Banner */}
       <div className="relative mb-8 group overflow-hidden">
-        <div className="absolute inset-0 h-[380px] bg-gradient-to-b from-primary/5 via-primary/5 to-background z-0"></div>
+        <div className="absolute inset-0 h-[300px] md:h-[380px] bg-gradient-to-b from-primary/5 via-primary/5 to-background z-0"></div>
 
         {/* Animated blobs */}
         <div className="absolute top-20 left-10 w-64 h-64 bg-green-400/20 rounded-full blur-[100px] animate-float"></div>
@@ -306,11 +306,11 @@ const Dashboard = () => {
                 <Leaf className="w-4 h-4" />
                 <span>Edulad Edukasi Lingkungan No. 1</span>
               </div>
-              <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight text-foreground drop-shadow-sm animate-slide-up">
+              <h1 className="font-display text-3xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6 leading-tight text-foreground drop-shadow-sm animate-slide-up">
                 Jelajahi Dunia, <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-green-600 to-teal-500">Selamatkan Bumi</span>
               </h1>
-              <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-lg mx-auto md:mx-0 leading-relaxed animate-slide-up" style={{ animationDelay: "0.1s" }}>
+              <p className="text-base md:text-xl text-muted-foreground mb-6 md:mb-8 max-w-lg mx-auto md:mx-0 leading-relaxed animate-slide-up" style={{ animationDelay: "0.1s" }}>
                 Pilih misi interaktif, hadapi tantangan nyata, dan kumpulkan poin kebaikan untuk masa depan yang lebih hijau.
               </p>
 
@@ -367,12 +367,12 @@ const Dashboard = () => {
           </div>
 
           {activeStories.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8">
               {activeStories.map((story, index) => (
                 <Link
                   key={story.id}
                   to={`/story/${story.id}`}
-                  className="group relative flex flex-col h-[420px] rounded-[2.5rem] overflow-hidden shadow-card hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
+                  className="group relative flex flex-col h-[220px] md:h-[420px] rounded-2xl md:rounded-[2.5rem] overflow-hidden shadow-card hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
                   {/* Full Background Image */}
@@ -386,44 +386,44 @@ const Dashboard = () => {
                   </div>
 
                   {/* Top Badge */}
-                  <div className="relative z-10 p-6 flex justify-between items-start">
-                    <div className="inline-block px-4 py-1.5 rounded-full bg-white/20 backdrop-blur-md border border-white/20 text-white text-xs font-bold tracking-wide uppercase">
+                  <div className="relative z-10 p-3 md:p-6 flex justify-between items-start">
+                    <div className="inline-block px-2 py-0.5 md:px-4 md:py-1.5 rounded-full bg-white/20 backdrop-blur-md border border-white/20 text-white text-[8px] md:text-xs font-bold tracking-wide uppercase">
                       {story.category}
                     </div>
-                    <div className="flex items-center gap-1.5 bg-black/40 backdrop-blur-md rounded-full px-3 py-1.5 text-white/90 shadow-sm border border-white/10">
-                      <Star className="w-3.5 h-3.5 text-yellow-400 fill-yellow-400" />
-                      <span className="text-xs font-bold">{story.points} XP</span>
+                    <div className="flex items-center gap-1 bg-black/40 backdrop-blur-md rounded-full px-2 py-0.5 md:px-3 md:py-1.5 text-white/90 shadow-sm border border-white/10">
+                      <Star className="w-2.5 h-2.5 md:w-3.5 md:h-3.5 text-yellow-400 fill-yellow-400" />
+                      <span className="text-[8px] md:text-xs font-bold">{story.points} XP</span>
                     </div>
                   </div>
 
                   {/* Bottom Content */}
-                  <div className="relative z-10 mt-auto p-8 pb-10">
-                    <h3 className="text-3xl font-display font-bold text-white mb-3 leading-tight drop-shadow-lg group-hover:text-primary-foreground transition-colors">
+                  <div className="relative z-10 mt-auto p-3 pb-4 md:p-8 md:pb-10">
+                    <h3 className="text-sm md:text-3xl font-display font-bold text-white mb-1 md:mb-3 leading-tight drop-shadow-lg group-hover:text-primary-foreground transition-colors line-clamp-2">
                       {story.title}
                     </h3>
 
-                    <p className="text-white/80 text-sm line-clamp-2 leading-relaxed mb-6 font-light">
+                    <p className="hidden md:block text-white/80 text-xs md:text-sm line-clamp-2 leading-relaxed mb-3 md:mb-6 font-light">
                       {story.description}
                     </p>
 
-                    <div className="flex items-center justify-between">
-                      <div className="flex flex-col gap-1">
-                        <span className="text-[10px] text-white/60 uppercase tracking-widest font-semibold">Tingkat Kesulitan</span>
-                        <div className="flex gap-1">
+                    <div className="flex items-center justify-between mt-2 md:mt-0">
+                      <div className="flex flex-col gap-0.5 md:gap-1">
+                        <span className="text-[7px] md:text-[10px] text-white/60 uppercase tracking-widest font-semibold">Tingkat Kesulitan</span>
+                        <div className="flex gap-0.5 md:gap-1">
                           {[1, 2, 3].map((star) => (
-                            <div key={star} className={`h-1.5 w-6 rounded-full ${story.difficulty === 'Mudah' && star === 1 ? 'bg-green-400' :
+                            <div key={star} className={`h-1 md:h-1.5 w-3 md:w-6 rounded-full ${story.difficulty === 'Mudah' && star === 1 ? 'bg-green-400' :
                               story.difficulty === 'Sedang' && star <= 2 ? 'bg-amber-400' :
                                 story.difficulty === 'Sulit' ? 'bg-red-400' : 'bg-white/20'
                               }`}></div>
                           ))}
                         </div>
-                        <span className={`text-xs font-medium mt-1 ${story.difficulty === 'Mudah' ? 'text-green-400' :
+                        <span className={`text-[8px] md:text-xs font-medium md:mt-1 ${story.difficulty === 'Mudah' ? 'text-green-400' :
                           story.difficulty === 'Sedang' ? 'text-amber-400' : 'text-red-400'
                           }`}>{story.difficulty}</span>
                       </div>
 
-                      <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md border border-white/30 flex items-center justify-center group-hover:bg-primary group-hover:scale-110 group-hover:rotate-90 transition-all duration-500 shadow-xl">
-                        <Play className="w-6 h-6 text-white ml-1 fill-white" />
+                      <div className="w-8 h-8 md:w-16 md:h-16 rounded-full bg-white/10 backdrop-blur-md border border-white/30 flex items-center justify-center group-hover:bg-primary group-hover:scale-110 group-hover:rotate-90 transition-all duration-500 shadow-xl">
+                        <Play className="w-3.5 h-3.5 md:w-6 md:h-6 text-white ml-0.5 fill-white" />
                       </div>
                     </div>
                   </div>

@@ -81,8 +81,8 @@ const AuthPage = () => {
     >
       {/* Background Decorations */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-leaf/10 rounded-full blur-3xl" />
+        <div className="absolute top-20 left-10 w-48 h-48 md:w-72 md:h-72 bg-primary/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-20 right-10 w-64 h-64 md:w-96 md:h-96 bg-leaf/10 rounded-full blur-3xl" />
       </div>
 
       <div className="w-full max-w-md relative z-10">
@@ -103,7 +103,7 @@ const AuthPage = () => {
           </div>
 
           {/* Title */}
-          <h1 className="font-display text-2xl font-bold text-foreground text-center mb-2">
+          <h1 className="font-display text-2xl md:text-3xl font-bold text-foreground text-center mb-2">
             {isLogin ? "Masuk ke Akun" : "Buat Akun Baru"}
           </h1>
           <p className="text-muted-foreground text-center mb-8">
@@ -197,7 +197,7 @@ const AuthPage = () => {
           </p>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 

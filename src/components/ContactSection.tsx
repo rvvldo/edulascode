@@ -57,7 +57,7 @@ export function ContactSection() {
   };
 
   return (
-    <section id="contact" className="py-24 bg-card">
+    <section id="contact" className="py-16 md:py-24 bg-card">
       <div className="container mx-auto px-4 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-start">
           {/* Contact Info */}
@@ -65,10 +65,10 @@ export function ContactSection() {
             <span className="text-primary font-semibold text-sm uppercase tracking-wider">
               Hubungi Kami
             </span>
-            <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mt-4 mb-6">
+            <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mt-3 md:mt-4 mb-4 md:mb-6">
               Mari Berdiskusi
             </h2>
-            <p className="text-muted-foreground text-lg mb-8">
+            <p className="text-muted-foreground text-base md:text-lg mb-8">
               Punya pertanyaan atau ingin berkolaborasi? Jangan ragu untuk menghubungi tim EDULAD.
             </p>
 

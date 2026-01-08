@@ -25,17 +25,17 @@ const features = [
 
 export function AboutSection() {
   return (
-    <section id="about" className="py-24 bg-card relative">
+    <section id="about" className="py-16 md:py-24 bg-card relative">
       <div className="container mx-auto px-4 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-16">
           <span className="text-primary font-semibold text-sm uppercase tracking-wider">
             Tentang EDULAD
           </span>
-          <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mt-4 mb-6">
+          <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mt-3 md:mt-4 mb-4 md:mb-6">
             Belajar Sambil Bermain
           </h2>
-          <p className="text-muted-foreground text-lg">
+          <p className="text-muted-foreground text-base md:text-lg px-2">
             EDULAD menghadirkan pengalaman belajar yang unik melalui storytelling interaktif yang menanamkan nilai-nilai pelestarian alam.
           </p>
         </div>

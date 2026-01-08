@@ -12,8 +12,10 @@ import {
     Server,
     Trash2,
     Ban,
-    Search
+    Search,
+    Menu
 } from "lucide-react";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -148,8 +150,45 @@ const CentralAdminDashboard = () => {
                 </nav>
             </aside>
 
+            {/* Mobile Header */}
+            <header className="lg:hidden fixed top-0 left-0 right-0 h-16 border-b border-border/50 bg-card z-50 flex items-center px-4 justify-between">
+                <div className="flex items-center gap-3">
+                    <Sheet>
+                        <SheetTrigger asChild>
+                            <Button variant="ghost" size="icon">
+                                <Menu className="w-6 h-6" />
+                            </Button>
+                        </SheetTrigger>
+                        <SheetContent side="left" className="w-64 p-0">
+                            <div className="p-6">
+                                <h1 className="font-display text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
+                                    Central Admin
+                                </h1>
+                            </div>
+                            <nav className="px-4 space-y-2">
+                                <Button variant={activeTab === "performance" ? "secondary" : "ghost"} className="w-full justify-start gap-3" onClick={() => setActiveTab("performance")}>
+                                    <Server className="w-5 h-5" /> Performa
+                                </Button>
+                                <Button variant={activeTab === "users" ? "secondary" : "ghost"} className="w-full justify-start gap-3" onClick={() => setActiveTab("users")}>
+                                    <Users className="w-5 h-5" /> Users
+                                </Button>
+                                <Button variant={activeTab === "reports" ? "secondary" : "ghost"} className="w-full justify-start gap-3" onClick={() => setActiveTab("reports")}>
+                                    <AlertTriangle className="w-5 h-5" /> Laporan
+                                </Button>
+                                <div className="pt-4 mt-4 border-t border-border/50">
+                                    <Button variant="ghost" className="w-full justify-start gap-3 text-destructive" onClick={handleLogout}>
+                                        <LogOut className="w-5 h-5" /> Keluar
+                                    </Button>
+                                </div>
+                            </nav>
+                        </SheetContent>
+                    </Sheet>
+                    <h1 className="font-display text-lg font-bold">Central Admin</h1>
+                </div>
+            </header>
+
             {/* Main Content */}
-            <main className="flex-1 overflow-y-auto p-8">
+            <main className="flex-1 overflow-y-auto p-4 lg:p-8 pt-20 lg:pt-8">
                 {activeTab === "performance" && (
                     <div className="space-y-6 animate-fade-in">
                         <h2 className="text-2xl font-bold mb-4">Performa & Pengaturan</h2>
@@ -214,39 +253,41 @@ const CentralAdminDashboard = () => {
                         </div>
 
                         <div className="bg-card rounded-xl border border-border/50 overflow-hidden">
-                            <Table>
-                                <TableHeader>
-                                    <TableRow>
-                                        <TableHead>Nama</TableHead>
-                                        <TableHead>Email</TableHead>
-                                        <TableHead>Role</TableHead>
-                                        <TableHead>Status</TableHead>
-                                        <TableHead className="text-right">Aksi</TableHead>
-                                    </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                    {filteredUsers.map((user) => (
-                                        <TableRow key={user.id}>
-                                            <TableCell className="font-medium">{user.displayName || "No Name"}</TableCell>
-                                            <TableCell>{user.email}</TableCell>
-                                            <TableCell><Badge variant="outline">{user.role || "user"}</Badge></TableCell>
-                                            <TableCell>
-                                                <Badge className={user.isActive !== false ? "bg-green-100 text-green-800 hover:bg-green-100" : "bg-red-100 text-red-800 hover:bg-red-100"}>
-                                                    {user.isActive !== false ? "Aktif" : "Non-Aktif"}
-                                                </Badge>
-                                            </TableCell>
-                                            <TableCell className="text-right space-x-2">
-                                                <Button variant="ghost" size="icon" onClick={() => handleBlockUser(user.id, user.isActive !== false)} title={user.isActive !== false ? "blokir" : "aktifkan"}>
-                                                    <Ban className={`w-4 h-4 ${user.isActive !== false ? "text-orange-500" : "text-green-500"}`} />
-                                                </Button>
-                                                <Button variant="ghost" size="icon" onClick={() => handleDeleteUser(user.id)} className="text-destructive">
-                                                    <Trash2 className="w-4 h-4" />
-                                                </Button>
-                                            </TableCell>
+                            <div className="overflow-x-auto">
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow>
+                                            <TableHead>Nama</TableHead>
+                                            <TableHead>Email</TableHead>
+                                            <TableHead>Role</TableHead>
+                                            <TableHead>Status</TableHead>
+                                            <TableHead className="text-right">Aksi</TableHead>
                                         </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {filteredUsers.map((user) => (
+                                            <TableRow key={user.id}>
+                                                <TableCell className="font-medium whitespace-nowrap">{user.displayName || "No Name"}</TableCell>
+                                                <TableCell>{user.email}</TableCell>
+                                                <TableCell><Badge variant="outline">{user.role || "user"}</Badge></TableCell>
+                                                <TableCell>
+                                                    <Badge className={user.isActive !== false ? "bg-green-100 text-green-800 hover:bg-green-100" : "bg-red-100 text-red-800 hover:bg-red-100"}>
+                                                        {user.isActive !== false ? "Aktif" : "Non-Aktif"}
+                                                    </Badge>
+                                                </TableCell>
+                                                <TableCell className="text-right space-x-2 whitespace-nowrap">
+                                                    <Button variant="ghost" size="icon" onClick={() => handleBlockUser(user.id, user.isActive !== false)} title={user.isActive !== false ? "blokir" : "aktifkan"}>
+                                                        <Ban className={`w-4 h-4 ${user.isActive !== false ? "text-orange-500" : "text-green-500"}`} />
+                                                    </Button>
+                                                    <Button variant="ghost" size="icon" onClick={() => handleDeleteUser(user.id)} className="text-destructive">
+                                                        <Trash2 className="w-4 h-4" />
+                                                    </Button>
+                                                </TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </div>
                         </div>
                     </div>
                 )}
