@@ -41,7 +41,7 @@ export function MusicProvider({ children }: { children: ReactNode }) {
       {/* Global Audio Element */}
       <audio
         ref={audioRef}
-        src="/limbo2.mp3"
+        src="/limbo3.mp3"
         loop
         preload="metadata"
       />
