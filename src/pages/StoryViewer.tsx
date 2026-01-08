@@ -68,6 +68,7 @@ const StoryViewer = () => {
 
   // Clean up speech on unmount
   const currentAudioRef = useRef<HTMLAudioElement | null>(null);
+  const backgroundMusicRef = useRef<HTMLAudioElement | null>(null);
 
   const stopAudio = useCallback(() => {
     if (currentAudioRef.current) {
@@ -81,6 +82,11 @@ const StoryViewer = () => {
   useEffect(() => {
     return () => {
       stopAudio();
+      // Stop background music on unmount
+      if (backgroundMusicRef.current) {
+        backgroundMusicRef.current.pause();
+        backgroundMusicRef.current = null;
+      }
     };
   }, [stopAudio]);
 
@@ -155,6 +161,41 @@ const StoryViewer = () => {
 
     return () => clearInterval(interval);
   }, [gameState, currentSceneIndex, currentDialogueIndex, currentScene, isMuted, handleSpeech]);
+
+  // Background Music Control
+  useEffect(() => {
+    // Only play background music during PLAYING state
+    if (gameState === "PLAYING" && story.backgroundMusic) {
+      // Create audio element if not exists
+      if (!backgroundMusicRef.current) {
+        const bgMusic = new Audio(story.backgroundMusic);
+        bgMusic.loop = true; // Loop the music
+        bgMusic.volume = 0.3; // Set volume to 30% so it doesn't overpower voice
+        backgroundMusicRef.current = bgMusic;
+      }
+
+      // Play or pause based on mute state
+      if (!isMuted) {
+        backgroundMusicRef.current.play().catch(err => {
+          console.error("Failed to play background music:", err);
+        });
+      } else {
+        backgroundMusicRef.current.pause();
+      }
+    } else {
+      // Stop background music if not in PLAYING state
+      if (backgroundMusicRef.current) {
+        backgroundMusicRef.current.pause();
+      }
+    }
+
+    // Cleanup when gameState changes away from PLAYING
+    return () => {
+      if (gameState !== "PLAYING" && backgroundMusicRef.current) {
+        backgroundMusicRef.current.pause();
+      }
+    };
+  }, [gameState, isMuted, story.backgroundMusic]);
 
 
   // Handler for Preparation Start
@@ -236,6 +277,12 @@ const StoryViewer = () => {
     setGameState("RESULT");
     setGameState("RESULT");
     stopAudio();
+    
+    // Stop background music when finishing game
+    if (backgroundMusicRef.current) {
+      backgroundMusicRef.current.pause();
+      backgroundMusicRef.current.currentTime = 0;
+    }
 
     if (currentUser && !alreadyPlayed) {
       try {
