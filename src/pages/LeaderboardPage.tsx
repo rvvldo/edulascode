@@ -17,22 +17,22 @@ const PodiumItem = React.memo(({ user, position, navigate }: { user: any; positi
   let ringColor = "";
 
   if (position === 1) {
-    sizeClass = "w-28 h-28 sm:w-36 sm:h-36";
+    sizeClass = "w-20 h-20 sm:w-36 sm:h-36";
     colorClass = "from-yellow-400 via-yellow-500 to-yellow-600";
     heightClass = "order-2";
-    podiumHeight = "h-48";
+    podiumHeight = "h-32 sm:h-48";
     ringColor = "ring-yellow-400/50";
   } else if (position === 2) {
-    sizeClass = "w-24 h-24 sm:w-28 sm:h-28";
+    sizeClass = "w-16 h-16 sm:w-28 sm:h-28";
     colorClass = "from-slate-300 via-slate-400 to-slate-500";
     heightClass = "order-1";
-    podiumHeight = "h-36";
+    podiumHeight = "h-24 sm:h-36";
     ringColor = "ring-slate-400/50";
   } else {
-    sizeClass = "w-24 h-24 sm:w-28 sm:h-28";
+    sizeClass = "w-16 h-16 sm:w-28 sm:h-28";
     colorClass = "from-amber-600 via-amber-700 to-amber-800";
     heightClass = "order-3";
-    podiumHeight = "h-28";
+    podiumHeight = "h-20 sm:h-28";
     ringColor = "ring-amber-600/50";
   }
 
@@ -41,7 +41,7 @@ const PodiumItem = React.memo(({ user, position, navigate }: { user: any; positi
       {/* Avatar and Crown */}
       <div className="relative mb-4 group cursor-pointer" onClick={() => navigate(`/user/${user.uid}`)}>
         {position === 1 && (
-          <div className="absolute -top-12 left-1/2 -translate-x-1/2 z-10 w-12 h-12">
+          <div className="absolute -top-10 sm:-top-12 left-1/2 -translate-x-1/2 z-10 w-10 h-10 sm:w-12 sm:h-12">
             <DotLottieReact
               src="https://lottie.host/02aace42-701c-4d99-b00f-378895304118/TxGc52vruN.lottie"
               loop
@@ -51,8 +51,8 @@ const PodiumItem = React.memo(({ user, position, navigate }: { user: any; positi
           </div>
         )}
 
-        <div className={`rounded-full p-1 bg-gradient-to-br ${colorClass} shadow-2xl ${ringColor} ring-4 transition-transform group-hover:scale-110 duration-300`}>
-          <div className={`${sizeClass} rounded-full bg-background border-4 border-white/20 overflow-hidden flex items-center justify-center relative`}>
+        <div className={`rounded-full p-1 bg-gradient-to-br ${colorClass} shadow-2xl ${ringColor} ring-2 sm:ring-4 transition-transform group-hover:scale-110 duration-300`}>
+          <div className={`${sizeClass} rounded-full bg-background border-2 sm:border-4 border-white/20 overflow-hidden flex items-center justify-center relative`}>
             {user.photoURL ? (
               <img src={user.photoURL} alt={user.name} className="w-full h-full object-cover" />
             ) : (
@@ -62,17 +62,17 @@ const PodiumItem = React.memo(({ user, position, navigate }: { user: any; positi
         </div>
 
         {/* Position Badge */}
-        <div className={`absolute -bottom-3 left-1/2 -translate-x-1/2 flex items-center justify-center w-10 h-10 rounded-full font-bold text-white shadow-xl bg-gradient-to-br ${colorClass} border-2 border-white`}>
+        <div className={`absolute -bottom-2 sm:-bottom-3 left-1/2 -translate-x-1/2 flex items-center justify-center w-6 h-6 sm:w-10 sm:h-10 rounded-full font-bold text-xs sm:text-base text-white shadow-xl bg-gradient-to-br ${colorClass} border border-white`}>
           {position}
         </div>
       </div>
 
       {/* User Info */}
       <div className="text-center space-y-2 mb-4">
-        <h3 className="font-bold text-lg sm:text-xl truncate max-w-[180px] px-2">{user.name}</h3>
-        <p className="text-sm text-muted-foreground truncate max-w-[180px] px-2">{user.institution}</p>
-        <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full font-bold text-lg shadow-lg bg-gradient-to-r ${colorClass} text-white`}>
-          <Trophy className="w-5 h-5" />
+        <h3 className="font-bold text-xs sm:text-lg sm:text-xl truncate max-w-[80px] sm:max-w-[180px] px-1">{user.name}</h3>
+        <p className="text-[10px] sm:text-sm text-muted-foreground truncate max-w-[80px] sm:max-w-[180px] px-1">{user.institution}</p>
+        <div className={`inline-flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-1 sm:py-2 rounded-full font-bold text-xs sm:text-lg shadow-lg bg-gradient-to-r ${colorClass} text-white`}>
+          <Trophy className="w-3 h-3 sm:w-5 sm:h-5" />
           {user.score}
         </div>
       </div>
@@ -80,7 +80,7 @@ const PodiumItem = React.memo(({ user, position, navigate }: { user: any; positi
       {/* Podium */}
       <div className={`w-full ${podiumHeight} bg-gradient-to-b ${colorClass} rounded-t-2xl shadow-xl border-t-4 border-white/30 relative overflow-hidden transition-all duration-300`}>
         <div className="absolute inset-0 bg-white/10"></div>
-        <div className="absolute top-4 left-1/2 -translate-x-1/2 text-white/90 font-bold text-4xl">#{position}</div>
+        <div className="absolute top-2 sm:top-4 left-1/2 -translate-x-1/2 text-white/90 font-bold text-2xl sm:text-4xl">#{position}</div>
       </div>
     </div>
   );
@@ -367,7 +367,7 @@ const LeaderboardPage = () => {
         ) : leaderboardData.length > 0 ? (
           <>
             <div className="text-center mb-12 animate-fade-in">
-              <h2 className="text-4xl sm:text-6xl font-display font-bold mb-3 bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+              <h2 className="text-3xl sm:text-4xl md:text-6xl font-display font-bold mb-3 bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
                 Top Champions
               </h2>
               <p className="text-muted-foreground text-lg flex items-center justify-center gap-2">
@@ -377,7 +377,7 @@ const LeaderboardPage = () => {
               </p>
             </div>
 
-            <div className="flex justify-center items-end gap-4 sm:gap-8 mb-16 px-4">
+            <div className="flex justify-center items-end gap-2 sm:gap-4 md:gap-8 mb-16 px-2 sm:px-4">
               {topThree[1] && <PodiumItem key={topThree[1].uid} user={topThree[1]} position={2} navigate={navigate} />}
               {topThree[0] && <PodiumItem key={topThree[0].uid} user={topThree[0]} position={1} navigate={navigate} />}
               {topThree[2] && <PodiumItem key={topThree[2].uid} user={topThree[2]} position={3} navigate={navigate} />}

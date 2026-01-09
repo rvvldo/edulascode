@@ -34,6 +34,7 @@ export interface Story {
     totalPoints: number;
     preparationText: string;
     mascotName: string;
+    backgroundMusic?: string; // Optional path to background music
     scenes: Scene[];
 }
 
@@ -46,6 +47,7 @@ export const storiesData: Record<number, Story> = {
         difficulty: "Mudah",
         totalPoints: 100,
         mascotName: "Lesta",
+        backgroundMusic: "/mp3/soundtrack1.mp3",
         preparationText: "Selamat datang, Guardian! Sebelum kita memulai misi penyelamatan di Hutan Kalimantan, ada beberapa hal yang perlu kamu ketahui. Misi ini membutuhkan keberanian dan kebijaksanaan. Kamu akan menghadapi dilema moral yang akan menguji kepedulianmu terhadap lingkungan. Apakah kamu siap menjadi pelindung hutan?",
         scenes: [
             {

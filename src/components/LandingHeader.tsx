@@ -29,14 +29,14 @@ export function LandingHeader() {
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-3xl bg-primary/10 flex items-center justify-center shadow-soft group-hover:shadow-card transition-shadow overflow-hidden">
-              <img 
-                src="/icons.webp" 
-                alt="EDULAD Logo" 
-                className="w-10 h-10 object-contain"
+            <div className="w-8 h-8 md:w-10 md:h-10 rounded-2xl md:rounded-3xl bg-primary/10 flex items-center justify-center shadow-soft group-hover:shadow-card transition-shadow overflow-hidden">
+              <img
+                src="/icons.webp"
+                alt="EDULAD Logo"
+                className="w-8 h-8 md:w-10 md:h-10 object-contain"
               />
             </div>
-            <span className="font-display text-xl lg:text-2xl font-bold text-foreground">
+            <span className="font-display text-lg md:text-xl lg:text-2xl font-bold text-foreground">
               EDULAD
             </span>
           </Link>

@@ -75,7 +75,7 @@ export function NotificationSidebar() {
                     )}
                 </Button>
             </SheetTrigger>
-            <SheetContent>
+            <SheetContent className="w-[85vw] sm:max-w-md p-4 sm:p-6">
                 <SheetHeader className="mb-6">
                     <SheetTitle>Notifikasi</SheetTitle>
                     <SheetDescription>
@@ -87,7 +87,7 @@ export function NotificationSidebar() {
                         {notifications.map((notification) => (
                             <div
                                 key={notification.id}
-                                className={`p-4 rounded-xl border transition-all hover:bg-muted/50 cursor-pointer ${notification.read ? "bg-background border-border/50" : "bg-primary/5 border-primary/20"}`}
+                                className={`p-3 md:p-4 rounded-xl border transition-all hover:bg-muted/50 cursor-pointer ${notification.read ? "bg-background border-border/50" : "bg-primary/5 border-primary/20"}`}
                                 onClick={() => markAsRead(notification.id)}
                             >
                                 <div className="flex gap-3 items-start">
