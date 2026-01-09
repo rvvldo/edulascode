@@ -152,7 +152,7 @@ const Dashboard = () => {
   const finishedStories = filteredStories.filter(story => completedStoryIds.includes(story.id));
 
   return (
-    <div className="min-h-screen bg-background font-body pt-20 ">
+    <div className="min-h-screen bg-background font-body pt-16 lg:pt-20 ">
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 glass-effect border-b border-border/50">
         <div className="container mx-auto px-4 lg:px-8">
@@ -302,20 +302,20 @@ const Dashboard = () => {
         <div className="container mx-auto px-4 lg:px-8 relative z-10 pt-16 pb-12">
           <div className="flex flex-col md:flex-row items-center justify-between gap-12">
             <div className="max-w-2xl text-center md:text-left">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/85 backdrop-blur-md text-primary text-sm font-bold tracking-wide mb-6 border border-white/60 shadow-sm animate-fade-in">
-                <Leaf className="w-4 h-4" />
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/85 backdrop-blur-md text-primary text-xs font-bold tracking-wide mb-4 border border-white/60 shadow-sm animate-fade-in">
+                <Leaf className="w-3 h-3" />
                 <span>Edulad Edukasi Lingkungan No. 1</span>
               </div>
-              <h1 className="font-display text-3xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6 leading-tight text-foreground drop-shadow-sm animate-slide-up">
+              <h1 className="font-display text-2xl md:text-6xl lg:text-7xl font-bold mb-3 md:mb-6 leading-tight text-foreground drop-shadow-sm animate-slide-up">
                 Jelajahi Dunia, <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-green-600 to-teal-500">Selamatkan Bumi</span>
               </h1>
-              <p className="text-base md:text-xl text-muted-foreground mb-6 md:mb-8 max-w-lg mx-auto md:mx-0 leading-relaxed animate-slide-up" style={{ animationDelay: "0.1s" }}>
+              <p className="text-sm md:text-xl text-muted-foreground mb-5 md:mb-8 max-w-lg mx-auto md:mx-0 leading-relaxed animate-slide-up" style={{ animationDelay: "0.1s" }}>
                 Pilih misi interaktif, hadapi tantangan nyata, dan kumpulkan poin kebaikan untuk masa depan yang lebih hijau.
               </p>
 
               {/* Search for mobile */}
-              <div className="md:hidden relative max-w-sm mx-auto animate-slide-up" style={{ animationDelay: "0.2s" }}>
+              <div className="md:hidden relative max-w-[80%] mx-auto animate-slide-up" style={{ animationDelay: "0.2s" }}>
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground transition-colors" />
                 <Input
                   placeholder="Cari konten..."
@@ -343,7 +343,7 @@ const Dashboard = () => {
       </div>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 lg:px-8 pt-24 lg:pt-2 pb-20 z-10 relative space-y-16">
+      <main className="container mx-auto px-4 lg:px-8 pt-6 lg:pt-2 pb-20 z-10 relative space-y-16">
 
         {/* ACTIVE STORIES SECTION */}
         <section>

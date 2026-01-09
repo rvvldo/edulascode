@@ -81,30 +81,32 @@ export function LandingHeader() {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden py-4 border-t border-border/50 animate-fade-in">
-            <nav className="flex flex-col gap-4">
+          <div className="md:hidden py-3 px-2 border-t border-border/50 animate-fade-in bg-background/95 backdrop-blur-xl absolute top-16 left-0 right-0 shadow-lg z-40">
+            <nav className="flex flex-col gap-1">
               {navItems.map((item) => (
                 <button
                   key={item.href}
                   onClick={() => scrollToSection(item.href)}
-                  className="text-left text-muted-foreground hover:text-foreground font-medium transition-colors py-2"
+                  className="text-left text-muted-foreground hover:text-foreground hover:bg-primary/5 font-medium transition-all py-2 px-4 rounded-lg text-sm"
                 >
                   {item.label}
                 </button>
               ))}
-              {currentUser ? (
-                <Link to="/dashboard" className="mt-2">
-                  <Button variant="hero" size="lg" className="w-full">
-                    Masuk
-                  </Button>
-                </Link>
-              ) : (
-                <Link to="/auth" className="mt-2">
-                  <Button variant="hero" size="lg" className="w-full">
-                    Daftar Sekarang
-                  </Button>
-                </Link>
-              )}
+              <div className="pt-2 mt-1 border-t border-border/30 px-2">
+                {currentUser ? (
+                  <Link to="/dashboard">
+                    <Button variant="hero" size="sm" className="w-full text-sm h-9">
+                      Masuk
+                    </Button>
+                  </Link>
+                ) : (
+                  <Link to="/auth">
+                    <Button variant="hero" size="sm" className="w-full text-sm h-9">
+                      Daftar Sekarang
+                    </Button>
+                  </Link>
+                )}
+              </div>
             </nav>
           </div>
         )}
