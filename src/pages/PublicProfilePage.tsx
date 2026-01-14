@@ -72,7 +72,7 @@ const PublicProfilePage = () => {
             <div className="min-h-screen flex items-center justify-center bg-background">
                 <div className="text-center">
                     <DotLottieReact
-                        src="https://lottie.host/8ac7a7f8-9e01-4e19-82c4-7381d9fc3218/D4UsU6eeiC.lottie"
+                        src="lottie/loading.lottie"
                         loop
                         autoplay
                         style={{ width: 120, height: 120 }}
@@ -87,11 +87,11 @@ const PublicProfilePage = () => {
             <div className="min-h-screen flex items-center justify-center bg-background">
                 <div className="flex flex-col items-center text-center">
                     <DotLottieReact
-                        src="https://lottie.host/ee72df6e-7258-420f-9130-2539fa06ee6e/bjsBEs5pjE.lottie"
-                        loop
-                        autoplay
-                        className="w-40 h-40"
-                    />
+                              src="lottie/404.lottie"
+                              loop
+                              autoplay
+                              className="w-32 h-32" // Atur ukuran sesuai kebutuhan
+                            />
                     <h2 className="text-2xl font-bold mb-2">Pengguna Tidak Ditemukan</h2>
                     <Button onClick={() => navigate("/dashboard")}>Kembali ke Dashboard</Button>
                 </div>

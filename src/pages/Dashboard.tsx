@@ -239,7 +239,7 @@ const Dashboard = () => {
                         <>
                           <CommandEmpty className="py-6 flex flex-col items-center justify-center gap-4">
                             <DotLottieReact
-                              src="https://lottie.host/ee72df6e-7258-420f-9130-2539fa06ee6e/bjsBEs5pjE.lottie"
+                              src="lottie/404.lottie"
                               loop
                               autoplay
                               className="w-32 h-32" // Atur ukuran sesuai kebutuhan
@@ -331,7 +331,7 @@ const Dashboard = () => {
               <div className="absolute inset-0 bg-gradient-to-tr from-green-500 to-teal-400 rounded-full blur-[60px] opacity-20 animate-pulse-slow"></div>
               <div className="relative z-10 w-full h-full flex items-center justify-center animate-float">
                 <DotLottieReact
-                  src="https://lottie.host/0e336f31-24bc-4cab-97e4-1e85bf47714d/YyKyPnypsV.lottie"
+                  src="lottie/earth.lottie"
                   loop
                   autoplay
                   className="w-64 h-64 md:w-80 md:h-80" // Sesuaikan ukuran
