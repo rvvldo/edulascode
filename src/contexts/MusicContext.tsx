@@ -43,7 +43,7 @@ export function MusicProvider({ children }: { children: ReactNode }) {
         ref={audioRef}
         src="/limbo3.mp3"
         loop
-        preload="metadata"
+        preload="none"
       />
       {children}
     </MusicContext.Provider>
