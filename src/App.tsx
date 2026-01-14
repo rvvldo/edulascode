@@ -6,18 +6,21 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { DialogProvider } from "@/components/DialogProvider";
-import Index from "./pages/Index";
-import AuthPage from "./pages/AuthPage";
-import Dashboard from "./pages/Dashboard";
-import StoryViewer from "./pages/StoryViewer";
-import ProfilePage from "./pages/ProfilePage";
-import NotFound from "./pages/NotFound";
-import LeaderboardPage from "./pages/LeaderboardPage";
-import PublicProfilePage from "./pages/PublicProfilePage";
-import CentralAdminDashboard from "./pages/CentralAdminDashboard";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { MusicProvider } from "@/contexts/MusicContext";
 import GlobalLoading from "@/components/GlobalLoading";
+import PageLoader from "@/components/PageLoader";
+import { Suspense, lazy } from "react";
+
+const Index = lazy(() => import("./pages/Index"));
+const AuthPage = lazy(() => import("./pages/AuthPage"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const StoryViewer = lazy(() => import("./pages/StoryViewer"));
+const ProfilePage = lazy(() => import("./pages/ProfilePage"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const LeaderboardPage = lazy(() => import("./pages/LeaderboardPage"));
+const PublicProfilePage = lazy(() => import("./pages/PublicProfilePage"));
+const CentralAdminDashboard = lazy(() => import("./pages/CentralAdminDashboard"));
 
 const queryClient = new QueryClient();
 
@@ -32,60 +35,62 @@ const App = () => (
             <DialogProvider />
             <GlobalLoading />
             <BrowserRouter>
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/auth" element={<AuthPage />} />
-                <Route
-                  path="/dashboard"
-                  element={
-                    <ProtectedRoute>
-                      <Dashboard />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/story/:id"
-                  element={
-                    <ProtectedRoute>
-                      <StoryViewer />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/profile"
-                  element={
-                    <ProtectedRoute>
-                      <ProfilePage />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/leaderboard"
-                  element={
-                    <ProtectedRoute>
-                      <LeaderboardPage />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/user/:id"
-                  element={
-                    <ProtectedRoute>
-                      <PublicProfilePage />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/central-admin"
-                  element={
-                    <ProtectedRoute>
-                      <CentralAdminDashboard />
-                    </ProtectedRoute>
-                  }
-                />
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
+              <Suspense fallback={<PageLoader />}>
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/auth" element={<AuthPage />} />
+                  <Route
+                    path="/dashboard"
+                    element={
+                      <ProtectedRoute>
+                        <Dashboard />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/story/:id"
+                    element={
+                      <ProtectedRoute>
+                        <StoryViewer />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/profile"
+                    element={
+                      <ProtectedRoute>
+                        <ProfilePage />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/leaderboard"
+                    element={
+                      <ProtectedRoute>
+                        <LeaderboardPage />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/user/:id"
+                    element={
+                      <ProtectedRoute>
+                        <PublicProfilePage />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/central-admin"
+                    element={
+                      <ProtectedRoute>
+                        <CentralAdminDashboard />
+                      </ProtectedRoute>
+                    }
+                  />
+                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </Suspense>
             </BrowserRouter>
           </TooltipProvider>
         </MusicProvider>

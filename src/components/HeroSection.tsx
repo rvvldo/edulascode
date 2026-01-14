@@ -1,9 +1,18 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import { lazy, Suspense } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
+
+const DotLottieReact = lazy(() =>
+  import('@lottiefiles/dotlottie-react').then((module) => ({
+    default: module.DotLottieReact,
+  }))
+);
 
 export function HeroSection() {
+  const isMobile = useIsMobile();
+
   return (
     <section
       id="hero"
@@ -63,27 +72,31 @@ export function HeroSection() {
               </Button>
             </div>
 
-            <div className="hidden md:flex items-center gap-5">
-              <Link to="/dashboard"
-                className="inline-block w-60 h-60 transition-transform hover:scale-105 active:scale-95 cursor-pointer"
-                aria-label="Mulai Petualangan"
-              >
-                <DotLottieReact
-                  src="https://lottie.host/5dd8f96c-5d47-44e2-a9a9-8c1bd583d3d6/02yHMpIzeb.lottie"
-                  loop
-                  autoplay
-                  className="w-full h-full"
-                />
-              </Link>
-              <Button
-                variant="outline"
-                size="xl"
-                className="border-2 hover:bg-primary/5 hover:border-primary/50 transition-all glow-effect"
-                onClick={() => document.querySelector("#about")?.scrollIntoView({ behavior: "smooth" })}
-              >
-                Pelajari Lebih Lanjut
-              </Button>
-            </div>
+            {!isMobile && (
+              <div className="hidden md:flex items-center gap-5">
+                <Link to="/dashboard"
+                  className="inline-block w-60 h-60 transition-transform hover:scale-105 active:scale-95 cursor-pointer"
+                  aria-label="Mulai Petualangan"
+                >
+                  <Suspense fallback={<div className="w-full h-full bg-primary/10 rounded-full animate-pulse" />}>
+                    <DotLottieReact
+                      src="https://lottie.host/5dd8f96c-5d47-44e2-a9a9-8c1bd583d3d6/02yHMpIzeb.lottie"
+                      loop
+                      autoplay
+                      className="w-full h-full"
+                    />
+                  </Suspense>
+                </Link>
+                <Button
+                  variant="outline"
+                  size="xl"
+                  className="border-2 hover:bg-primary/5 hover:border-primary/50 transition-all glow-effect"
+                  onClick={() => document.querySelector("#about")?.scrollIntoView({ behavior: "smooth" })}
+                >
+                  Pelajari Lebih Lanjut
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </div>
