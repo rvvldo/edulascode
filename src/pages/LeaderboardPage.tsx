@@ -43,7 +43,7 @@ const PodiumItem = React.memo(({ user, position, navigate }: { user: any; positi
         {position === 1 && (
           <div className="absolute -top-10 sm:-top-12 left-1/2 -translate-x-1/2 z-10 w-10 h-10 sm:w-12 sm:h-12">
             <DotLottieReact
-              src="https://lottie.host/02aace42-701c-4d99-b00f-378895304118/TxGc52vruN.lottie"
+              src="lottie/mahkota.lottie"
               loop
               autoplay
               className="w-full h-full"

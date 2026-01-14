@@ -300,7 +300,7 @@ const ProfilePage = () => {
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center">
           <DotLottieReact
-            src="https://lottie.host/8ac7a7f8-9e01-4e19-82c4-7381d9fc3218/D4UsU6eeiC.lottie"
+            src="lottie/loading.lottie"
             loop
             autoplay
             style={{ width: 120, height: 120 }}
