@@ -42,7 +42,7 @@ export function PrinciplesSection() {
   return (
     <section id="principles" className="py-16 md:py-24 bg-background relative overflow-hidden">
       {/* Background Decoration */}
-      <div className="absolute inset-0 pointer-events-none">
+      <div className="absolute inset-0 pointer-events-none hidden md:block">
         <div className="absolute top-0 right-0 w-96 h-96 bg-sage/30 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-primary/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
       </div>

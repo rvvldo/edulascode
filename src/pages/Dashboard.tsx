@@ -296,8 +296,8 @@ const Dashboard = () => {
         <div className="absolute inset-0 h-[300px] md:h-[380px] bg-gradient-to-b from-primary/5 via-primary/5 to-background z-0"></div>
 
         {/* Animated blobs */}
-        <div className="absolute top-20 left-10 w-64 h-64 bg-green-400/20 rounded-full blur-[100px] animate-float"></div>
-        <div className="absolute top-40 right-20 w-72 h-72 bg-blue-400/20 rounded-full blur-[100px] animate-float" style={{ animationDelay: "2s" }}></div>
+        <div className="absolute top-20 left-10 w-64 h-64 bg-green-400/20 rounded-full blur-[100px] animate-float hidden md:block"></div>
+        <div className="absolute top-40 right-20 w-72 h-72 bg-blue-400/20 rounded-full blur-[100px] animate-float hidden md:block" style={{ animationDelay: "2s" }}></div>
 
         <div className="container mx-auto px-4 lg:px-8 relative z-10 pt-16 pb-12">
           <div className="flex flex-col md:flex-row items-center justify-between gap-12">

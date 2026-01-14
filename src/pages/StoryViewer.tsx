@@ -277,7 +277,7 @@ const StoryViewer = () => {
     setGameState("RESULT");
     setGameState("RESULT");
     stopAudio();
-    
+
     // Stop background music when finishing game
     if (backgroundMusicRef.current) {
       backgroundMusicRef.current.pause();
@@ -333,7 +333,7 @@ const StoryViewer = () => {
           }}
         />
 
-        <div className="relative z-10 bg-card/95 backdrop-blur-md rounded-3xl shadow-2xl max-w-2xl w-[90%] md:w-full p-5 md:p-8 border border-border/50 animate-fade-in max-h-[90vh] overflow-y-auto">
+        <div className="relative z-10 bg-card/95 backdrop-blur-none md:backdrop-blur-md rounded-3xl shadow-2xl max-w-2xl w-[90%] md:w-full p-5 md:p-8 border border-border/50 animate-fade-in max-h-[90vh] overflow-y-auto">
           <div className="mb-6 text-center">
             <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold mb-3">
               {story.category}
@@ -409,7 +409,7 @@ const StoryViewer = () => {
           }}
         />
 
-        <div className="relative z-10 bg-card/95 backdrop-blur-md rounded-3xl shadow-2xl max-w-lg w-full p-8 border border-border/50 text-center animate-scale-in">
+        <div className="relative z-10 bg-card/95 backdrop-blur-none md:backdrop-blur-md rounded-3xl shadow-2xl max-w-lg w-full p-8 border border-border/50 text-center animate-scale-in">
           <div className="mb-8">
             <div className={`w-24 h-24 rounded-full mx-auto flex items-center justify-center mb-4 shadow-lg ${isGoodEnding ? "bg-green-100 text-green-600" : "bg-orange-100 text-orange-600"}`}>
               {isGoodEnding ? <CheckCircle className="w-12 h-12" /> : <AlertCircle className="w-12 h-12" />}
@@ -518,8 +518,8 @@ const StoryViewer = () => {
 
         {/* DIALOGUE & INTERACTION AREA */}
         <div className="relative z-20 
-  bg-transparent 
-  backdrop-blur-xl 
+  bg-background/95 md:bg-transparent 
+  backdrop-blur-none md:backdrop-blur-xl 
   border-t border-border/20 
   min-h-[35vh] 
   flex flex-col 
@@ -569,32 +569,32 @@ const StoryViewer = () => {
                   </h3>
                 </div>
 
-                      <div className="grid gap-4 mt-6">
-                      {currentScene.choices?.map((choice, idx) => (
-                        <button
-                          key={idx}
-                          onClick={() => handleChoice(choice)}
-                          className="w-full text-left p-4 lg:p-5 rounded-xl border-2 border-border bg-card 
+                <div className="grid gap-4 mt-6">
+                  {currentScene.choices?.map((choice, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => handleChoice(choice)}
+                      className="w-full text-left p-4 lg:p-5 rounded-xl border-2 border-border bg-card 
                                     hover:border-primary/70 hover:bg-primary/90 
                                     transition-all duration-300 ease-in-out 
                                     group relative overflow-hidden cursor-pointer"
-                        >
-                          <div className="flex items-center gap-4">
-                            {/* Lingkaran Indikator Pilihan */}
-                            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-muted 
+                    >
+                      <div className="flex items-center gap-4">
+                        {/* Lingkaran Indikator Pilihan */}
+                        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-muted 
                                             group-hover:bg-primary group-hover:text-primary-foreground 
                                             flex items-center justify-center font-bold text-sm 
                                             transition-colors duration-200">
-                              {String.fromCharCode(65 + idx)}
-                            </div>
-                            {/* Teks Pilihan */}
-                            <span className="text-lg font-medium text-foreground group-hover:text-primary-foreground transition-colors">
-                              {choice.text}
-                            </span>
-                          </div>
-                        </button>
-                      ))}
-                    </div>
+                          {String.fromCharCode(65 + idx)}
+                        </div>
+                        {/* Teks Pilihan */}
+                        <span className="text-lg font-medium text-foreground group-hover:text-primary-foreground transition-colors">
+                          {choice.text}
+                        </span>
+                      </div>
+                    </button>
+                  ))}
+                </div>
               </div>
             )}
           </div>
