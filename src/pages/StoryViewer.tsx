@@ -116,7 +116,7 @@ const StoryViewer = () => {
       // toast.success("ElevenLabs Audio Playing"); 
     } else {
       console.warn("Falling back to browser speech");
-      toast.info("Menggunakan Browser Voice (Fallback)");
+      // toast.info("Menggunakan Browser Voice (Fallback)");
 
       // Fallback to browser synthesis
       const utterance = new SpeechSynthesisUtterance(text);
