@@ -507,7 +507,7 @@ const StoryViewer = () => {
         {/* Mascot / Characters */}
         <div className="absolute bottom-[30vh] lg:bottom-1/3 left-1/2 -translate-x-1/2 w-full max-w-4xl flex justify-between px-4 pointer-events-none z-10">
           {/* Lesta Mascot (Left or Right) */}
-          <div className="w-32 h-48 md:w-40 md:h-64 lg:w-56 lg:h-72 relative animate-float transition-all duration-500" style={{ order: 2 }}>
+          <div className="w-60 h-80 md:w-60 md:h-80 lg:w-60 lg:h-80 relative animate-float transition-all duration-500" style={{ order: 2 }}>
             <img
               src="/maskot.webp"
               alt="Lesta Mascot"
@@ -540,17 +540,17 @@ const StoryViewer = () => {
             {currentScene?.type === "NARRATIVE" && currentScene.dialogues && (
               <div className="flex-1 flex flex-col justify-between" onClick={handleNextDialogue}>
                 <div>
-                  <h3 className="text-primary font-bold text-lg mb-2 flex items-center gap-2">
+                  <h3 className="text-primary text-white font-bold text-lg mb-2 flex items-center gap-2">
                     {currentScene.dialogues[currentDialogueIndex].character}
                   </h3>
-                  <p className="text-xl lg:text-2xl leading-relaxed text-foreground">
+                  <p className="text-xl text-white lg:text-2xl leading-relaxed text-foreground">
                     {displayedText}
                     {isTyping && <span className="animate-pulse">|</span>}
                   </p>
                 </div>
 
                 {!isTyping && (
-                  <div className="mt-8 flex justify-end animate-pulse text-muted-foreground text-sm flex items-center gap-2">
+                  <div className="mt-8 flex justify-end text-white animate-pulse text-muted-foreground text-sm flex items-center gap-2">
                     Ketuk untuk lanjut <Play className="w-3 h-3 ml-1 fill-current" />
                   </div>
                 )}
@@ -564,27 +564,37 @@ const StoryViewer = () => {
                   <span className="inline-block px-3 py-1 bg-amber-500/10 text-amber-500 rounded-full text-xs font-bold mb-3 border border-amber-500/20">
                     PELUANG POIN
                   </span>
-                  <h3 className="text-xl lg:text-2xl font-medium text-foreground leading-relaxed">
+                  <h3 className="text-xl text-white lg:text-2xl font-medium text-foreground leading-relaxed">
                     {currentScene.question}
                   </h3>
                 </div>
 
-                <div className="grid gap-4 mt-auto">
-                  {currentScene.choices?.map((choice, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => handleChoice(choice)}
-                      className="w-full text-left p-4 lg:p-5 rounded-xl border-2 border-border hover:border-primary/50 bg-card hover:bg-primary/5 transition-all duration-200 group relative overflow-hidden"
-                    >
-                      <div className="relative z-10 flex items-center gap-4">
-                        <div className="w-8 h-8 rounded-full bg-muted group-hover:bg-primary group-hover:text-primary-foreground flex items-center justify-center font-bold transition-colors">
-                          {String.fromCharCode(65 + idx)}
-                        </div>
-                        <span className="text-lg font-medium">{choice.text}</span>
-                      </div>
-                    </button>
-                  ))}
-                </div>
+                      <div className="grid gap-4 mt-6">
+                      {currentScene.choices?.map((choice, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => handleChoice(choice)}
+                          className="w-full text-left p-4 lg:p-5 rounded-xl border-2 border-border bg-card 
+                                    hover:border-primary/70 hover:bg-primary/90 
+                                    transition-all duration-300 ease-in-out 
+                                    group relative overflow-hidden cursor-pointer"
+                        >
+                          <div className="flex items-center gap-4">
+                            {/* Lingkaran Indikator Pilihan */}
+                            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-muted 
+                                            group-hover:bg-primary group-hover:text-primary-foreground 
+                                            flex items-center justify-center font-bold text-sm 
+                                            transition-colors duration-200">
+                              {String.fromCharCode(65 + idx)}
+                            </div>
+                            {/* Teks Pilihan */}
+                            <span className="text-lg font-medium text-foreground group-hover:text-primary-foreground transition-colors">
+                              {choice.text}
+                            </span>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
               </div>
             )}
           </div>
