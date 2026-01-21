@@ -517,15 +517,18 @@ const StoryViewer = () => {
         </div>
 
         {/* DIALOGUE & INTERACTION AREA */}
-        <div className="relative z-20 
-  bg-background/95 md:bg-transparent 
-  backdrop-blur-none md:backdrop-blur-xl 
-  border-t border-border/20 
-  min-h-[35vh] 
-  flex flex-col 
-  shadow-[0_-10px_40px_rgba(0,0,0,0.15)] 
-  rounded-t-[2rem]
-  px-2 py-4">
+        <div className="relative z-20
+            bg-black
+            md:bg-transparent
+            backdrop-blur-none
+            md:backdrop-blur-xl
+            border-t border-border/20
+            min-h-[35vh]
+            flex flex-col
+            shadow-[0_-10px_40px_rgba(0,0,0,0.15)]
+            rounded-t-[2rem]
+            px-2 py-4"
+          >
           {/* Progress Bar */}
           <div className="w-full bg-muted/30 h-1.5 overflow-hidden">
             <div
