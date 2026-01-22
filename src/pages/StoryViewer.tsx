@@ -518,7 +518,7 @@ const StoryViewer = () => {
 
         {/* DIALOGUE & INTERACTION AREA */}
         <div className="relative z-20
-            bg-black
+            bg-card/95
             md:bg-transparent
             backdrop-blur-none
             md:backdrop-blur-xl
@@ -543,17 +543,17 @@ const StoryViewer = () => {
             {currentScene?.type === "NARRATIVE" && currentScene.dialogues && (
               <div className="flex-1 flex flex-col justify-between" onClick={handleNextDialogue}>
                 <div>
-                  <h3 className="text-primary text-white font-bold text-lg mb-2 flex items-center gap-2">
+                  <h3 className="text-primary text-foreground font-bold text-lg mb-2 flex items-center gap-2">
                     {currentScene.dialogues[currentDialogueIndex].character}
                   </h3>
-                  <p className="text-xl text-white lg:text-2xl leading-relaxed text-foreground">
+                  <p className="text-xl text-foreground lg:text-2xl leading-relaxed text-foreground">
                     {displayedText}
                     {isTyping && <span className="animate-pulse">|</span>}
                   </p>
                 </div>
 
                 {!isTyping && (
-                  <div className="mt-8 flex justify-end text-white animate-pulse text-muted-foreground text-sm flex items-center gap-2">
+                  <div className="mt-8 flex justify-end text-foreground animate-pulse text-muted-foreground text-sm flex items-center gap-2">
                     Ketuk untuk lanjut <Play className="w-3 h-3 ml-1 fill-current" />
                   </div>
                 )}
@@ -567,7 +567,7 @@ const StoryViewer = () => {
                   <span className="inline-block px-3 py-1 bg-amber-500/10 text-amber-500 rounded-full text-xs font-bold mb-3 border border-amber-500/20">
                     PELUANG POIN
                   </span>
-                  <h3 className="text-xl text-white lg:text-2xl font-medium text-foreground leading-relaxed">
+                  <h3 className="text-xl text-foreground lg:text-2xl font-medium text-foreground leading-relaxed">
                     {currentScene.question}
                   </h3>
                 </div>
