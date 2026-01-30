@@ -32,6 +32,9 @@ export function PrinciplesSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const togglePrinciple = (index: number) => {
+    // Only allow toggling on mobile devices (below md breakpoint)
+    if (window.innerWidth >= 768) return;
+
     if (openIndex === index) {
       setOpenIndex(null);
     } else {

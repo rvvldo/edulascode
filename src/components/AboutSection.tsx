@@ -28,6 +28,9 @@ export function AboutSection() {
   const [openCardIndex, setOpenCardIndex] = useState<number | null>(null);
 
   const toggleCard = (index: number) => {
+    // Only allow toggling on mobile devices (below md breakpoint)
+    if (window.innerWidth >= 768) return;
+
     // Only apply toggle logic on mobile (optional check, but UI logic handles view)
     if (openCardIndex === index) {
       setOpenCardIndex(null);
