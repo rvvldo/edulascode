@@ -74,18 +74,21 @@ export function HeroSection() {
 
             {!isMobile && (
               <div className="hidden md:flex items-center gap-5">
-                <Link to="/dashboard"
-                  className="inline-block w-60 h-60 transition-transform hover:scale-105 active:scale-95 cursor-pointer"
-                  aria-label="Mulai Petualangan"
-                >
-                  <Suspense fallback={<div className="w-full h-full bg-primary/10 rounded-full animate-pulse" />}>
-                    <DotLottieReact
-                      src="https://lottie.host/5dd8f96c-5d47-44e2-a9a9-8c1bd583d3d6/02yHMpIzeb.lottie"
-                      loop
-                      autoplay
-                      className="w-full h-full"
-                    />
-                  </Suspense>
+                <Link to="/dashboard" className="contents">
+                  <Button
+                    
+                    size="xl"
+                    className=" py-0 px-3 
+                      text-base whitespace-normal text-center leading-tight 
+                      shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all glow-effect 
+                      bg-gradient-to-r from-primary to-forest-light 
+                      rounded-lg
+                      flex items-center justify-center gap-2
+                    "
+                  >
+                    {/* <Sparkles className="w-4 h-4" /> */}
+                    <span>Mulai Petualangan</span>
+                  </Button>
                 </Link>
                 <Button
                   variant="outline"
