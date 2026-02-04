@@ -26,7 +26,7 @@ export function HeroSection() {
       </div>
 
       <div className="container mx-auto px-4 lg:px-8 relative z-10">
-        <div className="max-w-4xl mx-auto text-center">
+        <div className="max-w-5xl mx-auto text-center">
           {/* Badge */}
           <div className="inline-flex items-center gap-2 glass-effect rounded-full px-5 py-2.5 mb-8 animate-bounce-in border border-border/30">
             <Sparkles className="w-4 h-4 text-accent animate-pulse-slow" />
@@ -38,11 +38,7 @@ export function HeroSection() {
           {/* Heading */}
           <h1 className="font-display text-3xl md:text-6xl lg:text-7xl font-bold text-foreground mb-4 md:mb-6 animate-fade-in leading-tight" style={{ animationDelay: "0.1s" }}>
             Edukasi{" "}
-            <span className="gradient-text bg-gradient-to-r from-primary via-forest-light to-leaf bg-clip-text text-transparent">Lestari Alam</span>
-            <br />
-            Digital
-          </h1>
-
+            <span className="gradient-text bg-gradient-to-r from-primary via-forest-light to-leaf bg-clip-text text-transparent">Lestari Alam</span> DIgital</h1>
           {/* Subheading */}
           <p className="text-base md:text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-6 md:mb-12 animate-fade-in leading-relaxed px-4" style={{ animationDelay: "0.2s" }}>
             Jelajahi petualangan interaktif yang menanamkan kesadaran pelestarian alam melalui cerita-cerita yang menginspirasi dan pilihan yang bermakna.
