@@ -553,8 +553,30 @@ const StoryViewer = () => {
                 </div>
 
                 {!isTyping && (
-                  <div className="mt-8 flex justify-end text-foreground animate-pulse text-muted-foreground text-sm flex items-center gap-2">
-                    Ketuk untuk lanjut <Play className="w-3 h-3 ml-1 fill-current" />
+                  <div className="mt-8 flex justify-end">
+                    <button
+                      type="button"
+                      className="
+                        flex items-center gap-2 
+                        px-4 py-2 
+                        rounded-full 
+                        /* Border yang jelas terlihat */
+                        border-2 border-primary 
+                        /* Background yang menyatu dengan tema tapi memberi kontras pada teks */
+                        bg-background 
+                        hover:bg-primary hover:text-primary-foreground 
+                        /* Teks berwarna primary agar jelas dan bukan abu-abu pudar */
+                        text-primary 
+                        text-sm font-semibold
+                        transition-all duration-300 ease-in-out 
+                        cursor-pointer
+                        shadow-md hover:shadow-lg
+                        group
+                      "
+                    >
+                      <span>Ketuk untuk lanjut</span>
+                      <Play className="w-3 h-3 fill-current group-hover:translate-x-1 transition-transform" />
+                    </button>
                   </div>
                 )}
               </div>
