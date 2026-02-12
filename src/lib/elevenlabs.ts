@@ -2,12 +2,7 @@
 const ELEVENLABS_API_KEY = import.meta.env.VITE_ELEVENLABS_API_KEY || "";
 const BASE_URL = "https://api.elevenlabs.io/v1";
 
-// Default Voice ID (You can change this to any voice ID you prefer)
-// "21m00Tcm4TlvDq8ikWAM" is Rachel (Standard US).
-// For Indonesian, you might want to explore the Voice Lab or Library to specific ID.
-// Using a generic one for now.
-const DEFAULT_VOICE_ID = "21m00Tcm4TlvDq8ikWAM"; // User requested voice ID
-// "21m00Tcm4TlvDq8ikWAM" is Rachel (Standard US).
+const DEFAULT_VOICE_ID = "21m00Tcm4TlvDq8ikWAM";
 
 export const generateSpeech = async (text: string, voiceId: string = DEFAULT_VOICE_ID): Promise<HTMLAudioElement | null> => {
   if (!ELEVENLABS_API_KEY) {
